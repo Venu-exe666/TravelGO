@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script th:src="@{/js/theme.js}"></script>
+    <title>Customer Workspace - TravelGO Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700;800&family=Outfit:wght@700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/customer.css}">
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+</head>
+<body class="customer-portal-body">
+
+    <!-- Figma: Portal-Topbar (2:312) -->
+    <header class="cust-topbar">
+        <a th:href="@{/customer/dashboard}" class="cust-brand">
+            <div class="cust-brand-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                </svg>
+            </div>
+            <h2 class="cust-brand-title">
+                Travel<span class="accent">GO</span> <span class="badge-portal">Portal</span>
+            </h2>
+        </a>
+
+        <div class="cust-user-badge-row">
+            <div class="cust-loyalty-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12">
+                    <circle cx="12" cy="8" r="6"></circle>
+                    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+                </svg>
+                <span>GOLD MEMBER</span>
+            </div>
+
+            <a th:href="@{/customer/settings}" class="cust-avatar-chip" title="Open profile settings">
+                <div class="cust-avatar-img" th:text="${currentUser != null ? #strings.substring(currentUser.name,0,2).toUpperCase() : 'JT'}">
+                    JT
+                </div>
+                <span class="cust-avatar-name" th:text="${currentUser != null ? currentUser.name : 'John Traveler'}">
+                    John Traveler
+                </span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Figma: Dashboard-Columns (2:326) -->
+    <div class="cust-dashboard-layout">
+        
+        <!-- Figma: Dashboard-Sidebar (2:327) -->
+        <aside class="cust-sidebar">
+            <a th:href="@{/customer/dashboard}" class="cust-nav-item active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="9" rx="1"></rect>
+                    <rect x="14" y="3" width="7" height="5" rx="1"></rect>
+                    <rect x="14" y="12" width="7" height="9" rx="1"></rect>
+                    <rect x="3" y="16" width="7" height="5" rx="1"></rect>
+                </svg>
+                <span>My Overview</span>
+            </a>
+
+            <a th:href="@{/customer/bookings}" class="cust-nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                </svg>
+                <span>My Expeditions</span>
+            </a>
+
+            <a th:href="@{/customer/visas}" class="cust-nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <span>Consular &amp; Visas</span>
+            </a>
+
+            <a th:href="@{/customer/bookings}" class="cust-nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+                <span>Invoices</span>
+            </a>
+
+            <a th:href="@{/customer/settings}" class="cust-nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6 1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"></path>
+                </svg>
+                <span>Settings</span>
+            </a>
+
+            <a th:href="@{/}" class="cust-nav-item" style="margin-top: auto;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>Back to Website</span>
+            </a>
+
+            <form th:action="@{/auth/logout}" method="post" style="margin: 0; width: 100%;">
+                <button type="submit" class="cust-nav-item" style="background: none; border: none; width: 100%; cursor: pointer; text-align: left;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Sign Out</span>
+                </button>
+            </form>
+        </aside>
+
+        <!-- Figma: Dashboard-Content-Body (2:348) -->
+        <main class="cust-content-area">
+
+            <!-- Figma: Welcome-Banner (2:349) -->
+            <div class="cust-welcome-banner">
+                <div class="cust-welcome-text">
+                    <h1>Welcome back, <span th:text="${currentUser != null ? currentUser.name : 'John Traveler'}">John Traveler</span>!</h1>
+                    <p>Your personal concierge has verified your next departure. Have a pristine expedition.</p>
+                </div>
+                <a th:href="@{/packages}" class="btn-book-adventure">
+                    <span>+ Book New Adventure</span>
+                </a>
+            </div>
+
+            <!-- Figma: Stats-Row (2:355) -->
+            <div class="cust-stats-grid">
+                <!-- Stat 1 -->
+                <div class="cust-stat-card">
+                    <div class="cust-stat-header">
+                        <span class="cust-stat-label">ACTIVE BOOKINGS</span>
+                        <svg class="cust-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                    </div>
+                    <div class="cust-stat-value">
+                        <span th:text="${activeBookingCount != null ? activeBookingCount : 0}">0</span> Upcoming
+                    </div>
+                </div>
+
+                <!-- Stat 2 -->
+                <div class="cust-stat-card">
+                    <div class="cust-stat-header">
+                        <span class="cust-stat-label">VISA PROCESSING</span>
+                        <svg class="cust-stat-icon orange" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <div class="cust-stat-value">
+                        <span th:text="${activeVisa != null ? #strings.replace(activeVisa.status.name(), '_', ' ') : 'No active visa'}">No active visa</span>
+                    </div>
+                </div>
+
+                <!-- Stat 3 -->
+                <div class="cust-stat-card">
+                    <div class="cust-stat-header">
+                        <span class="cust-stat-label">INVOICES &amp; PAYMENTS</span>
+                        <svg class="cust-stat-icon gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                            <line x1="1" y1="10" x2="23" y2="10"></line>
+                        </svg>
+                    </div>
+                    <div class="cust-stat-value"><span th:text="'$' + ${#numbers.formatDecimal(settledAmount != null ? settledAmount : 0, 1, 'COMMA', 2, 'POINT')}">$0.00</span> Settled</div>
+                </div>
+
+                <!-- Stat 4 -->
+                <div class="cust-stat-card">
+                    <div class="cust-stat-header">
+                        <span class="cust-stat-label">CONFIRMED EXPEDITIONS</span>
+                        <svg class="cust-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
+                            <line x1="12" y1="7" x2="12" y2="13"></line>
+                            <line x1="9" y1="10" x2="15" y2="10"></line>
+                        </svg>
+                    </div>
+                    <div class="cust-stat-value"><span th:text="${confirmedBookingCount != null ? confirmedBookingCount : 0}">0</span> Trips</div>
+                </div>
+            </div>
+
+            <!-- Figma: Countdown-Banner (2:380) -->
+            <div class="cust-countdown-banner" th:if="${upcomingBooking != null}"
+                 th:style="|background-image: url('${upcomingBooking.tourPackage != null and upcomingBooking.tourPackage.image != null and !#strings.isEmpty(upcomingBooking.tourPackage.image) ? upcomingBooking.tourPackage.image : '/images/hero-travel.jpg'}');|">
+                <div class="cust-countdown-overlay">
+                    <div>
+                        <div class="cust-countdown-meta">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            <span th:text="'UPCOMING EXPEDITION · ' + ${daysUntilUpcoming} + ' DAYS TO DEPARTURE'">UPCOMING EXPEDITION</span>
+                        </div>
+                        <h2 class="cust-countdown-title" th:text="${upcomingBooking.tourPackage != null ? upcomingBooking.tourPackage.name : 'Upcoming journey'}">
+                            Kyoto Autumn Cultural Journey
+                        </h2>
+                        <div class="cust-countdown-chips">
+                            <div class="cust-countdown-chip">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                    <circle cx="12" cy="12" r="5"></circle>
+                                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                                </svg>
+                                <span th:text="${upcomingBooking.tourPackage != null && upcomingBooking.tourPackage.destination != null ? upcomingBooking.tourPackage.destination.city + ', ' + upcomingBooking.tourPackage.destination.country : 'Destination pending'}">Destination</span>
+                            </div>
+                            <div class="cust-countdown-chip">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                    <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path>
+                                </svg>
+                                <span th:text="${upcomingBooking.tourPackage != null && upcomingBooking.tourPackage.flightDetails != null ? upcomingBooking.tourPackage.flightDetails : 'Flight details pending'}">Flight details pending</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cust-countdown-actions">
+                        <a th:href="@{/customer/bookings/{id}(id=${upcomingBooking.id})}" class="btn-cust-primary">
+                            <span>View Full Itinerary</span>
+                        </a>
+                        <a th:if="${upcomingBooking.bookingStatus.name() == 'CONFIRMED'}" th:href="@{/customer/bookings/{id}/confirmation(id=${upcomingBooking.id})}" class="btn-cust-outline">
+                            <span>Print Travel Voucher</span>
+                        </a>
+                        <a th:if="${upcomingBooking.bookingStatus.name() != 'CONFIRMED' and upcomingBooking.bookingStatus.name() != 'PAID_AWAITING_TICKETS'}" th:href="@{/customer/payments/checkout/{id}(id=${upcomingBooking.id})}" class="btn-cust-outline">
+                            <span>Continue Booking</span>
+                        </a>
+                        <span th:if="${upcomingBooking.bookingStatus.name() == 'PAID_AWAITING_TICKETS'}" class="btn-cust-outline" style="cursor: default;">Awaiting Ticket Release</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cust-welcome-banner" th:if="${upcomingBooking == null}" style="margin-bottom: 24px;">
+                <div class="cust-welcome-text">
+                    <h2 style="margin: 0 0 6px;">No upcoming expedition yet</h2>
+                    <p>Browse the current catalog to start a new booking.</p>
+                </div>
+                <a th:href="@{/packages}" class="btn-book-adventure">Browse Packages</a>
+            </div>
+
+            <!-- Figma: Visa-Tracking-Card (2:402) -->
+            <div class="cust-visa-card" th:if="${activeVisa != null}">
+                <div class="cust-visa-header">
+                    <div>
+                        <div class="cust-visa-sub">CONGRUENT CONSULAR SYSTEM</div>
+                        <h3 class="cust-visa-title">Active Visa Tracking Status</h3>
+                    </div>
+                    <div class="cust-visa-code" th:text="'#VISA-' + ${activeVisa.id} + ' (' + ${#strings.replace(activeVisa.visaType.name(), '_', ' ')} + ')'">#VISA-1</div>
+                </div>
+
+                <div class="cust-stepper">
+                    <!-- Step 1 -->
+                    <div class="cust-step" th:classappend="${visaProgress > 1 ? ' done' : (visaProgress == 1 ? ' active' : '')}">
+                        <div class="cust-step-circle">1</div>
+                        <div class="cust-step-label">Applied</div>
+                        <div class="cust-step-status">Done</div>
+                    </div>
+                    <div class="cust-stepper-line" th:classappend="${visaProgress > 1 ? ' active' : ''}"></div>
+
+                    <!-- Step 2 -->
+                    <div class="cust-step" th:classappend="${visaProgress > 2 ? ' done' : (visaProgress == 2 ? ' active' : '')}">
+                        <div class="cust-step-circle">2</div>
+                        <div class="cust-step-label">Docs Uploaded</div>
+                        <div class="cust-step-status">Done</div>
+                    </div>
+                    <div class="cust-stepper-line" th:classappend="${visaProgress > 2 ? ' active' : ''}"></div>
+
+                    <!-- Step 3 (Active) -->
+                    <div class="cust-step" th:classappend="${visaProgress > 3 ? ' done' : (visaProgress == 3 ? ' active' : '')}">
+                        <div class="cust-step-circle">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16">
+                                <line x1="12" y1="2" x2="12" y2="6"></line>
+                                <line x1="12" y1="18" x2="12" y2="22"></line>
+                                <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                                <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                                <line x1="2" y1="12" x2="6" y2="12"></line>
+                                <line x1="18" y1="12" x2="22" y2="12"></line>
+                                <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                                <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+                            </svg>
+                        </div>
+                        <div class="cust-step-label">Verification</div>
+                        <div class="cust-step-status">Active Pulse</div>
+                    </div>
+                    <div class="cust-stepper-line" th:classappend="${visaProgress > 3 ? ' active' : ''}"></div>
+
+                    <!-- Step 4 -->
+                    <div class="cust-step" th:classappend="${visaProgress > 4 ? ' done' : (visaProgress == 4 ? ' active' : '')}">
+                        <div class="cust-step-circle">4</div>
+                        <div class="cust-step-label">Embassy Review</div>
+                        <div class="cust-step-status">Pending</div>
+                    </div>
+                    <div class="cust-stepper-line" th:classappend="${visaProgress > 4 ? ' active' : ''}"></div>
+
+                    <!-- Step 5 -->
+                    <div class="cust-step" th:classappend="${visaProgress == 5 ? ' done' : ''}">
+                        <div class="cust-step-circle">5</div>
+                        <div class="cust-step-label">Approved</div>
+                        <div class="cust-step-status" th:text="${activeVisa.status.name() == 'APPROVED' ? 'Granted' : 'Pending'}">Pending</div>
+                    </div>
+                </div>
+
+                <div class="cust-visa-alert-bar">
+                    <div class="alert-text">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" width="16" height="16">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <span th:text="${activeVisa.officerRemarks != null && !#strings.isEmpty(activeVisa.officerRemarks) ? 'Officer request: ' + activeVisa.officerRemarks : 'Open your visa workspace to review documents, charges, and current status.'}">Open your visa workspace.</span>
+                    </div>
+                    <a th:href="@{/customer/visas(upload=${activeVisa.id})}" class="btn-book-adventure" style="padding: 6px 14px; font-size: 12px;">
+                        <span th:text="${activeVisa.status.name() == 'PENDING_DOCUMENTS' or activeVisa.status.name() == 'DOCUMENTS_SUBMITTED' ? 'Manage Documents' : 'Open Visa Workspace'}">Open Visa Workspace</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="cust-visa-card" th:if="${activeVisa == null}">
+                <div class="cust-visa-header">
+                    <div>
+                        <div class="cust-visa-sub">CONSULAR WORKSPACE</div>
+                        <h3 class="cust-visa-title">No visa application on file</h3>
+                    </div>
+                    <a th:href="@{/customer/visas}" class="btn-book-adventure" style="padding: 6px 14px; font-size: 12px;">Start or Review Visa Applications</a>
+                </div>
+            </div>
+
+            <!-- Figma: Current Bookings Ledger (2:438) -->
+            <div class="cust-ledger-card">
+                <h3 class="cust-ledger-title">Current Bookings Ledger</h3>
+                <div class="cust-table-wrap">
+                    <table class="cust-table">
+                        <thead>
+                            <tr>
+                                <th>BOOKING ID</th>
+                                <th>PACKAGE NAME</th>
+                                <th>DEPARTURE</th>
+                                <th>HOTEL ADD-ON</th>
+                                <th>AMOUNT</th>
+                                <th>STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic loop if customer bookings exist -->
+                            <tr th:each="b : ${bookings}" th:if="${bookings != null && !bookings.isEmpty()}">
+                                <td style="font-family: var(--cust-font-mono); font-weight: 700; color: var(--cust-accent-mint);" th:text="'#TRV-' + ${b.id}">#TRV-8941</td>
+                                <td style="font-weight: 600;" th:text="${b.tourPackage != null ? b.tourPackage.name : 'Expedition Tour'}">Schengen Ski &amp; Chalet Expedition</td>
+                                <td th:text="${b.travelDate != null ? #temporals.format(b.travelDate, 'MMM dd, yyyy') : 'Nov 12, 2026'}">Oct 12, 2026</td>
+                                <td th:text="${b.tourPackage != null && b.tourPackage.destination != null ? b.tourPackage.destination.city : 'Grand Hotel Zermatt'}">Grand Hotel Zermatt</td>
+                                <td style="font-weight: 700; color: var(--cust-accent-green);" th:text="'$' + ${#numbers.formatDecimal(b.totalPackageAmount != null ? b.totalPackageAmount : 3500, 1, 'COMMA', 0, 'POINT')}">$5,700</td>
+                                <td>
+                                    <span class="cust-badge-status" th:classappend="${b.bookingStatus != null && b.bookingStatus.name() == 'CONFIRMED'} ? 'cust-badge-paid' : 'cust-badge-pending'" th:text="${b.bookingStatus != null ? b.bookingStatus.name() : 'PAID'}">PAID</span>
+                                </td>
+                                <td>
+                                    <div class="cust-table-actions">
+                                        <a th:if="${b.bookingStatus.name() == 'CONFIRMED'}" th:href="@{/customer/bookings/{id}/confirmation(id=${b.id})}" class="cust-link-action">Travel Voucher</a>
+                                        <a th:href="@{/customer/bookings/{id}(id=${b.id})}" class="cust-link-action">Manage</a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr th:if="${bookings == null || bookings.isEmpty()}">
+                                <td colspan="7" style="padding: 32px; text-align: center; color: var(--cust-text-muted);">No bookings yet. Use “Book New Adventure” to start your first journey.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>

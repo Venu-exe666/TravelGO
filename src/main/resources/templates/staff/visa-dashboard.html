@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visa Officer Command Terminal - TravelGO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700;800&family=Outfit:wght@700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <style>
+        /* Specific Figma Tokens & Overrides for Visa Officer Hub */
+        .staff-kpi-grid-6 {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        @media (max-width: 1200px) {
+            .staff-kpi-grid-6 { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .staff-kpi-grid-6 { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .filter-pills-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        .pill-tab {
+            background: rgba(165, 214, 167, 0.08);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .pill-tab:hover,
+        .pill-tab.active {
+            background: rgba(102, 187, 106, 0.16);
+            border-color: var(--brand-primary);
+            color: var(--brand-primary);
+        }
+
+        /* Dossier Verification Panel (Figma 2:938) */
+        .dossier-panel {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .applicant-chip-box {
+            background: #0e2615;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 14px 16px;
+        }
+        .applicant-chip-box h4 {
+            margin: 0 0 4px 0;
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .badge-expiry {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--brand-gold);
+            letter-spacing: 0.05em;
+        }
+        .applicant-chip-box p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        .doc-checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .doc-check-item {
+            background: var(--bg-main);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+        .doc-check-item.warn {
+            border-color: var(--brand-gold);
+            background: rgba(34, 211, 238, 0.06);
+        }
+        .doc-check-title {
+            font-weight: 600;
+            color: #ffffff;
+        }
+        .doc-check-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .live-preview-box {
+            background: #061208;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        .live-preview-img {
+            max-width: 100%;
+            height: 140px;
+            object-fit: contain;
+            border-radius: 4px;
+            background: #ffffff;
+            padding: 4px;
+        }
+        .preview-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body class="admin-layout">
+
+    <!-- Dedicated Visa Officer Sidebar Fragment -->
+    <div th:replace="~{fragments/visa-sidebar :: visa-sidebar('dashboard')}"></div>
+
+    <!-- Main Workspace -->
+    <div class="admin-main">
+
+        <!-- Topbar (Figma 2:887) -->
+        <header class="admin-topbar">
+            <div class="topbar-left">
+                <h2 style="font-family: var(--font-heading); font-size: 17px; margin: 0; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+                    <span style="color: var(--brand-primary);">&bull;</span>
+                    TravelGO Visa Officer Command Terminal
+                </h2>
+            </div>
+            <div class="topbar-right">
+                <span class="sidebar-logo-badge" style="background: rgba(16, 185, 129, 0.16); border: 1px solid rgba(16, 185, 129, 0.35); color: #34d399;">VERIFICATION SPECIALIST</span>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="user-chip-avatar" style="color: var(--brand-primary); margin: 0;"
+                          th:text="${currentUser != null ? #strings.substring(currentUser.name, 0, 1).toUpperCase() : 'V'}">V</span>
+                    <span style="font-size: 13px; font-weight: 600; color: #ffffff;"
+                          th:text="${currentUser != null ? currentUser.name : 'Visa Officer'}">Visa Officer</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="admin-content">
+
+            <div th:if="${successMessage}" style="padding: 12px 16px; margin-bottom: 16px; border: 1px solid rgba(16,185,129,.35); border-radius: 8px; background: rgba(16,185,129,.1); color: #6ee7b7;" th:text="${successMessage}"></div>
+            <div th:if="${errorMessage}" style="padding: 12px 16px; margin-bottom: 16px; border: 1px solid rgba(239,68,68,.35); border-radius: 8px; background: rgba(239,68,68,.1); color: #fca5a5;" th:text="${errorMessage}"></div>
+
+            <!-- 6 Metric Cards Row (Figma 2:892) -->
+            <div class="staff-kpi-grid-6">
+                <div class="stat-card-kpi">
+                    <span class="kpi-label">TOTAL APPLICATIONS</span>
+                    <h2 class="kpi-number" th:text="${totalCount != null ? totalCount : 142}">142</h2>
+                    <span class="kpi-subtext">Active pipeline</span>
+                </div>
+
+                <div class="stat-card-kpi">
+                    <span class="kpi-label">PENDING DOCUMENTS</span>
+                    <h2 class="kpi-number" style="color: var(--brand-cta);" th:text="${pendingCount != null ? pendingCount : 28}">28</h2>
+                    <span class="kpi-subtext">Awaiting inspection</span>
+                </div>
+
+                <div class="stat-card-kpi">
+                    <span class="kpi-label">IN PROCESSING</span>
+                    <h2 class="kpi-number" style="color: var(--brand-info);" th:text="${processingCount != null ? processingCount : 45}">45</h2>
+                    <span class="kpi-subtext">Consular audit stage</span>
+                </div>
+
+                <div class="stat-card-kpi">
+                    <span class="kpi-label">APPROVED (CONSULAR)</span>
+                    <h2 class="kpi-number" style="color: var(--brand-primary);" th:text="${approvedCount != null ? approvedCount : 62}">62</h2>
+                    <span class="kpi-subtext">99.4% approval standard</span>
+                </div>
+
+                <div class="stat-card-kpi">
+                    <span class="kpi-label">REJECTED STATUS</span>
+                    <h2 class="kpi-number" style="color: var(--brand-danger);" th:text="${rejectedCount != null ? rejectedCount : 7}">7</h2>
+                    <span class="kpi-subtext">Invalid bank files</span>
+                </div>
+
+                <div class="stat-card-kpi">
+                    <span class="kpi-label">FEE LEDGER SUMMARY</span>
+                    <h2 class="kpi-number" style="color: var(--brand-primary); font-size: 21px;" th:text="${visaPaymentsTotal != null ? '$' + #numbers.formatDecimal(visaPaymentsTotal, 1, 'COMMA', 0, 'POINT') : '$21,300'}">$21,300</h2>
+                    <span class="kpi-subtext">Settled &amp; wire cleared</span>
+                </div>
+            </div>
+
+            <!-- Dual Layout: Active Consular Dossiers & Dossier Verification Panel -->
+            <div style="display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px; margin-bottom: 24px;">
+                
+                <!-- Left: Active Consular Application Dossiers (Figma 2:910) -->
+                <div class="surface-panel" style="margin-bottom: 0;">
+                    <div class="surface-header">
+                        <div class="surface-title-group">
+                            <span class="surface-tag">EMBASSY FEED</span>
+                            <h3>Active Consular Application Dossiers</h3>
+                        </div>
+                    </div>
+
+                    <!-- Pill Filter Tabs -->
+                    <div style="padding: 12px 24px; border-bottom: 1px solid var(--border-subtle);">
+                        <div class="filter-pills-row" id="dashboardVisaFilters">
+                            <button type="button" class="pill-tab active" data-filter="all">All Applications</button>
+                            <button type="button" class="pill-tab" data-filter="PENDING">Awaiting Verification</button>
+                            <button type="button" class="pill-tab" data-filter="PROCESSING">In Processing</button>
+                            <button type="button" class="pill-tab" data-filter="APPROVED">Approved</button>
+                            <button type="button" class="pill-tab" data-filter="REJECTED">Rejected</button>
+                        </div>
+                    </div>
+
+                    <div class="table-container" style="border: none; border-radius: 0;">
+                        <table class="data-table" id="dashboardVisaTable">
+                            <thead>
+                                <tr>
+                                    <th>DOSSIER ID</th>
+                                    <th>APPLICANT / VISA TYPE</th>
+                                    <th>EXPEDITION ROUTE</th>
+                                    <th>SUBMIT DATE</th>
+                                    <th>STATUS</th>
+                                    <th>ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic Loop if live applications exist -->
+                                <tr th:each="app : ${recentApplications}" th:if="${recentApplications != null && !recentApplications.isEmpty()}"
+                                    th:attr="data-status=${app.status.name()}">
+                                    <td style="font-family: var(--font-mono); color: var(--text-muted); font-weight: 700;" th:text="'#VISA-' + ${app.id}">#VISA-1082</td>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <span class="user-chip-avatar" style="margin: 0;" th:text="${app.booking != null && app.booking.user != null ? #strings.substring(app.booking.user.name, 0, 2).toUpperCase() : 'AP'}">SJ</span>
+                                            <div>
+                                                <div style="font-weight: 600;" th:text="${app.booking != null && app.booking.user != null ? app.booking.user.name : 'Applicant'}">Sarah Jenkins</div>
+                                                <div style="font-size: 11px; color: var(--text-muted);" th:text="${app.visaType != null ? app.visaType.name() : 'Tourist'}">Tourist</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="font-size: 12px;" th:text="${app.booking != null && app.booking.tourPackage != null ? app.booking.tourPackage.name : 'Expedition Tour'}">Swiss Alps Luxury</td>
+                                    <td th:text="${app.createdAt != null ? #temporals.format(app.createdAt, 'MMM dd, yyyy') : 'Sep 28, 2026'}">Sep 28, 2026</td>
+                                    <td>
+                                        <span class="badge-role visa_officer" th:text="${app.status != null ? app.status.name() : 'Awaiting Verification'}">Awaiting Verification</span>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/staff/visa-dashboard(applicationId=${app.id})}" class="btn-action" style="background: var(--brand-primary); color: #061208; padding: 4px 10px; font-size: 11px; font-weight: 700;">Open Dossier</a>
+                                    </td>
+                                </tr>
+
+                                <tr th:if="${recentApplications == null || recentApplications.isEmpty()}">
+                                    <td colspan="6" style="padding: 32px; text-align: center; color: var(--text-muted);">No visa applications are currently in the consular queue.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right: Dossier Verification Panel (Figma 2:938) -->
+                <div class="dossier-panel" th:if="${selectedApplication != null}">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div>
+                            <span class="surface-tag" style="margin-bottom: 2px;">INSPECTION AUDIT</span>
+                            <h3 style="font-family: var(--font-heading); font-size: 16px; margin: 0; color: #ffffff;">Dossier Verification</h3>
+                        </div>
+                        <span class="sidebar-logo-badge" style="background: var(--brand-cta);" th:text="${selectedApplication.status.name()}">STATUS</span>
+                    </div>
+
+                    <!-- Applicant Meta Chip -->
+                    <div class="applicant-chip-box">
+                        <h4>
+                            <span th:text="${selectedApplication.booking.user.name}">Applicant</span>
+                            <span class="badge-expiry" th:text="'#VISA-' + ${selectedApplication.id}">#VISA-1</span>
+                        </h4>
+                        <p>
+                            <span th:text="${selectedApplication.booking.user.email}">customer@example.com</span>
+                            &bull;
+                            <span th:text="${selectedApplication.visaType.name()}">TOURIST</span>
+                        </p>
+                    </div>
+
+                    <!-- Mandatory Document Checklist (Figma 2:947) -->
+                    <div>
+                        <div style="font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">MANDATORY CONSULAR FILES</div>
+                        <div class="doc-checklist">
+                            <div class="doc-check-item" th:each="doc : ${selectedDocuments}" th:classappend="${doc.verified} ? '' : ' warn'">
+                                <div>
+                                    <div class="doc-check-title" th:text="${doc.documentName}">Uploaded document</div>
+                                    <div class="doc-check-desc" th:text="${doc.verified ? 'Verified by visa officer' : 'Awaiting verification'}">Awaiting verification</div>
+                                </div>
+                                <a th:href="@{'/' + ${doc.documentUrl}}" target="_blank" rel="noopener" class="btn-action btn-outline" style="font-size: 10px; padding: 4px 8px;">View</a>
+                            </div>
+                            <div class="doc-check-item warn" th:if="${#lists.isEmpty(selectedDocuments)}">
+                                <div>
+                                    <div class="doc-check-title">No documents uploaded</div>
+                                    <div class="doc-check-desc">Ask the applicant to upload the required consular files.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:if="${selectedApplication.status.name() == 'PENDING_DOCUMENTS' or selectedApplication.status.name() == 'DOCUMENTS_SUBMITTED'}" style="display: grid; gap: 10px;">
+                        <form th:if="${!#lists.isEmpty(selectedDocuments)}" th:action="@{/staff/visas/{id}/verify-all(id=${selectedApplication.id})}" method="post">
+                            <input type="hidden" name="redirect" value="dashboard">
+                            <button type="submit" class="btn-action" style="width: 100%; background: var(--brand-primary); color: #061208; font-weight: 700; padding: 10px; border: 0; cursor: pointer;" onclick="return confirm('Mark all uploaded documents as verified?');">Verify All Documents</button>
+                        </form>
+                        <form th:action="@{/staff/visas/{id}/request-documents(id=${selectedApplication.id})}" method="post">
+                            <input type="hidden" name="redirect" value="dashboard">
+                            <textarea name="remarks" class="form-control" required placeholder="Describe the missing or invalid documents..." style="min-height: 60px; font-size: 12px; margin-bottom: 8px;"></textarea>
+                            <button type="submit" class="btn-action" style="width: 100%; background: transparent; border: 1px solid var(--brand-danger); color: var(--brand-danger); font-weight: 600; padding: 10px; cursor: pointer;">Request Re-upload</button>
+                        </form>
+                    </div>
+
+                    <form th:if="${selectedApplication.status.name() == 'DOCUMENTS_VERIFIED'}" th:action="@{/staff/visas/{id}/charges(id=${selectedApplication.id})}" method="post" style="display: grid; gap: 10px;">
+                        <input type="hidden" name="redirect" value="dashboard">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label class="form-label">Embassy fee
+                                <input class="form-control" type="number" name="visaCharge" min="0" step="0.01" required th:value="${selectedApplication.visaCharge != null ? selectedApplication.visaCharge : 0}">
+                            </label>
+                            <label class="form-label">Documentation fee
+                                <input class="form-control" type="number" name="documentationCharge" min="0" step="0.01" required th:value="${selectedApplication.documentationCharge != null ? selectedApplication.documentationCharge : 0}">
+                            </label>
+                        </div>
+                        <button type="submit" class="btn-action btn-primary" style="width: 100%; padding: 10px; border: 0; cursor: pointer;">Issue Charges to Customer</button>
+                    </form>
+
+                    <div th:if="${selectedApplication.status.name() == 'PAYMENT_PENDING'}" style="display: grid; gap: 10px;">
+                        <p style="margin: 0; color: var(--text-muted); font-size: 12px;" th:text="${selectedPaymentPaid ? 'Payment is marked paid. The dossier can move to embassy processing.' : 'Waiting for the customer payment or an offline payment clearance.'}"></p>
+                        <form th:if="${selectedPaymentPaid}" th:action="@{/staff/visas/{id}/process(id=${selectedApplication.id})}" method="post">
+                            <input type="hidden" name="redirect" value="dashboard">
+                            <button type="submit" class="btn-action btn-primary" style="width: 100%; padding: 10px; border: 0; cursor: pointer;">Move to Processing</button>
+                        </form>
+                        <a th:unless="${selectedPaymentPaid}" th:href="@{/staff/payments(tab='pending',search=${selectedApplication.booking.id})}" class="btn-action btn-outline" style="padding: 10px;">Review Payment Ledger</a>
+                    </div>
+
+                    <div th:if="${selectedApplication.status.name() == 'PROCESSING'}" style="display: grid; gap: 10px;">
+                        <form th:action="@{/staff/visas/{id}/approve(id=${selectedApplication.id})}" method="post">
+                            <input type="hidden" name="redirect" value="dashboard">
+                            <button type="submit" class="btn-action btn-primary" style="width: 100%; padding: 10px; border: 0; cursor: pointer;" onclick="return confirm('Approve this visa application?');">Approve Visa</button>
+                        </form>
+                        <form th:action="@{/staff/visas/{id}/reject(id=${selectedApplication.id})}" method="post">
+                            <input type="hidden" name="redirect" value="dashboard">
+                            <textarea name="rejectionReason" class="form-control" required placeholder="Enter the embassy rejection reason..." style="min-height: 60px; font-size: 12px; margin-bottom: 8px;"></textarea>
+                            <button type="submit" class="btn-action btn-danger" style="width: 100%; padding: 10px; cursor: pointer;" onclick="return confirm('Reject this visa and cancel its linked booking?');">Reject Visa</button>
+                        </form>
+                    </div>
+
+                    <div th:if="${selectedApplication.status.name() == 'APPROVED' or selectedApplication.status.name() == 'REJECTED' or selectedApplication.status.name() == 'EXPIRED'}" class="live-preview-box">
+                        <strong th:text="${selectedApplication.status.name()}">DECIDED</strong>
+                        <p style="margin: 6px 0 0; color: var(--text-muted); font-size: 12px;">This dossier has reached a terminal state. No further decision action is available.</p>
+                    </div>
+                </div>
+
+                <div class="dossier-panel" th:if="${selectedApplication == null}" style="justify-content: center; text-align: center; color: var(--text-muted);">
+                    No dossier is available for review.
+                </div>
+            </div>
+
+            <!-- Bottom Command Bar (Figma 2:970) -->
+            <div class="surface-panel" style="padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 0;">
+                <div style="display: flex; gap: 12px;">
+                    <a th:href="@{/staff/visas}" class="btn-action btn-outline">Open Full Dossier Queue</a>
+                    <a th:href="@{/staff/payments}" class="btn-action btn-outline">Open Payment Ledger</a>
+                    <a th:if="${selectedApplication != null}" th:href="@{/staff/payments(record=true,bookingId=${selectedApplication.booking.id})}" class="btn-action btn-outline">Record Offline Payment</a>
+                </div>
+                <div th:if="${selectedApplication != null}" style="display: flex; gap: 12px; align-items: center;">
+                    <span style="font-size: 12px; color: var(--text-muted);">Selected dossier</span>
+                    <strong style="font-family: var(--font-mono); color: var(--brand-primary);" th:text="'#VISA-' + ${selectedApplication.id}">#VISA-1</strong>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        document.querySelectorAll('#dashboardVisaFilters .pill-tab').forEach(function (button) {
+            button.addEventListener('click', function () {
+                document.querySelectorAll('#dashboardVisaFilters .pill-tab').forEach(function (item) {
+                    item.classList.remove('active');
+                });
+                button.classList.add('active');
+                var filter = button.getAttribute('data-filter');
+                document.querySelectorAll('#dashboardVisaTable tbody tr[data-status]').forEach(function (row) {
+                    var status = row.getAttribute('data-status');
+                    var visible = filter === 'all'
+                        || (filter === 'PENDING' && (status === 'PENDING_DOCUMENTS' || status === 'DOCUMENTS_SUBMITTED' || status === 'DOCUMENTS_VERIFIED'))
+                        || status === filter;
+                    row.style.display = visible ? '' : 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

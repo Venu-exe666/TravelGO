@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+    <aside th:fragment="visa-sidebar(activeTab)" class="admin-sidebar sidebar--visa">
+        <!-- Figma: Logo-Section -->
+        <div class="sidebar-header">
+            <a th:href="@{/staff/visa-dashboard}" class="sidebar-logo">
+                <div class="brand-logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                    </svg>
+                </div>
+                <span>Travel<span class="accent">GO</span></span>
+            </a>
+            <span class="sidebar-logo-badge">VISA OFFICER</span>
+        </div>
+
+        <div class="sidebar-section-title">Consular Command</div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item" th:classappend="${activeTab == 'dashboard'} ? 'active' : ''">
+                <a th:href="@{/staff/visa-dashboard}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="9" rx="1"></rect>
+                        <rect x="14" y="3" width="7" height="5" rx="1"></rect>
+                        <rect x="14" y="12" width="7" height="9" rx="1"></rect>
+                        <rect x="3" y="16" width="7" height="5" rx="1"></rect>
+                    </svg>
+                    <span>Operations Console</span>
+                </a>
+            </li>
+            <li class="sidebar-item" th:classappend="${activeTab == 'visas'} ? 'active' : ''">
+                <a th:href="@{/staff/visas}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                    </svg>
+                    <span>Dossier Verifications</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Finance &amp; Ledger</div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item" th:classappend="${activeTab == 'payments'} ? 'active' : ''">
+                <a th:href="@{/staff/payments}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                        <line x1="1" y1="10" x2="23" y2="10"></line>
+                    </svg>
+                    <span>Fee Ledger Summary</span>
+                </a>
+            </li>
+            <li class="sidebar-item" th:classappend="${activeTab == 'history'} ? 'active' : ''">
+                <a th:href="@{/staff/payments(tab='history')}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    <span>Wire Clearances</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Reports</div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item" th:classappend="${activeTab == 'reports'} ? 'active' : ''">
+                <a th:href="@{/staff/reports}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                    </svg>
+                    <span>Embassy Reports</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-user-card">
+                <div class="user-avatar">IV</div>
+                <div class="user-info">
+                    <div class="user-name">Inspector Vance</div>
+                    <span class="user-role-badge">VISA OFFICER</span>
+                </div>
+            </div>
+            <form th:action="@{/auth/logout}" method="post" style="margin: 0; width: 100%;">
+                <button type="submit" class="btn-logout" style="width: 100%; border: none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Sign Out Terminal
+                </button>
+            </form>
+        </div>
+        <script th:src="@{/js/theme.js}"></script>
+        <script th:src="@{/js/staff-ui.js}" defer></script>
+    </aside>
+</body>
+</html>

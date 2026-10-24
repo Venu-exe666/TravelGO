@@ -1,0 +1,1956 @@
+/* ==========================================================================
+   TravelGO - Premium Design System Utilities & Ambient Visual Effects
+   Version: 2.0 (Executive Dark Luxury Edition)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Mesh Gradients & Glow Effects
+   -------------------------------------------------------------------------- */
+.glow-azure,
+.glow-emerald {
+    box-shadow: 0 0 35px -5px rgba(102, 187, 106, 0.45);
+}
+
+.glow-coral {
+    box-shadow: 0 0 35px -5px rgba(249, 115, 22, 0.35);
+}
+
+.glow-amber {
+    box-shadow: 0 0 35px -5px rgba(245, 158, 11, 0.35);
+}
+
+.text-gradient-azure {
+    background: linear-gradient(135deg, #F0F9FF 0%, #BAE6FD 30%, #38BDF8 65%, #0284C7 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    display: inline-block;
+    text-shadow: none !important;
+    filter: drop-shadow(0 3px 14px rgba(0, 0, 0, 0.85));
+}
+
+.text-gradient-emerald {
+    background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 30%, #4ADE80 70%, #16A34A 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    display: inline-block;
+    text-shadow: none !important;
+    filter: drop-shadow(0 3px 14px rgba(0, 0, 0, 0.85));
+}
+
+.text-gradient-gold {
+    background: linear-gradient(135deg, #FFFBEB 0%, #FDE68A 30%, #FBBF24 65%, #F59E0B 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    display: inline-block;
+    text-shadow: none !important;
+    filter: drop-shadow(0 3px 14px rgba(0, 0, 0, 0.85));
+}
+
+.text-gradient-white {
+    background: linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    display: inline-block;
+    text-shadow: none !important;
+    filter: drop-shadow(0 3px 14px rgba(0, 0, 0, 0.85));
+}
+
+/* Ambient Background Orbs */
+.ambient-glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.55;
+    transition: transform 0.8s ease-out;
+}
+
+.ambient-orb-1 {
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(102, 187, 106, 0.25) 0%, transparent 70%);
+    top: -10%;
+    right: -5%;
+    animation: orbFloat 14s ease-in-out infinite alternate;
+}
+
+.ambient-orb-2 {
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, rgba(165, 214, 167, 0.18) 0%, transparent 70%);
+    bottom: -15%;
+    left: -5%;
+    animation: orbFloat 18s ease-in-out infinite alternate-reverse;
+}
+
+.ambient-orb-3 {
+    width: 360px;
+    height: 360px;
+    background: radial-gradient(circle, rgba(27, 94, 32, 0.22) 0%, transparent 70%);
+    top: 40%;
+    right: 30%;
+    animation: orbFloat 22s ease-in-out infinite alternate;
+}
+
+@keyframes orbFloat {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(40px, -30px) scale(1.08); }
+    100% { transform: translate(-30px, 40px) scale(0.95); }
+}
+
+/* --------------------------------------------------------------------------
+   2. Glassmorphism Design Language
+   -------------------------------------------------------------------------- */
+.glass-panel {
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-panel-light {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.08);
+}
+
+.glass-card-interactive {
+    position: relative;
+    background: rgba(17, 24, 39, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 20px;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.4s ease,
+                box-shadow 0.4s ease;
+    overflow: hidden;
+}
+
+.glass-card-interactive::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.glass-card-interactive:hover {
+    transform: translateY(-8px);
+    border-color: rgba(56, 189, 248, 0.35);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.55),
+                0 0 30px -5px rgba(14, 165, 233, 0.2);
+}
+
+.glass-card-interactive:hover::before {
+    opacity: 1;
+}
+
+/* Glass Pill */
+.glass-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 9999px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #F1F5F9;
+    letter-spacing: 0.02em;
+}
+
+/* --------------------------------------------------------------------------
+   3. WebGL Canvas & Background Elements
+   -------------------------------------------------------------------------- */
+.webgl-hero-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+#webgl-aurora-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.72;
+    mix-blend-mode: screen;
+}
+
+/* Grid Matrix Pattern Overlay */
+.grid-pattern-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 80%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   4. High-Performance Scroll Reveal Engine
+   -------------------------------------------------------------------------- */
+.reveal, .reveal-up, .reveal-fade, .reveal-scale, .reveal-left, .reveal-right {
+    opacity: 0;
+    will-change: transform, opacity;
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal, .reveal-up {
+    transform: translateY(50px);
+}
+
+.reveal-fade {
+    transform: none;
+}
+
+.reveal-scale {
+    transform: scale(0.94);
+}
+
+.reveal-left {
+    transform: translateX(-40px);
+}
+
+.reveal-right {
+    transform: translateX(40px);
+}
+
+.revealed,
+.is-in-view {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+}
+
+/* Stagger utilities */
+.stagger-1 { transition-delay: 0.10s; }
+.stagger-2 { transition-delay: 0.20s; }
+.stagger-3 { transition-delay: 0.30s; }
+.stagger-4 { transition-delay: 0.40s; }
+.stagger-5 { transition-delay: 0.50s; }
+.stagger-6 { transition-delay: 0.60s; }
+
+/* --------------------------------------------------------------------------
+   5. Interactive Micro-Interactions & Magnetic Elements
+   -------------------------------------------------------------------------- */
+.btn-magnetic {
+    display: inline-flex;
+    position: relative;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Shimmer Light Bar for CTA */
+.btn-shimmer {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-shimmer::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 40%;
+    height: 200%;
+    background: linear-gradient(
+        60deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.25) 50%,
+        transparent 100%
+    );
+    transform: rotate(25deg);
+    animation: shimmerSlide 4.5s ease-in-out infinite;
+}
+
+@keyframes shimmerSlide {
+    0% { transform: translateX(-150%) rotate(25deg); }
+    30%, 100% { transform: translateX(450%) rotate(25deg); }
+}
+
+/* --------------------------------------------------------------------------
+   6. Custom Subtle Particle Container
+   -------------------------------------------------------------------------- */
+#particles-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particle-dot {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+    pointer-events: none;
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+    will-change: transform, opacity;
+}
+
+/* --------------------------------------------------------------------------
+   7. Badge & Tag Luxury Touches
+   -------------------------------------------------------------------------- */
+.badge-luxury {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.75rem;
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 9999px;
+    color: #38BDF8;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.badge-gold {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(234, 88, 12, 0.18) 100%);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    color: #FBBF24;
+}
+
+/* --------------------------------------------------------------------------
+   8. Mobile Drawer Navigation Overlay
+   -------------------------------------------------------------------------- */
+.mobile-nav-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(7, 11, 18, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.mobile-nav-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-nav-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 320px;
+    max-width: 85vw;
+    background: #0B111E;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: -15px 0 40px rgba(0, 0, 0, 0.6);
+    z-index: 1999;
+    display: flex;
+    flex-direction: column;
+    padding: 1.75rem;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
+}
+
+.mobile-nav-drawer.active {
+    transform: translateX(0);
+}
+
+.mobile-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 1.5rem;
+}
+
+.mobile-nav-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.mobile-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    color: #CBD5E1;
+    font-size: 1.05rem;
+    font-weight: 500;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.mobile-nav-link:hover, .mobile-nav-link.active {
+    color: #38BDF8;
+    background: rgba(14, 165, 233, 0.12);
+    transform: translateX(4px);
+}
+
+.mobile-drawer-close {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #FFFFFF;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.mobile-drawer-close:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   9. Scroll-Driven Progress Bar & Navbar Scroll State
+   -------------------------------------------------------------------------- */
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, #38BDF8, #818CF8, #F59E0B);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.85);
+    z-index: 99999;
+    pointer-events: none;
+    transition: width 0.08s linear;
+}
+
+.navbar-scrolled {
+    background: rgba(6, 18, 9, 0.35) !important;
+    backdrop-filter: blur(14px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(160%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* --------------------------------------------------------------------------
+   10. Page Hero Banners with Cinematic Destination Imagery & Parallax
+   -------------------------------------------------------------------------- */
+.page-hero-banner {
+    position: relative;
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 7.5rem 1.5rem 5rem;
+    background: #070B12;
+}
+
+@media (max-width: 768px) {
+    .page-hero-banner {
+        min-height: 320px;
+        padding: 6rem 1rem 3.5rem;
+    }
+}
+
+.page-hero-banner-bg {
+    position: absolute;
+    top: -20%;
+    left: 0;
+    width: 100%;
+    height: 140%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    will-change: transform;
+    pointer-events: none;
+    z-index: 0;
+    filter: brightness(0.85) contrast(1.05);
+}
+
+.page-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(7, 11, 18, 0.30) 0%,
+        rgba(7, 11, 18, 0.50) 55%,
+        rgba(7, 11, 18, 0.70) 90%,
+        rgba(7, 11, 18, 0.90) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+}
+
+.page-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* --------------------------------------------------------------------------
+   11. Homepage Cinematic UHD Background Video & Slideshow
+   -------------------------------------------------------------------------- */
+.hero-video-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
+    background-color: #061208;
+}
+
+.hero-video-wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero-video-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.hero-video-overlay {
+    position: absolute;
+    inset: 0;
+    background: 
+        linear-gradient(90deg, rgba(6, 18, 8, 0.65) 0%, rgba(6, 18, 8, 0.35) 40%, rgba(6, 18, 8, 0.05) 70%, rgba(6, 18, 8, 0.20) 100%),
+        linear-gradient(180deg, rgba(6, 18, 8, 0.15) 0%, transparent 40%, rgba(6, 18, 8, 0.75) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.hero-slideshow-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transform: none !important;
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    transform: none !important;
+}
+
+.hero-slide-overlay {
+    position: absolute;
+    inset: 0;
+    background: 
+        linear-gradient(90deg, rgba(6, 18, 8, 0.65) 0%, rgba(6, 18, 8, 0.40) 35%, rgba(6, 18, 8, 0.05) 65%, rgba(6, 18, 8, 0.20) 100%),
+        linear-gradient(180deg, rgba(6, 18, 8, 0.15) 0%, transparent 40%, rgba(6, 18, 8, 0.75) 100%);
+}
+
+.hero-slide-dots {
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 10;
+}
+
+@media (max-width: 768px) {
+    .hero-slide-dots {
+        bottom: 1.25rem;
+        right: 50%;
+        transform: translateX(50%);
+    }
+}
+
+.hero-slide-dot {
+    width: 26px;
+    height: 4px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.25);
+    border: none;
+    cursor: pointer;
+    transition: all 0.35s ease;
+}
+
+.hero-slide-dot.active {
+    width: 44px;
+    background: #38BDF8;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+}
+
+/* --------------------------------------------------------------------------
+   12. 3D Tilt Card & Specular Glare Effect
+   -------------------------------------------------------------------------- */
+.tilt-card {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+}
+
+.tilt-glare {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 5;
+    transition: opacity 0.35s ease;
+}
+
+/* --------------------------------------------------------------------------
+   13. Cinematic Section Dividers
+   -------------------------------------------------------------------------- */
+.section-divider-curve {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    z-index: 3;
+    pointer-events: none;
+    margin-top: -1px;
+}
+
+.section-divider-curve svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 60px;
+}
+
+@media (max-width: 768px) {
+    .section-divider-curve svg {
+        height: 35px;
+    }
+}
+
+.section-divider-curve path {
+    fill: #061208;
+}
+
+/* --------------------------------------------------------------------------
+   14. Animated Shimmer & Gradient Border Enhancements
+   -------------------------------------------------------------------------- */
+.gradient-border-glow {
+    position: relative;
+    background: #0F172A;
+    border-radius: 20px;
+    z-index: 1;
+}
+
+.gradient-border-glow::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 21px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.6) 0%, rgba(99, 102, 241, 0.3) 50%, rgba(245, 158, 11, 0.5) 100%);
+    z-index: -1;
+    opacity: 0.45;
+    transition: opacity 0.4s ease;
+}
+
+.gradient-border-glow:hover::before {
+    opacity: 0.9;
+    filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.4));
+}
+
+.footer-ambient-glow {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(102, 187, 106, 0.5), rgba(165, 214, 167, 0.4), transparent);
+    box-shadow: 0 0 30px rgba(102, 187, 106, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   15. Full-Page Immersive Scenic Background Architecture
+   -------------------------------------------------------------------------- */
+.page-immersive-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color: #061208;
+}
+
+.page-immersive-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    z-index: 0;
+    transform: none !important;
+}
+
+.page-immersive-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        ellipse 90% 70% at 50% 25%,
+        rgba(6, 18, 9, 0.40) 0%,
+        rgba(6, 18, 9, 0.60) 60%,
+        rgba(6, 18, 9, 0.78) 100%
+    );
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+}
+
+.page-immersive-content {
+    position: relative;
+    z-index: 2;
+    padding-top: 6.5rem;
+    padding-bottom: 6rem;
+}
+
+/* --------------------------------------------------------------------------
+   16. Luxury Borderless Category Pills & Tags (UI/UX Redesign)
+   -------------------------------------------------------------------------- */
+.category-pill-luxury,
+.badge.card-img-badge,
+.card-img-badge,
+.badge-category {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding: 0.38rem 0.95rem !important;
+    border: none !important;
+    border-radius: 9999px !important;
+    font-size: 0.74rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    color: #34d399 !important;
+    background: rgba(16, 185, 129, 0.18) !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+    box-shadow: 0 4px 16px -2px rgba(16, 185, 129, 0.25) !important;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.category-pill-luxury::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #A5D6A7;
+    box-shadow: 0 0 8px #A5D6A7, 0 0 12px rgba(102, 187, 106, 0.8);
+}
+
+.category-pill-luxury:hover {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 6px 22px -2px rgba(27, 94, 32, 0.65),
+                inset 0 1px 2px rgba(232, 245, 233, 0.4) !important;
+    color: #FFFFFF !important;
+}
+
+/* Gold Variant for Packages */
+.category-pill-gold {
+    color: #FBBF24 !important;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.28) 0%, rgba(27, 94, 32, 0.55) 100%) !important;
+    box-shadow: 0 4px 16px -2px rgba(245, 158, 11, 0.45),
+                inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
+}
+
+.category-pill-gold::before {
+    background: #FBBF24;
+    box-shadow: 0 0 8px #FBBF24, 0 0 12px rgba(251, 191, 36, 0.8);
+}
+
+/* Emerald Variant */
+.category-pill-emerald {
+    color: #E8F5E9 !important;
+    background: linear-gradient(135deg, rgba(27, 94, 32, 0.8) 0%, rgba(102, 187, 106, 0.35) 100%) !important;
+    border-color: rgba(102, 187, 106, 0.45) !important;
+    box-shadow: 0 4px 16px -2px rgba(27, 94, 32, 0.5),
+                inset 0 1px 1px rgba(232, 245, 233, 0.3) !important;
+}
+
+.category-pill-emerald::before {
+    background: #66BB6A;
+    box-shadow: 0 0 8px #66BB6A;
+}
+
+/* Destination Floating Country Badge Over Image */
+.card-img-badge {
+    top: 1rem !important;
+    left: auto !important;
+    right: 1rem !important;
+    border: 1px solid rgba(165, 214, 167, 0.3) !important;
+    background: linear-gradient(135deg, rgba(11, 31, 17, 0.9) 0%, rgba(27, 94, 32, 0.85) 100%) !important;
+    backdrop-filter: blur(14px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(200%) !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(232, 245, 233, 0.25) !important;
+    color: #E8F5E9 !important;
+    letter-spacing: 0.07em !important;
+}
+
+/* ==========================================================================
+   Wanderlust Travel Vibe Dock (Creative, Tactile Category Organization)
+   ========================================================================== */
+.travel-vibe-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3rem;
+    padding: 0 1rem;
+    width: 100%;
+}
+
+.travel-vibe-dock {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    padding: 0.55rem 0.85rem;
+    background: rgba(11, 31, 17, 0.45) !important;
+    backdrop-filter: blur(28px) saturate(190%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+    border-radius: 9999px;
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.45);
+    border: none !important;
+}
+
+.travel-vibe-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.65rem 1.45rem;
+    border-radius: 9999px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #CBD5E1;
+    text-decoration: none;
+    background: transparent;
+    border: none !important;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+}
+
+.travel-vibe-pill .vibe-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.travel-vibe-pill:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+    border: none !important;
+}
+
+.travel-vibe-pill.active {
+    color: #FFFFFF;
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45) !important;
+    border: none !important;
+    transform: scale(1.02);
+}
+
+/* Fallback & Legacy Category Filter Strip */
+.category-filter-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    overflow-x: auto;
+    padding: 0.5rem 0.25rem 1rem;
+    margin-bottom: 2.5rem;
+    scrollbar-width: none;
+}
+
+.category-filter-strip::-webkit-scrollbar {
+    display: none;
+}
+
+.category-filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.6rem 1.35rem;
+    border: none !important;
+    border-radius: 9999px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #CBD5E1;
+    background: rgba(11, 31, 17, 0.45);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.category-filter-chip:hover {
+    color: #FFFFFF;
+    background: rgba(16, 185, 129, 0.25) !important;
+    border: none !important;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+    transform: translateY(-2px);
+}
+
+.category-filter-chip.active {
+    color: #FFFFFF;
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+    border: none !important;
+    box-shadow: 0 6px 22px rgba(16, 185, 129, 0.45) !important;
+    transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   17. Ultra-Smooth Luxury Glass Cards (Translucent, Transparent Ribbons)
+   -------------------------------------------------------------------------- */
+.glass-card-luxury {
+    background: rgba(11, 31, 17, 0.42) !important;
+    backdrop-filter: blur(28px) saturate(190%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+    border: none !important;
+    border-radius: 24px !important;
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.45) !important;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.glass-card-luxury:hover {
+    transform: translateY(-8px) !important;
+    border: none !important;
+    box-shadow: 0 24px 55px rgba(0, 0, 0, 0.65),
+                0 0 25px rgba(16, 185, 129, 0.2) !important;
+}
+
+.glass-card-luxury .card-body {
+    background: transparent !important;
+}
+
+/* Inclusions & Hotel Badge in Cards */
+.hotel-note {
+    background: linear-gradient(90deg, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0.04) 100%) !important;
+    border: none !important;
+    border-left: 3px solid #F59E0B !important;
+    border-radius: 8px !important;
+}
+
+/* --------------------------------------------------------------------------
+   18. Borderless Floating Luxury Travel Cards (Effortless Elegance)
+   -------------------------------------------------------------------------- */
+.luxury-travel-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .luxury-travel-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .luxury-travel-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+}
+
+.luxury-travel-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 410px;
+    border-radius: 22px;
+    overflow: hidden;
+    text-decoration: none;
+    border: none !important;
+    background: #0B1F11;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+}
+
+.luxury-travel-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 28px 60px rgba(0, 0, 0, 0.75),
+                0 0 35px rgba(16, 185, 129, 0.25);
+}
+
+.luxury-card-media {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.luxury-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-travel-card:hover .luxury-card-img {
+    transform: scale(1.07);
+}
+
+/* Floating Price Tag Pill */
+.luxury-card-price-pill {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    background: rgba(6, 18, 9, 0.72);
+    border: 1px solid rgba(165, 214, 167, 0.25);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 999px;
+    padding: 0.35rem 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    z-index: 3;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+    transition: all 0.3s ease;
+}
+
+.luxury-travel-card:hover .luxury-card-price-pill {
+    background: rgba(6, 18, 9, 0.92);
+    border-color: rgba(52, 211, 153, 0.5);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+}
+
+.luxury-card-price-pill .price-from {
+    font-size: 0.72rem;
+    color: #94A3B8;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+}
+
+.luxury-card-price-pill .price-amount {
+    font-size: 0.96rem;
+    font-weight: 800;
+    color: #34D399;
+}
+
+/* Crystal-Clear Bottom Vignette Ribbon (No Blur on Photo) */
+.luxury-card-ribbon {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 3.5rem 1.6rem 1.4rem;
+    background: linear-gradient(180deg, 
+        transparent 0%, 
+        rgba(6, 18, 9, 0.12) 20%, 
+        rgba(6, 18, 9, 0.72) 65%, 
+        rgba(6, 18, 9, 0.94) 100%);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    z-index: 2;
+    transition: background 0.35s ease;
+}
+
+.luxury-travel-card:hover .luxury-card-ribbon {
+    background: linear-gradient(180deg, 
+        transparent 0%, 
+        rgba(6, 18, 9, 0.22) 20%, 
+        rgba(6, 18, 9, 0.82) 65%, 
+        rgba(6, 18, 9, 0.96) 100%);
+}
+
+.luxury-card-location {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #34D399;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.45rem;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+}
+
+.luxury-card-location svg {
+    color: #34D399;
+    flex-shrink: 0;
+}
+
+.luxury-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.luxury-card-title {
+    font-family: var(--font-heading);
+    font-size: 1.28rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1.3;
+    margin: 0;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+    transition: color 0.3s ease;
+}
+
+.luxury-travel-card:hover .luxury-card-title {
+    color: #E8F5E9;
+}
+
+.luxury-card-arrow {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #CBD5E1;
+    flex-shrink: 0;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-travel-card:hover .luxury-card-arrow {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    border-color: #34D399;
+    color: #FFFFFF;
+    transform: translateX(3px) scale(1.05);
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.45);
+}
+
+/* --------------------------------------------------------------------------
+   19. Scenic Background Sections with Seamless Organic Atmospheric Blending
+   (Eliminates Straight Lines and Hard Cutoffs Completely)
+   -------------------------------------------------------------------------- */
+.section-scenic {
+    position: relative;
+    overflow: visible;
+    background-color: #061208 !important;
+    padding: 6.5rem 0 !important;
+    margin: 0 !important;
+    z-index: 1;
+    border-bottom: none !important;
+}
+
+.section-scenic:last-of-type {
+    border-bottom: none !important;
+}
+
+/* Feathered edge masking on background images:
+   Gently dissolves the top and bottom into the deep luxury green background */
+.section-scenic-bg {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    right: 0;
+    bottom: -40px;
+    width: 100%;
+    height: calc(100% + 80px);
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    z-index: 0;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to bottom, 
+        transparent 0%, 
+        black 140px, 
+        black calc(100% - 140px), 
+        transparent 100%);
+    mask-image: linear-gradient(to bottom, 
+        transparent 0%, 
+        black 140px, 
+        black calc(100% - 140px), 
+        transparent 100%);
+}
+
+/* First scenic section meets hero banner at top, so keep top solid and blend bottom */
+.section-scenic:first-of-type .section-scenic-bg {
+    top: 0;
+    height: calc(100% + 40px);
+    -webkit-mask-image: linear-gradient(to bottom, 
+        black 0%, 
+        black calc(100% - 140px), 
+        transparent 100%);
+    mask-image: linear-gradient(to bottom, 
+        black 0%, 
+        black calc(100% - 140px), 
+        transparent 100%);
+}
+
+/* Last scenic section meets footer at bottom, so blend top and keep bottom solid */
+.section-scenic:last-of-type .section-scenic-bg {
+    bottom: 0;
+    height: calc(100% + 40px);
+    -webkit-mask-image: linear-gradient(to bottom, 
+        transparent 0%, 
+        black 140px, 
+        black 100%);
+    mask-image: linear-gradient(to bottom, 
+        transparent 0%, 
+        black 140px, 
+        black 100%);
+}
+
+.section-scenic-overlay {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    right: 0;
+    bottom: -40px;
+    background: rgba(6, 18, 9, 0.38) !important;
+    backdrop-filter: blur(0.5px);
+    -webkit-backdrop-filter: blur(0.5px);
+    z-index: 1;
+}
+
+/* Atmospheric Organic Curved Mist Blend between consecutive sections (No straight lines) */
+.section-scenic::after {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: radial-gradient(ellipse 90% 70% at 50% 50%, rgba(6, 18, 9, 0.92) 0%, transparent 100%);
+    z-index: 2;
+    pointer-events: none;
+    filter: blur(10px);
+}
+
+.section-scenic:last-of-type::after {
+    display: none !important;
+}
+
+.section-scenic-content {
+    position: relative;
+    z-index: 3;
+}
+
+/* Eliminate black gap dividers completely */
+.section-scenic-divider-top,
+.section-scenic-divider-bottom {
+    display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   20. Accessibility & Reduced Motion Support
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .reveal, .reveal-up, .reveal-fade, .reveal-scale, .reveal-left, .reveal-right {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
+    #webgl-aurora-canvas, .ambient-glow-orb {
+        display: none !important;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   21. Hide WebGL Canvas
+   -------------------------------------------------------------------------- */
+.webgl-hero-container,
+#webgl-aurora-canvas,
+.webgl-aurora-canvas {
+    display: none !important;
+}
+
+/* ==========================================================================
+   Cinematic Page-to-Page Navigation Transition Curtain
+   ========================================================================== */
+.page-transition-curtain {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(4, 14, 7, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 999999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.page-transition-curtain.transitioning-out {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.page-transition-curtain.transitioning-in {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.page-transition-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.page-transition-curtain.transitioning-out .page-transition-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.page-transition-minimal-brand {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+}
+
+.page-transition-minimal-brand span {
+    background: linear-gradient(135deg, #38BDF8, #A7F3D0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.page-transition-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, #10B981, #38BDF8, #81C784);
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.7);
+    transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.page-transition-curtain.transitioning-out .page-transition-bar {
+    width: 100%;
+}
+
+
+
+/* --------------------------------------------------------------------------
+   22. Hero Scroll-Down Indicator Button (Method for Smooth Section Move)
+   -------------------------------------------------------------------------- */
+.hero-scroll-down-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 1.35rem 0.65rem 1rem;
+    background: rgba(8, 24, 12, 0.78);
+    border: 1px solid rgba(165, 214, 167, 0.32);
+    border-radius: 9999px;
+    color: #E2E8F0;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 16px rgba(102, 187, 106, 0.18);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    margin-top: 1.75rem;
+    z-index: 10;
+}
+
+.hero-scroll-down-btn:hover {
+    background: rgba(14, 38, 20, 0.92);
+    border-color: rgba(165, 214, 167, 0.65);
+    color: #FFFFFF;
+    transform: translateY(-3px);
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.55), 0 0 24px rgba(102, 187, 106, 0.35);
+}
+
+.scroll-mouse-pill {
+    width: 20px;
+    height: 30px;
+    border-radius: 12px;
+    border: 2px solid rgba(165, 214, 167, 0.85);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.scroll-mouse-dot {
+    width: 4px;
+    height: 7px;
+    border-radius: 2px;
+    background: #81C784;
+    position: absolute;
+    top: 5px;
+    animation: mouseWheelGlide 1.8s infinite cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@keyframes mouseWheelGlide {
+    0% { opacity: 0; transform: translateY(0); }
+    30% { opacity: 1; }
+    80% { opacity: 0; transform: translateY(11px); }
+    100% { opacity: 0; transform: translateY(11px); }
+}
+
+.scroll-mouse-arrow {
+    animation: arrowBob 1.8s infinite ease-in-out;
+    color: #81C784;
+    flex-shrink: 0;
+}
+
+@keyframes arrowBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+}
+
+/* --------------------------------------------------------------------------
+   23. Dedicated Downward Scroll Reveal Animation
+   -------------------------------------------------------------------------- */
+.scroll-down-reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+}
+
+.scroll-down-reveal.is-in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   24. Curated Tourist Locations Showcase Section & Luxury Grid
+   -------------------------------------------------------------------------- */
+.destinations-showcase-section {
+    position: relative;
+    padding: 6.5rem 0 !important;
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   Wanderlust Bento Grid Architecture (Creative Asymmetric Organization)
+   ========================================================================== */
+.destinations-bento-grid,
+.destinations-showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: 240px;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+}
+
+/* Feature Spotlight Card (Index 1 / 6n + 1): Tall Hero Feature */
+.destinations-bento-grid > :nth-child(6n + 1),
+.destinations-showcase-grid > :nth-child(6n + 1) {
+    grid-column: span 7;
+    grid-row: span 2;
+    min-height: 504px;
+}
+
+/* Companion Cards (Index 2 & 3 / 6n + 2, 6n + 3): Stacked Alongside Hero */
+.destinations-bento-grid > :nth-child(6n + 2),
+.destinations-showcase-grid > :nth-child(6n + 2),
+.destinations-bento-grid > :nth-child(6n + 3),
+.destinations-showcase-grid > :nth-child(6n + 3) {
+    grid-column: span 5;
+    grid-row: span 1;
+    min-height: 240px;
+}
+
+/* Balanced Panorama Trio (Index 4, 5, 6 / 6n + 4, 6n + 5, 6n + 6): Grounded Row */
+.destinations-bento-grid > :nth-child(6n + 4),
+.destinations-showcase-grid > :nth-child(6n + 4),
+.destinations-bento-grid > :nth-child(6n + 5),
+.destinations-showcase-grid > :nth-child(6n + 5),
+.destinations-bento-grid > :nth-child(6n + 6),
+.destinations-showcase-grid > :nth-child(6n + 6) {
+    grid-column: span 4;
+    grid-row: span 1;
+    min-height: 290px;
+}
+
+/* Base Bento Destination Card: Full-Bleed Photo with Transparent Ribbon */
+.bento-destination-card,
+.destination-showcase-card {
+    position: relative;
+    border-radius: 26px;
+    overflow: hidden;
+    border: none !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.45);
+    text-decoration: none;
+    background: transparent !important;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bento-destination-card:hover,
+.destination-showcase-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 24px 55px rgba(0, 0, 0, 0.65), 0 0 30px rgba(16, 185, 129, 0.22);
+    border: none !important;
+}
+
+/* Full-Bleed Photograph (100% card coverage) */
+.bento-destination-img,
+.destination-showcase-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.destination-showcase-image-wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.bento-destination-card:hover .bento-destination-img,
+.destination-showcase-card:hover .destination-showcase-img {
+    transform: scale(1.08);
+}
+
+/* Crystal-Clear Bottom Description Ribbon (No Blur on Photo) */
+.bento-destination-ribbon,
+.destination-showcase-body {
+    position: relative;
+    z-index: 2;
+    padding: 2.2rem 1.8rem 1.4rem;
+    background: linear-gradient(180deg, 
+        transparent 0%, 
+        rgba(6, 18, 9, 0.12) 20%, 
+        rgba(6, 18, 9, 0.72) 65%, 
+        rgba(6, 18, 9, 0.94) 100%) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    border: none !important;
+    transition: background 0.35s ease;
+}
+
+.bento-destination-card:hover .bento-destination-ribbon,
+.destination-showcase-card:hover .destination-showcase-body {
+    background: linear-gradient(180deg, 
+        transparent 0%, 
+        rgba(6, 18, 9, 0.22) 20%, 
+        rgba(6, 18, 9, 0.82) 65%, 
+        rgba(6, 18, 9, 0.96) 100%) !important;
+}
+
+.bento-destination-country,
+.destination-showcase-country {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #34d399 !important;
+    margin: 0;
+}
+
+.bento-destination-title,
+.destination-showcase-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #FFFFFF !important;
+    margin: 0;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+}
+
+.destinations-bento-grid > :nth-child(6n + 1) .bento-destination-title,
+.destinations-showcase-grid > :nth-child(6n + 1) .destination-showcase-title {
+    font-size: 1.85rem;
+}
+
+.destination-showcase-badge,
+.destination-showcase-rating,
+.destination-showcase-desc,
+.destination-showcase-tags,
+.destination-showcase-footer {
+    display: none !important;
+}
+
+@media (max-width: 1024px) {
+    .destinations-bento-grid,
+    .destinations-showcase-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: auto;
+    }
+    .destinations-bento-grid > :nth-child(6n + 1),
+    .destinations-showcase-grid > :nth-child(6n + 1) {
+        grid-column: span 2;
+        min-height: 380px;
+    }
+    .destinations-bento-grid > :nth-child(6n + 2),
+    .destinations-showcase-grid > :nth-child(6n + 2),
+    .destinations-bento-grid > :nth-child(6n + 3),
+    .destinations-showcase-grid > :nth-child(6n + 3),
+    .destinations-bento-grid > :nth-child(6n + 4),
+    .destinations-showcase-grid > :nth-child(6n + 4),
+    .destinations-bento-grid > :nth-child(6n + 5),
+    .destinations-showcase-grid > :nth-child(6n + 5),
+    .destinations-bento-grid > :nth-child(6n + 6),
+    .destinations-showcase-grid > :nth-child(6n + 6) {
+        grid-column: span 1;
+        min-height: 270px;
+    }
+}
+
+@media (max-width: 640px) {
+    .destinations-bento-grid,
+    .destinations-showcase-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+    .destinations-bento-grid > :nth-child(n),
+    .destinations-showcase-grid > :nth-child(n) {
+        grid-column: span 1 !important;
+        grid-row: span 1 !important;
+        min-height: 270px;
+    }
+}
+
+/* ==========================================================================
+   Genuine Cinematic Scroll-Driven Motion & Smooth Parallax Engine
+   Note: Native Browser Scrolling 100% Preserved (Zero Snapping / Zero Hijacking)
+   ========================================================================== */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* --------------------------------------------------------------------------
+   1. Cinematic Section Entrance Architecture (48px Translation, 800ms)
+   -------------------------------------------------------------------------- */
+.scroll-section-animate {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+.scroll-section-animate.section-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Heading & Subtitle Choreographed Entrance */
+.scroll-section-animate .section-header {
+    opacity: 0;
+    transform: translateY(44px);
+    transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.scroll-section-animate.section-visible .section-header {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scroll-section-animate .section-header .section-subtitle {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.09s,
+                transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.09s;
+}
+
+.scroll-section-animate.section-visible .section-header .section-subtitle {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   2. Coordinated Card and Content Stagger (Only Public Section Cards)
+   -------------------------------------------------------------------------- */
+.scroll-section-animate .card,
+.scroll-section-animate .destination-showcase-card,
+.scroll-section-animate .feature-card {
+    opacity: 0;
+    transform: translateY(52px);
+    transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.4s ease,
+                border-color 0.4s ease;
+}
+
+.scroll-section-animate.section-visible .card,
+.scroll-section-animate.section-visible .destination-showcase-card,
+.scroll-section-animate.section-visible .feature-card {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Systematic 100ms Micro-Stagger Delays */
+.scroll-section-animate.section-visible .grid > *:nth-child(1),
+.scroll-section-animate.section-visible .destinations-showcase-grid > *:nth-child(1) {
+    transition-delay: 0.10s;
+}
+.scroll-section-animate.section-visible .grid > *:nth-child(2),
+.scroll-section-animate.section-visible .destinations-showcase-grid > *:nth-child(2) {
+    transition-delay: 0.20s;
+}
+.scroll-section-animate.section-visible .grid > *:nth-child(3),
+.scroll-section-animate.section-visible .destinations-showcase-grid > *:nth-child(3) {
+    transition-delay: 0.30s;
+}
+.scroll-section-animate.section-visible .grid > *:nth-child(4),
+.scroll-section-animate.section-visible .destinations-showcase-grid > *:nth-child(4) {
+    transition-delay: 0.40s;
+}
+.scroll-section-animate.section-visible .grid > *:nth-child(5),
+.scroll-section-animate.section-visible .destinations-showcase-grid > *:nth-child(5) {
+    transition-delay: 0.50s;
+}
+.scroll-section-animate.section-visible .grid > *:nth-child(6),
+.scroll-section-animate.section-visible .destinations-showcase-grid > *:nth-child(6) {
+    transition-delay: 0.60s;
+}
+
+/* --------------------------------------------------------------------------
+   3. Destination Image Scale Transition (1.06 Settle Down to 1.0)
+   -------------------------------------------------------------------------- */
+.scroll-section-animate .card-img,
+.scroll-section-animate .destination-showcase-img {
+    transform: scale(1.06);
+    transition: transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.scroll-section-animate.section-visible .card-img,
+.scroll-section-animate.section-visible .destination-showcase-img {
+    transform: scale(1.0);
+}
+
+/* --------------------------------------------------------------------------
+   4. Scroll-Driven Storytelling: Cinematic Hero Curtain Transition
+   -------------------------------------------------------------------------- */
+@media (min-width: 992px) {
+    .curtain-hero-sticky {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        min-height: 100vh;
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    .hero-lower-left {
+        will-change: transform, opacity;
+        transition: transform 0.1s linear, opacity 0.1s linear;
+    }
+
+    .curtain-layer {
+        position: relative;
+        z-index: 10;
+        background: #061208;
+    }
+
+    .curtain-stack {
+        box-shadow: 0 -38px 85px rgba(0, 0, 0, 0.95), 0 -15px 35px rgba(0, 0, 0, 0.8);
+    }
+}
+
+@media (max-width: 991px) {
+    .curtain-hero-sticky {
+        position: relative;
+        top: auto;
+        height: auto;
+        min-height: 85vh;
+        z-index: auto;
+    }
+
+    .curtain-layer {
+        position: relative;
+        z-index: auto;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   5. Genuine Visible Parallax Backgrounds (Multi-Plane Depth)
+   -------------------------------------------------------------------------- */
+.section-scenic {
+    position: relative;
+    overflow: hidden;
+}
+
+.section-scenic .section-scenic-bg {
+    position: absolute;
+    top: -20%;
+    left: 0;
+    right: 0;
+    height: 140%;
+    width: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    will-change: transform;
+    transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Card Image Parallax Container Readiness */
+.card-image-wrap,
+.destination-showcase-image-wrap {
+    overflow: hidden;
+    position: relative;
+}
+
+/* Curated destination cards use the same full-bleed image layer as the
+   Iconic Destinations cards. Keep this wrapper out of normal document flow so
+   the scenic section background cannot show through behind the caption. */
+.destinations-showcase-grid .destination-showcase-image-wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.card-image-wrap .card-img,
+.destination-showcase-image-wrap .destination-showcase-img {
+    will-change: transform;
+}
+
+/* --------------------------------------------------------------------------
+   6. Scripting Fallback & Reduced-Motion Accessibility
+   -------------------------------------------------------------------------- */
+@media (scripting: none) {
+    .scroll-section-animate,
+    .scroll-down-reveal,
+    .reveal,
+    .reveal-up,
+    .reveal-fade,
+    .reveal-scale,
+    .scroll-section-animate .card,
+    .scroll-section-animate .section-header {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto !important;
+    }
+
+    .scroll-section-animate,
+    .scroll-down-reveal,
+    .reveal,
+    .reveal-up,
+    .reveal-fade,
+    .reveal-scale,
+    .curtain-hero-sticky,
+    .curtain-layer,
+    .hero-lower-left,
+    .scroll-section-animate .section-header,
+    .scroll-section-animate .card,
+    .scroll-section-animate .destination-showcase-card,
+    .scroll-section-animate .feature-card {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        animation: none !important;
+    }
+
+    .scroll-section-animate .card-img,
+    .scroll-section-animate .destination-showcase-img,
+    .section-scenic .section-scenic-bg {
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .page-transition-curtain {
+        display: none !important;
+    }
+}

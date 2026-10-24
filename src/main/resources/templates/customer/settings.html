@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script th:src="@{/js/theme.js}"></script>
+    <title>Profile Settings - TravelGO Customer Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700;800&family=Outfit:wght@700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/customer.css}">
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+</head>
+<body class="customer-portal-body">
+    <header class="cust-topbar">
+        <a th:href="@{/customer/dashboard}" class="cust-brand">
+            <div class="cust-brand-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                </svg>
+            </div>
+            <h2 class="cust-brand-title">Travel<span class="accent">GO</span> <span class="badge-portal">Portal</span></h2>
+        </a>
+
+        <a th:href="@{/customer/settings}" class="cust-avatar-chip" aria-label="Profile settings">
+            <div class="cust-avatar-img" th:text="${#strings.substring(currentUser.name, 0, 1).toUpperCase()}">J</div>
+            <span class="cust-avatar-name" th:text="${currentUser.name}">John Traveler</span>
+        </a>
+    </header>
+
+    <div class="cust-dashboard-layout">
+        <aside class="cust-sidebar">
+            <a th:href="@{/customer/dashboard}" class="cust-nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="9" rx="1"></rect><rect x="14" y="3" width="7" height="5" rx="1"></rect><rect x="14" y="12" width="7" height="9" rx="1"></rect><rect x="3" y="16" width="7" height="5" rx="1"></rect>
+                </svg>
+                <span>My Overview</span>
+            </a>
+            <a th:href="@{/customer/bookings}" class="cust-nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+                <span>My Expeditions</span>
+            </a>
+            <a th:href="@{/customer/visas}" class="cust-nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                <span>Consular &amp; Visas</span>
+            </a>
+            <a th:href="@{/customer/bookings}" class="cust-nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                <span>Invoices</span>
+            </a>
+            <a th:href="@{/customer/settings}" class="cust-nav-item active" aria-current="page">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6 1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"></path></svg>
+                <span>Settings</span>
+            </a>
+            <a th:href="@{/}" class="cust-nav-item" style="margin-top: auto;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <span>Back to Website</span>
+            </a>
+            <form th:action="@{/auth/logout}" method="post" class="cust-signout-form">
+                <button type="submit" class="cust-nav-item cust-signout-button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Sign Out</span>
+                </button>
+            </form>
+        </aside>
+
+        <main class="cust-content-area cust-settings-content">
+            <section class="cust-settings-header">
+                <div>
+                    <span class="cust-settings-kicker">Account preferences</span>
+                    <h1>Personal details</h1>
+                    <p>Keep your contact information current so the TravelGO team can support your bookings and documentation.</p>
+                </div>
+                <div class="cust-profile-summary">
+                    <span class="cust-profile-summary-avatar" th:text="${#strings.substring(currentUser.name, 0, 1).toUpperCase()}">J</span>
+                    <span><strong th:text="${currentUser.name}">John Traveler</strong><small>Customer account</small></span>
+                </div>
+            </section>
+
+            <div th:if="${successMessage}" class="cust-settings-alert cust-settings-alert-success" role="status">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"></path></svg>
+                <span th:text="${successMessage}"></span>
+            </div>
+            <div th:if="${errorMessage}" class="cust-settings-alert cust-settings-alert-error" role="alert">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5m0 3h.01"></path></svg>
+                <span th:text="${errorMessage}"></span>
+            </div>
+
+            <div class="cust-settings-grid">
+                <section class="cust-settings-card">
+                    <div class="cust-settings-card-heading">
+                        <span class="cust-settings-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21a8 8 0 0 0-16 0"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        </span>
+                        <div><h2>Profile information</h2><p>These details are visible to authorized administrators in User Management.</p></div>
+                    </div>
+
+                    <form th:action="@{/customer/settings}" method="post" class="cust-settings-form">
+                        <div class="cust-settings-field">
+                            <label for="profileName">Full name <span>*</span></label>
+                            <input id="profileName" name="name" type="text" th:value="${currentUser.name}" minlength="2" maxlength="100" autocomplete="name" required>
+                        </div>
+
+                        <div class="cust-settings-field">
+                            <label for="profileEmail">Email address</label>
+                            <div class="cust-settings-readonly-wrap">
+                                <input id="profileEmail" type="email" th:value="${currentUser.email}" disabled>
+                                <span>Login ID</span>
+                            </div>
+                            <small>Email is protected because it identifies your signed-in account.</small>
+                        </div>
+
+                        <div class="cust-settings-field">
+                            <label for="profilePhone">Phone number</label>
+                            <input id="profilePhone" name="phone" type="tel" th:value="${currentUser.phone}" maxlength="20" pattern="^\+?[0-9\-\s()]{7,20}$" autocomplete="tel" placeholder="e.g. +94 77 123 4567">
+                        </div>
+
+                        <div class="cust-settings-field">
+                            <label for="profileAddress">Residential address</label>
+                            <textarea id="profileAddress" name="address" maxlength="1000" rows="5" autocomplete="street-address" placeholder="Street address, city, postal code" th:text="${currentUser.address}"></textarea>
+                            <small>Used only when TravelGO staff need contact or travel-document context.</small>
+                        </div>
+
+                        <div class="cust-settings-form-actions">
+                            <a th:href="@{/customer/dashboard}" class="cust-settings-button cust-settings-button-secondary">Cancel</a>
+                            <button type="submit" class="cust-settings-button cust-settings-button-primary">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"></path><path d="M17 21v-8H7v8M7 3v5h8"></path></svg>
+                                Save profile
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <aside class="cust-settings-side">
+                    <div class="cust-settings-note">
+                        <span class="cust-settings-note-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="m9 12 2 2 4-4"></path></svg>
+                        </span>
+                        <h3>Shared securely</h3>
+                        <p>Your profile is available only to you and authorized TravelGO staff who manage customer accounts.</p>
+                    </div>
+                    <div class="cust-settings-meta">
+                        <span>Account status</span><strong th:text="${currentUser.active ? 'Active' : 'Inactive'}">Active</strong>
+                        <span>Member since</span><strong th:text="${#temporals.format(currentUser.createdAt, 'MMM yyyy')}">Jan 2026</strong>
+                        <span>Last profile update</span><strong th:text="${#temporals.format(currentUser.updatedAt, 'dd MMM yyyy')}">17 Oct 2026</strong>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

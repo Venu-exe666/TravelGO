@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Clear answers about TravelGO package pricing, accommodation options, booking access, inquiries, and visa guidance.">
+    <title>Frequently Asked Questions - TravelGO</title>
+    <link rel="stylesheet" th:href="@{/css/premium.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/public-pages.css}">
+</head>
+<body class="public-inner-page page-faq">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-immersive-wrapper">
+        <div class="page-immersive-bg" data-parallax-bg th:style="'background-image: url(' + @{/images/destinations/tropical-beach.jpg} + ');'">
+            <div class="page-immersive-overlay"></div>
+            <div class="ambient-glow-orb ambient-orb-1"></div>
+            <div class="ambient-glow-orb ambient-orb-2"></div>
+        </div>
+
+        <main class="page-immersive-content">
+            <div class="container">
+                <div class="page-hero-content inner-page-hero" data-motion="up">
+                    <span class="page-eyebrow">TravelGO help centre</span>
+                    <h1 class="hero-title">Frequently Asked <span class="text-gradient-azure">Questions</span></h1>
+                    <p class="page-summary">Straightforward answers about package pricing, accommodation, account access, inquiries, and visa support.</p>
+                    <a href="#faq-list" class="page-scroll-cue" data-scroll-link>
+                        Browse answers
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m0 0l6-6m-6 6l-6-6" /></svg>
+                    </a>
+                </div>
+
+                <div class="public-section-heading" data-motion="up">
+                    <span class="section-kicker">Useful answers</span>
+                    <h2>Plan with fewer unknowns</h2>
+                    <p>Open a question to see the answer. Only one item stays open at a time for easier reading.</p>
+                </div>
+
+                <div id="faq-list" class="public-faq-list public-content-start" data-motion-group>
+                    <details class="public-faq-item" open>
+                        <summary>
+                            <span class="public-faq-index">01</span>
+                            <span>Does the base package price include hotel accommodation?</span>
+                            <span class="public-faq-toggle" aria-hidden="true"></span>
+                        </summary>
+                        <div class="public-faq-answer">
+                            <p>No, unless the package explicitly says otherwise. Accommodation is normally selected as an optional add-on during booking, allowing you to choose the available hotel category that suits your plans.</p>
+                        </div>
+                    </details>
+
+                    <details class="public-faq-item">
+                        <summary>
+                            <span class="public-faq-index">02</span>
+                            <span>What is included in a tour package?</span>
+                            <span class="public-faq-toggle" aria-hidden="true"></span>
+                        </summary>
+                        <div class="public-faq-answer">
+                            <p>Inclusions can differ between packages. Review the package’s destination, duration, price, flight details, and included-services information before reserving. Contact TravelGO when a listed inclusion needs clarification.</p>
+                        </div>
+                    </details>
+
+                    <details class="public-faq-item">
+                        <summary>
+                            <span class="public-faq-index">03</span>
+                            <span>Can I browse destinations and packages without an account?</span>
+                            <span class="public-faq-toggle" aria-hidden="true"></span>
+                        </summary>
+                        <div class="public-faq-answer">
+                            <p>Yes. Destinations, active packages, general visa guidance, and contact information are publicly available. You may be asked to sign in or create an account when you continue into the booking workflow.</p>
+                        </div>
+                    </details>
+
+                    <details class="public-faq-item">
+                        <summary>
+                            <span class="public-faq-index">04</span>
+                            <span>Does TravelGO guarantee a visa approval?</span>
+                            <span class="public-faq-toggle" aria-hidden="true"></span>
+                        </summary>
+                        <div class="public-faq-answer">
+                            <p>No. TravelGO can help organize and review application information, but requirements and final decisions belong to the responsible embassy, consulate, or immigration authority.</p>
+                        </div>
+                    </details>
+
+                    <details class="public-faq-item">
+                        <summary>
+                            <span class="public-faq-index">05</span>
+                            <span>How do I start a package reservation?</span>
+                            <span class="public-faq-toggle" aria-hidden="true"></span>
+                        </summary>
+                        <div class="public-faq-answer">
+                            <p>Open Tour Packages, use the destination and category filters, then select “Reserve Package” on your preferred journey. The booking flow will guide you through the remaining details.</p>
+                        </div>
+                    </details>
+
+                    <details class="public-faq-item">
+                        <summary>
+                            <span class="public-faq-index">06</span>
+                            <span>What happens after I send a contact inquiry?</span>
+                            <span class="public-faq-toggle" aria-hidden="true"></span>
+                        </summary>
+                        <div class="public-faq-answer">
+                            <p>Your message is added to the TravelGO staff inquiry inbox together with your name, email, subject, and travel requirements so the team can review and respond.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="card glass-card-luxury public-cta public-section" data-motion="scale">
+                    <span class="section-kicker">Need personal guidance?</span>
+                    <h2 style="color: #FFFFFF; font-size: clamp(2rem, 4vw, 2.7rem); margin-bottom: 0.9rem;">Tell us what you are planning</h2>
+                    <p style="color: #CBD5E1; max-width: 620px; margin: 0 auto 2rem; font-size: 1.05rem; line-height: 1.7;">Send your destination, preferred dates, group size, or documentation question to the TravelGO team.</p>
+                    <a th:href="@{/contact}" class="btn btn-primary btn-lg btn-shimmer">Contact TravelGO</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <button class="scroll-top-btn" aria-label="Scroll to top">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+
+    <script th:src="@{/js/public-scroll.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

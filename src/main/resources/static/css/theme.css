@@ -1,0 +1,450 @@
+/* TravelGO customer appearance control. Loaded after page-specific styles. */
+.theme-toggle {
+    min-height: 40px;
+    border: 1px solid var(--cust-border-subtle, var(--border-subtle));
+    border-radius: 10px;
+    background: var(--cust-bg-surface-elevated, var(--bg-surface-elevated));
+    color: var(--cust-text-white, var(--text-heading));
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0.65rem 0.85rem;
+    font: 700 0.78rem/1 'Inter', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12);
+    transition: transform 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+.theme-toggle svg { width: 17px; height: 17px; }
+.theme-toggle:hover { transform: translateY(-1px); border-color: var(--cust-accent-green, var(--brand-accent)); }
+.theme-toggle:focus-visible { outline: 3px solid rgba(5, 150, 105, 0.28); outline-offset: 2px; }
+.theme-toggle--topbar { box-shadow: none; white-space: nowrap; }
+.theme-toggle--floating {
+    position: fixed;
+    z-index: 1000;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    border-color: rgba(102, 187, 106, 0.4);
+}
+
+html[data-theme="dark"] body {
+    background-color: var(--cust-bg-canvas, var(--bg-main, #061208));
+    color: var(--cust-text-muted, var(--text-body, #c8dccb));
+}
+
+html[data-theme="dark"] .card {
+    background-color: var(--cust-bg-surface, var(--bg-surface, #0b1f11));
+    border-color: var(--cust-border-subtle, var(--border-subtle, rgba(165, 214, 167, 0.15)));
+    color: var(--cust-text-white, var(--text-heading, #f1f8f2));
+}
+
+html[data-theme="dark"] .text-muted {
+    color: var(--cust-text-muted, var(--text-muted, #a5d6a7)) !important;
+}
+
+html[data-theme="light"] {
+    --cust-bg-canvas: #f4f7f5;
+    --cust-bg-surface: #ffffff;
+    --cust-bg-surface-elevated: #edf3ef;
+    --cust-bg-glass: rgba(255, 255, 255, 0.92);
+    --cust-border-subtle: rgba(24, 73, 43, 0.15);
+    --cust-border-hover: rgba(5, 150, 105, 0.42);
+    --cust-accent-green: #087f5b;
+    --cust-accent-mint: #365f47;
+    --cust-accent-orange: #c2410c;
+    --cust-accent-orange-hover: #9a3412;
+    --cust-accent-gold: #9a6700;
+    --cust-text-white: #102419;
+    --cust-text-muted: #526b5c;
+    --cust-status-paid: #087443;
+    --cust-status-pending: #9a5b00;
+
+    --brand-primary: #0b3320;
+    --brand-primary-light: #e7f1ea;
+    --brand-accent: #087f5b;
+    --brand-accent-hover: #066b4c;
+    --brand-accent-light: rgba(5, 150, 105, 0.12);
+    --brand-secondary: #047857;
+    --brand-secondary-hover: #065f46;
+    --brand-secondary-light: rgba(4, 120, 87, 0.12);
+    --bg-main: #f4f7f5;
+    --bg-surface: #ffffff;
+    --bg-surface-elevated: #edf3ef;
+    --bg-subtle: #f0f5f2;
+    --bg-dark: #dfe8e2;
+    --text-heading: #102419;
+    --text-body: #304a39;
+    --text-muted: #587062;
+    --text-subtle: #6d8175;
+    --text-inverse: #ffffff;
+    --border-subtle: rgba(24, 73, 43, 0.14);
+    --border-strong: rgba(24, 73, 43, 0.25);
+    --border-highlight: rgba(5, 150, 105, 0.4);
+    --shadow-sm: 0 2px 7px rgba(20, 60, 35, 0.09);
+    --shadow-md: 0 8px 22px rgba(20, 60, 35, 0.11);
+    --shadow-lg: 0 14px 34px rgba(20, 60, 35, 0.13);
+}
+
+html[data-theme="light"] body,
+html[data-theme="light"] .customer-portal-body,
+html[data-theme="light"] .customer-bookings-page,
+html[data-theme="light"] .bookings-main,
+html[data-theme="light"] .cust-dashboard-layout,
+html[data-theme="light"] .cust-content-area {
+    background-color: var(--cust-bg-canvas, var(--bg-main)) !important;
+    color: var(--cust-text-muted, var(--text-body)) !important;
+}
+
+html[data-theme="light"] .cust-topbar,
+html[data-theme="light"] .cust-sidebar,
+html[data-theme="light"] .cust-welcome-banner,
+html[data-theme="light"] .cust-stat-card,
+html[data-theme="light"] .cust-visa-card,
+html[data-theme="light"] .cust-ledger-card,
+html[data-theme="light"] .bookings-ledger,
+html[data-theme="light"] .booking-record,
+html[data-theme="light"] .cust-settings-card,
+html[data-theme="light"] .cust-settings-note,
+html[data-theme="light"] .cust-settings-meta {
+    background: #ffffff !important;
+    border-color: var(--cust-border-subtle) !important;
+    box-shadow: 0 12px 32px rgba(20, 60, 35, 0.07);
+}
+
+html[data-theme="light"] .cust-topbar {
+    box-shadow: 0 1px 0 var(--cust-border-subtle);
+}
+
+html[data-theme="light"] .cust-brand-title,
+html[data-theme="light"] .cust-avatar-name,
+html[data-theme="light"] .cust-welcome-text h1,
+html[data-theme="light"] .cust-stat-value,
+html[data-theme="light"] .cust-visa-title,
+html[data-theme="light"] .cust-step-label,
+html[data-theme="light"] .cust-ledger-title,
+html[data-theme="light"] .cust-table td,
+html[data-theme="light"] .bookings-page-header h1,
+html[data-theme="light"] .bookings-ledger-header h2,
+html[data-theme="light"] .booking-record-title,
+html[data-theme="light"] .bookings-empty-state h3,
+html[data-theme="light"] .cust-settings-header h1,
+html[data-theme="light"] .cust-profile-summary strong,
+html[data-theme="light"] .cust-settings-card-heading h2,
+html[data-theme="light"] .cust-settings-note h3 {
+    color: #102419 !important;
+}
+
+html[data-theme="light"] .cust-nav-item { color: #365f47; }
+html[data-theme="light"] .cust-nav-item:hover,
+html[data-theme="light"] .cust-nav-item.active {
+    background: rgba(5, 150, 105, 0.1);
+    color: #102419;
+}
+
+html[data-theme="light"] .cust-avatar-chip,
+html[data-theme="light"] .cust-visa-alert-bar,
+html[data-theme="light"] .bookings-ledger-header,
+html[data-theme="light"] .bookings-count,
+html[data-theme="light"] .booking-record-facts,
+html[data-theme="light"] .cust-settings-button-secondary {
+    background: #edf3ef !important;
+    color: #294c36 !important;
+}
+
+html[data-theme="light"] .cust-avatar-img,
+html[data-theme="light"] .cust-step-circle {
+    background: #e2ece5;
+    color: #245536;
+}
+
+html[data-theme="light"] .bookings-page-header p,
+html[data-theme="light"] .booking-record-facts dt,
+html[data-theme="light"] .booking-record-copy,
+html[data-theme="light"] .bookings-empty-state p,
+html[data-theme="light"] .cust-settings-header > div > p,
+html[data-theme="light"] .cust-settings-card-heading p,
+html[data-theme="light"] .cust-settings-note p,
+html[data-theme="light"] .cust-settings-meta span {
+    color: #587062 !important;
+}
+
+html[data-theme="light"] .cust-settings-field label,
+html[data-theme="light"] .cust-settings-meta strong {
+    color: #294c36;
+}
+
+html[data-theme="light"] .cust-settings-field input,
+html[data-theme="light"] .cust-settings-field textarea,
+html[data-theme="light"] .form-control-custom,
+html[data-theme="light"] input.form-control,
+html[data-theme="light"] select.form-control,
+html[data-theme="light"] textarea.form-control {
+    background: #ffffff !important;
+    border-color: rgba(24, 73, 43, 0.25) !important;
+    color: #102419 !important;
+}
+
+html[data-theme="light"] input::placeholder,
+html[data-theme="light"] textarea::placeholder {
+    color: #718579 !important;
+    opacity: 1;
+}
+
+html[data-theme="light"] .booking-page-button-secondary,
+html[data-theme="light"] .booking-action-secondary {
+    border-color: rgba(24, 73, 43, 0.22);
+    background: #edf3ef;
+    color: #294c36;
+}
+
+html[data-theme="light"] .context-banner.banner-amber { color: #854d0e; }
+html[data-theme="light"] .context-banner.banner-green { color: #06603f; }
+html[data-theme="light"] .context-banner.banner-blue { color: #075985; }
+html[data-theme="light"] .step-item.completed .step-title { color: #087443; }
+html[data-theme="light"] .concierge-title { color: #6b21a8; }
+html[data-theme="light"] .concierge-desc { color: #7e22ce; }
+
+html[data-theme="light"] .confirmation-page {
+    background: #f4f7f5 !important;
+}
+
+html[data-theme="light"] .booking-confirmation-body .navbar,
+html[data-theme="light"] .booking-confirmation-body .navbar.scrolled {
+    background: rgba(255, 255, 255, 0.97) !important;
+    border-bottom-color: rgba(24, 73, 43, 0.14) !important;
+    box-shadow: 0 8px 24px rgba(20, 60, 35, 0.1) !important;
+}
+
+html[data-theme="light"] .booking-confirmation-body .navbar .nav-link,
+html[data-theme="light"] .booking-confirmation-body .navbar .brand-name {
+    color: #102419 !important;
+}
+
+html[data-theme="light"] .card,
+html[data-theme="light"] .summary-card,
+html[data-theme="light"] .flight-ticket-card,
+html[data-theme="light"] .hotel-voucher-card,
+html[data-theme="light"] .booking-card {
+    background-color: #ffffff !important;
+    border-color: rgba(24, 73, 43, 0.14) !important;
+    color: #304a39;
+}
+
+html[data-theme="light"] .text-muted { color: #587062 !important; }
+
+@media (max-width: 720px) {
+    .theme-toggle--topbar span { display: none; }
+    .theme-toggle--topbar { width: 40px; padding: 0; }
+    .theme-toggle--floating { right: 0.8rem; bottom: 0.8rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .theme-toggle { transition: none; }
+}
+
+/* Customer bookings ledger: explicit light colors for every row-level datum. */
+html[data-theme="light"] .customer-bookings-page .bookings-eyebrow,
+html[data-theme="light"] .customer-bookings-page .bookings-ledger-kicker,
+html[data-theme="light"] .customer-bookings-page .booking-reference {
+    color: #087f5b !important;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-record {
+    border-bottom-color: #d8e3dc;
+    background: #ffffff;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-record:hover {
+    background: #f7faf8;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-record-cancelled,
+html[data-theme="light"] .customer-bookings-page .booking-record-cancelled:hover {
+    background: #fffafa;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-record-identity h3 {
+    color: #183d27 !important;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-record-identity p {
+    color: #526b5c !important;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-record-identity p svg {
+    color: #087f5b;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-record-facts {
+    background: transparent !important;
+    color: #263d30 !important;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-record-facts div {
+    padding: 0.72rem 0.85rem;
+    border-left: 1px solid #d3e0d7;
+    background: #eef4f0;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-record-facts div:first-child {
+    border-radius: 8px 0 0 8px;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-record-facts div:last-child {
+    border-radius: 0 8px 8px 0;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-record-facts dt {
+    color: #526b5c !important;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-record-facts dd,
+html[data-theme="light"] .customer-bookings-page .booking-record-facts .booking-price {
+    color: #183d27 !important;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-record-facts dd small {
+    color: #526b5c !important;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-status-confirmed {
+    border-color: #9fd8b7;
+    background: #e9f7ef;
+    color: #067647;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-status-cancelled {
+    border-color: #f1b7b2;
+    background: #fff0ef;
+    color: #b42318;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-status-pending {
+    border-color: #e4c678;
+    background: #fff8df;
+    color: #7a4b00;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-status-info {
+    border-color: #a7cce3;
+    background: #edf7fc;
+    color: #075985;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-action-note {
+    color: #365f47;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-action-danger {
+    border-color: #e9a6a0;
+    background: #fff0ef;
+    color: #b42318;
+}
+
+html[data-theme="light"] .customer-bookings-page .booking-page-button-secondary:hover,
+html[data-theme="light"] .customer-bookings-page .booking-action-secondary:hover {
+    border-color: #75aa89;
+    background: #e2ece5;
+    color: #183d27;
+}
+
+/* Customer visa workspace: replace dark-only button and badge colors. */
+html[data-theme="light"] .customer-visas-page .main-content h1,
+html[data-theme="light"] .customer-visas-page .main-content h3,
+html[data-theme="light"] .customer-visas-page .main-content h4 {
+    color: #102419;
+}
+
+html[data-theme="light"] .customer-visas-page .card {
+    background: #ffffff !important;
+    border: 1px solid #d3e0d7 !important;
+    box-shadow: 0 14px 38px rgba(20, 60, 35, 0.12);
+}
+
+html[data-theme="light"] .customer-visas-page .card:hover {
+    transform: none;
+    box-shadow: 0 14px 38px rgba(20, 60, 35, 0.12);
+}
+
+html[data-theme="light"] .customer-visas-page .btn-outline {
+    border-color: #b7cabd;
+    background: #f2f6f3;
+    color: #294c36 !important;
+    box-shadow: none;
+}
+
+html[data-theme="light"] .customer-visas-page .btn-outline:hover {
+    border-color: #75aa89;
+    background: #e2ece5;
+    color: #183d27 !important;
+}
+
+html[data-theme="light"] .customer-visas-page .badge-info {
+    border-color: #8ed1ee;
+    background: #e1f5fe;
+    color: #03678f;
+}
+
+html[data-theme="light"] .customer-visas-page .badge-success {
+    border-color: #9fd8b7;
+    background: #e9f7ef;
+    color: #067647;
+}
+
+html[data-theme="light"] .customer-visas-page .badge-warning {
+    border-color: #e4c678;
+    background: #fff8df;
+    color: #7a4b00;
+}
+
+html[data-theme="light"] .customer-visas-page .badge-danger {
+    border-color: #f1b7b2;
+    background: #fff0ef;
+    color: #b42318;
+}
+
+html[data-theme="light"] .customer-visas-page .table-container {
+    border-color: #d3e0d7;
+    background: #ffffff;
+}
+
+html[data-theme="light"] .customer-visas-page .data-table th {
+    border-bottom-color: #c8d8ce;
+    background: #eef4f0;
+    color: #183d27;
+}
+
+html[data-theme="light"] .customer-visas-page .data-table td {
+    border-bottom-color: #d8e3dc;
+    color: #304a39;
+}
+
+html[data-theme="light"] .customer-visas-page .data-table tbody tr:hover {
+    background: #f7faf8;
+}
+
+html[data-theme="light"] .customer-visas-page .data-table strong[style*="var(--brand-accent)"] {
+    color: #087f5b !important;
+}
+
+html[data-theme="light"] .customer-visas-page .action-group .btn-primary {
+    color: #ffffff !important;
+}
+
+html[data-theme="light"] .customer-visas-page .custom-modal-box,
+html[data-theme="light"] .customer-visas-page .custom-modal-body {
+    background: #ffffff;
+    color: #304a39;
+}
+
+html[data-theme="light"] .customer-visas-page .custom-modal-header,
+html[data-theme="light"] .customer-visas-page .custom-modal-footer {
+    border-color: #d8e3dc;
+    background: #f7faf8;
+}
+
+html[data-theme="light"] .customer-visas-page .custom-modal-header h4,
+html[data-theme="light"] .customer-visas-page .form-label {
+    color: #102419;
+}

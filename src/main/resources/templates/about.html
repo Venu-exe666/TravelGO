@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn how TravelGO connects destination discovery, tour booking, inquiries, payments, and visa-focused workflows.">
+    <title>About Us - TravelGO Luxury Agency Ecosystem</title>
+    <link rel="stylesheet" th:href="@{/css/premium.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/public-pages.css}">
+</head>
+<body class="public-inner-page page-about">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-immersive-wrapper">
+        <!-- Full-Page Filling Scenic Background (Fairytale Castle Mist) -->
+        <div class="page-immersive-bg" data-parallax-bg th:style="'background-image: url(' + @{/images/destinations/castle-mist.jpg} + ');'">
+            <div class="page-immersive-overlay"></div>
+            <div class="ambient-glow-orb ambient-orb-1"></div>
+            <div class="ambient-glow-orb ambient-orb-2"></div>
+        </div>
+
+        <main class="page-immersive-content">
+            <div class="container">
+                <!-- Page Hero Header -->
+                <div class="page-hero-content inner-page-hero" data-motion="up">
+                    <span class="page-eyebrow">About TravelGO</span>
+                    <h1 class="hero-title">
+                        Architecting <span class="text-gradient-azure">Modern Exploration</span>
+                    </h1>
+                    <p class="page-summary">A connected travel experience designed to make discovery, booking, documentation, and trip support easier to understand.</p>
+                    <a href="#about-story" class="page-scroll-cue" data-scroll-link>
+                        Our approach
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m0 0l6-6m-6 6l-6-6" /></svg>
+                    </a>
+                </div>
+
+                <!-- Product capabilities without unsupported marketing statistics -->
+                <div class="public-value-grid" data-motion-group>
+                    <div class="public-value-card">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18zm0 0c2.2-2.4 3.3-5.4 3.3-9S14.2 5.4 12 3m0 18c-2.2-2.4-3.3-5.4-3.3-9S9.8 5.4 12 3M3.6 9h16.8M3.6 15h16.8" /></svg>
+                        <h3>Open exploration</h3>
+                        <p>Browse active destinations and packages before deciding whether to create an account.</p>
+                    </div>
+                    <div class="public-value-card">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <h3>Clear inclusions</h3>
+                        <p>See package pricing and key trip details with accommodation choices kept explicit.</p>
+                    </div>
+                    <div class="public-value-card">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5l5 5v11a2 2 0 01-2 2z" /></svg>
+                        <h3>Guided preparation</h3>
+                        <p>Organize booking and visa information through structured customer and staff workflows.</p>
+                    </div>
+                    <div class="public-value-card">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h10M4 18h7" /></svg>
+                        <h3>Visible progress</h3>
+                        <p>Keep bookings, inquiries, payments, and application stages easier to follow.</p>
+                    </div>
+                </div>
+
+                <!-- Brand Story Card -->
+                <div id="about-story" class="card glass-card-luxury public-story-panel public-content-start" data-motion="up" style="margin-bottom: 4.5rem;">
+                    <span class="section-kicker">Why we exist</span>
+                    <h2 style="font-size: 2.2rem; margin-bottom: 1.25rem; color: #FFFFFF;">Pioneering Transparent, Effortless Global Travel</h2>
+                    <p style="color: #CBD5E1; font-size: 1.15rem; line-height: 1.85; margin-bottom: 2.75rem; max-width: 900px;"
+                       th:text="${settings != null ? settings.companyDescription : 'TravelGO is an end-to-end travel agency management ecosystem designed to streamline bookings, transparent tour packages, visa document processing, and role-based staff operations.'}">
+                        TravelGO is a trusted travel agency platform.
+                    </p>
+
+                    <h3 style="margin-bottom: 1.75rem; color: #FFFFFF; font-size: 1.5rem;">Our Guiding Principles</h3>
+                    <div class="grid grid-3" data-motion-group>
+                        <div class="card glass-card-luxury" style="padding: 2.25rem; border-radius: 20px;">
+                            <div class="category-pill-luxury" style="margin-bottom: 1rem;">Principle 01</div>
+                            <h4 style="color: #FFFFFF; margin-bottom: 0.75rem; font-size: 1.25rem;">Complete Transparency</h4>
+                            <p style="font-size: 0.94rem; color: #94A3B8; line-height: 1.65;">
+                                Absolute clarity on every booking. Packages clearly detail flight tickets, activities, and visa services, while modular hotels remain your choice.
+                            </p>
+                        </div>
+
+                        <div class="card glass-card-luxury" style="padding: 2.25rem; border-radius: 20px;">
+                            <div class="category-pill-luxury category-pill-gold" style="margin-bottom: 1rem;">Principle 02</div>
+                            <h4 style="color: #FFFFFF; margin-bottom: 0.75rem; font-size: 1.25rem;">Specialist Guidance</h4>
+                            <p style="font-size: 0.94rem; color: #94A3B8; line-height: 1.65;">
+                                Travel consultants and visa-focused staff help organize the information and documents needed for each stage of the journey.
+                            </p>
+                        </div>
+
+                        <div class="card glass-card-luxury" style="padding: 2.25rem; border-radius: 20px;">
+                            <div class="category-pill-luxury category-pill-emerald" style="margin-bottom: 1rem;">Principle 03</div>
+                            <h4 style="color: #FFFFFF; margin-bottom: 0.75rem; font-size: 1.25rem;">Coordinated Workflows</h4>
+                            <p style="font-size: 0.94rem; color: #94A3B8; line-height: 1.65;">
+                                Role-based workspaces connect customer requests with the staff responsible for packages, payments, inquiries, and visa processing.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Global Reach Banner -->
+                <div class="cta-banner glass-card-luxury public-cta" data-motion="scale">
+                    <h2 style="color: #FFFFFF; font-size: 2.4rem; margin-bottom: 1rem;">Experience the TravelGO Difference</h2>
+                    <p style="color: #CBD5E1; max-width: 600px; margin: 0 auto 2.25rem; font-size: 1.15rem; line-height: 1.7;">
+                        Whether you are planning a cultural journey, business trip, or private getaway, start with the package catalogue or speak with the TravelGO team.
+                    </p>
+                    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                        <a th:href="@{/packages}" class="btn btn-primary btn-lg btn-shimmer btn-magnetic">Explore Tour Packages</a>
+                        <a th:href="@{/contact}" class="btn btn-outline btn-lg btn-magnetic">Contact Concierge</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top-btn" aria-label="Scroll to top">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+
+    <!-- UI Scripts -->
+    <script th:src="@{/js/public-scroll.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

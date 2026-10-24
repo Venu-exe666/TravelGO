@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Compare active TravelGO tour packages by destination, category, duration, capacity, and price.">
+    <title>Curated Tour Packages &amp; Pricing - TravelGO</title>
+    <link rel="stylesheet" th:href="@{/css/premium.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/public-pages.css}">
+</head>
+<body class="public-inner-page page-packages">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-immersive-wrapper">
+        <!-- Full-Page Filling Scenic Background (Swiss Alps Lake & Wildflowers) -->
+        <div class="page-immersive-bg" data-parallax-bg th:style="'background-image: url(' + @{/images/destinations/swiss-alps.jpg} + ');'">
+            <div class="page-immersive-overlay"></div>
+            <div class="ambient-glow-orb ambient-orb-1"></div>
+            <div class="ambient-glow-orb ambient-orb-3"></div>
+        </div>
+
+        <main class="page-immersive-content">
+            <div class="container">
+                <!-- Section Header -->
+                <div class="page-hero-content inner-page-hero" data-motion="up">
+                    <span class="page-eyebrow">Curated travel collection</span>
+                    <h1 class="hero-title">
+                        Curated <span class="text-gradient-gold">Luxury Packages</span>
+                    </h1>
+                    <p class="page-summary">Compare destinations, trip length, capacity, and pricing in one place before beginning your reservation.</p>
+                    <a href="#package-filters" class="page-scroll-cue" data-scroll-link>
+                        Find a journey
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m0 0l6-6m-6 6l-6-6" /></svg>
+                    </a>
+                </div>
+
+                <!-- Creative Wanderlust Journey Vibe Dock -->
+                <div class="travel-vibe-container" data-motion="up" th:if="${not #lists.isEmpty(categories)}">
+                    <div class="travel-vibe-dock">
+                        <a th:href="@{/packages}" 
+                           class="travel-vibe-pill"
+                           th:classappend="${selectedCategoryId == null ? 'active' : ''}">
+                            <span class="vibe-name">All Journeys</span>
+                        </a>
+                        <a th:each="cat : ${categories}" 
+                           th:href="@{/packages(categoryId=${cat.id})}"
+                           class="travel-vibe-pill"
+                           th:classappend="${selectedCategoryId != null and selectedCategoryId == cat.id ? 'active' : ''}">
+                            <span class="vibe-name" th:text="${cat.name}">Cultural Heritage</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Search & Filter Controls (Frosted Glass Panel) -->
+                <div id="package-filters" class="card glass-card-luxury public-search-panel public-content-start" data-motion="up">
+                    <form th:action="@{/packages}" method="get" class="public-filter-form public-filter-form--packages">
+                        <div class="public-filter-field public-filter-field--grow">
+                            <label for="packageSearch" class="public-field-label">Search packages</label>
+                            <input id="packageSearch" type="search" name="search" th:value="${search}" placeholder="Destination or package name" class="form-control public-inner-control">
+                        </div>
+
+                        <div class="public-filter-field">
+                            <label for="packageDestination" class="public-field-label">Destination</label>
+                            <select id="packageDestination" name="destinationId" class="form-control public-inner-control">
+                                <option value="">All Destinations</option>
+                                <option th:each="dest : ${destinations}" 
+                                        th:value="${dest.id}" 
+                                        th:text="${dest.city + ', ' + dest.country}" 
+                                        th:selected="${selectedDestinationId != null and selectedDestinationId == dest.id}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="public-filter-field">
+                            <label for="packageCategory" class="public-field-label">Category</label>
+                            <select id="packageCategory" name="categoryId" class="form-control public-inner-control">
+                                <option value="">All Categories</option>
+                                <option th:each="cat : ${categories}" 
+                                        th:value="${cat.id}" 
+                                        th:text="${cat.name}" 
+                                        th:selected="${selectedCategoryId != null and selectedCategoryId == cat.id}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="public-filter-actions">
+                            <button type="submit" class="btn btn-primary btn-shimmer btn-magnetic" style="height: 48px; padding: 0 1.5rem;">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" style="width: 16px; height: 16px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                                <span>Filter</span>
+                            </button>
+                            <a th:href="@{/packages}" class="btn btn-outline btn-magnetic" style="height: 48px; padding: 0 1.25rem;">Reset</a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Accommodation policy -->
+                <div class="public-policy-note" data-motion="up">
+                    <div>
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" style="flex-shrink: 0; color: #F59E0B;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div><strong style="color: #FBBF24;">Accommodation policy:</strong> Base package prices do not include hotel accommodation unless a package explicitly says otherwise. You can choose an accommodation option during booking; review each package’s listed inclusions before reserving.</div>
+                </div>
+
+                <div class="public-results-bar" th:if="${not #lists.isEmpty(packages)}" data-motion="up">
+                    <div>
+                        <span class="section-kicker">Journey catalogue</span>
+                        <h2>Packages matching your plans</h2>
+                        <p>Pricing and availability are taken from the active package inventory.</p>
+                    </div>
+                    <span class="public-result-count"><span th:text="${#lists.size(packages)}">0</span> packages</span>
+                </div>
+
+                <!-- Dynamic Package Grid -->
+                <div class="grid grid-3 public-card-grid" data-motion-group th:if="${not #lists.isEmpty(packages)}">
+                    <article class="card glass-card-luxury public-package-card" 
+                         th:each="pkg : ${packages}" 
+                         style="display: flex; flex-direction: column;">
+                        <div class="card-image-wrap">
+                            <img th:src="${pkg.image != null and !pkg.image.isEmpty() ? pkg.image : 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1920&q=90'}" 
+                                 th:alt="${pkg.name}" 
+                                 class="card-img"
+                                 data-parallax-media
+                                 loading="lazy"
+                                 onerror="this.src='https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1920&q=90'">
+                            <span class="card-img-price" th:text="'$' + ${#numbers.formatDecimal(pkg.basePrice, 1, 'COMMA', 2, 'POINT')}">$1,299</span>
+                        </div>
+
+                        <div class="card-body" style="padding: 1.4rem 1.6rem 1.6rem; display: flex; flex-direction: column; flex: 1; background: transparent;">
+                            <!-- Destination Location -->
+                            <span style="font-size: 0.82rem; color: #34d399; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 0.4rem;" 
+                                  th:text="${pkg.destination != null ? pkg.destination.city + ', ' + pkg.destination.country : ''}">
+                                Destination
+                            </span>
+
+                            <h3 th:text="${pkg.name}" style="margin-bottom: 0.8rem; font-size: 1.35rem; font-weight: 800; color: #FFFFFF;">Package Name</h3>
+
+                            <p th:if="${pkg.description != null and !#strings.isEmpty(pkg.description)}" th:text="${#strings.abbreviate(pkg.description, 112)}" style="color: #A9BCAF; font-size: 0.9rem; line-height: 1.65; margin-bottom: 1rem;">Package description</p>
+
+                            <div class="public-package-meta">
+                                <span th:if="${pkg.durationDays != null}" th:text="${pkg.durationDays + ' days'}">7 days</span>
+                                <span th:if="${pkg.maxCapacity != null}" th:text="${'Up to ' + pkg.maxCapacity + ' travelers'}">Up to 12 travelers</span>
+                                <span th:if="${pkg.category != null}" th:text="${pkg.category.name}">Category</span>
+                            </div>
+
+                            <div style="margin-top: auto;">
+                                <a th:href="@{/packages/{id}/book(id=${pkg.id})}" class="btn btn-primary btn-magnetic" style="width: 100%; height: 48px; border-radius: 14px; border: none; font-weight: 700;">
+                                    <span>Reserve Package</span>
+                                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Empty State -->
+                <div th:if="${#lists.isEmpty(packages)}" class="card glass-card-luxury" data-motion="scale" style="text-align: center; padding: 4.5rem 2rem; max-width: 620px; margin: 0 auto;">
+                    <div style="width: 70px; height: 70px; background: rgba(14, 165, 233, 0.12); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: var(--brand-accent);">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 34px; height: 34px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                        </svg>
+                    </div>
+                    <h3 style="margin-bottom: 0.75rem; color: #FFFFFF;">No Tour Packages Found</h3>
+                    <p style="color: #94A3B8; margin-bottom: 1.75rem;">We could not locate any active packages matching your search criteria. Please adjust your destination or category selection.</p>
+                    <a th:href="@{/packages}" class="btn btn-primary btn-magnetic" style="display: inline-flex;">View All Packages</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top-btn" aria-label="Scroll to top">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+
+    <!-- UI Scripts -->
+    <script th:src="@{/js/public-scroll.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

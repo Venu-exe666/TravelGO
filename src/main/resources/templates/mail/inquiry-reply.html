@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title th:text="'RE: ' + ${subject != null ? subject : 'Inquiry'} + ' - TravelGO Support'">TravelGO Support Response</title>
+    <!--[if mso]>
+    <style type="text/css">
+        body, table, td {font-family: Arial, Helvetica, sans-serif !important;}
+    </style>
+    <![endif]-->
+    <style>
+        /* Email client resets */
+        body {
+            margin: 0;
+            padding: 0;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            background-color: #0F172A;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #334155;
+        }
+        table {
+            border-spacing: 0;
+            border-collapse: collapse;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+        img {
+            border: 0;
+            outline: none;
+            text-decoration: none;
+            -ms-interpolation-mode: bicubic;
+        }
+        a {
+            text-decoration: none;
+            color: #0D9488;
+        }
+        @media only screen and (max-width: 620px) {
+            .email-container {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            .mobile-p-20 {
+                padding: 20px !important;
+            }
+            .mobile-header {
+                padding: 24px 20px !important;
+            }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #0B1120; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
+
+    <!-- Outer Wrapper Table -->
+    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #0B1120; width: 100%; table-layout: fixed;">
+        <tr>
+            <td align="center" style="padding: 30px 12px 40px 12px;">
+
+                <!-- Preheader Preview Text -->
+                <div style="display: none; font-size: 1px; color: #0B1120; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden; mso-hide: all;"
+                     th:text="'TravelGO consultant response regarding ' + ${subject != null ? subject : 'your inquiry'}">
+                    TravelGO Official Support Response
+                </div>
+
+                <!-- Main Email Card Container (600px Max) -->
+                <table role="presentation" class="email-container" width="600" border="0" cellspacing="0" cellpadding="0"
+                       style="max-width: 600px; width: 100%; background-color: #FFFFFF; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.45); border: 1px solid #1E293B;">
+
+                    <!-- Brand Header with Premium Dark / Teal Gradient -->
+                    <tr>
+                        <td class="mobile-header" style="background: linear-gradient(135deg, #0F172A 0%, #134E4A 50%, #0F172A 100%); padding: 36px 36px 30px 36px; text-align: left; border-bottom: 2px solid #14B8A6;">
+                            <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td>
+                                        <!-- Brand Logo & Badge -->
+                                        <table role="presentation" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td style="vertical-align: middle; padding-right: 12px;">
+                                                    <div style="width: 42px; height: 42px; background: rgba(16, 185, 129, 0.18); border: 1px solid rgba(165, 214, 167, 0.35); border-radius: 12px; text-align: center; line-height: 40px; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" width="22" height="22" style="vertical-align: middle; display: inline-block;">
+                                                            <circle cx="12" cy="12" r="10"></circle>
+                                                            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                                                        </svg>
+                                                    </div>
+                                                </td>
+                                                <td style="vertical-align: middle;">
+                                                    <div style="font-size: 24px; font-weight: 800; letter-spacing: -0.5px; color: #FFFFFF; line-height: 1.1;">
+                                                        Travel<span style="color: #34d399;">GO</span>
+                                                    </div>
+                                                    <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #94A3B8; font-weight: 600; margin-top: 3px;">
+                                                        Luxury Journeys & Smart Travel
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td align="right" style="vertical-align: middle;">
+                                        <!-- Support Status Badge -->
+                                        <span style="display: inline-block; background-color: rgba(45, 212, 191, 0.15); border: 1px solid rgba(45, 212, 191, 0.4); color: #2DD4BF; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;">
+                                            Official Response
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Subject Header Line -->
+                            <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.12);">
+                                <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #2DD4BF; margin-bottom: 4px;">
+                                    Inquiry Reference
+                                </div>
+                                <div style="font-size: 18px; font-weight: 700; color: #FFFFFF; line-height: 1.3;"
+                                     th:text="${subject != null ? subject : 'General Travel Inquiry'}">
+                                    Tour Package Planning
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Email Body Area -->
+                    <tr>
+                        <td class="mobile-p-20" style="padding: 36px 36px 28px 36px; background-color: #FFFFFF;">
+
+                            <!-- Customer Greeting -->
+                            <div style="font-size: 16px; color: #0F172A; font-weight: 600; margin-bottom: 8px;">
+                                Hello <span th:text="${customerName != null and !customerName.isEmpty() ? customerName : 'Valued Traveler'}" style="color: #0D9488;">Valued Traveler</span>,
+                            </div>
+                            <p style="margin: 0 0 24px 0; font-size: 14.5px; line-height: 1.6; color: #475569;">
+                                Thank you for reaching out to <strong>TravelGO</strong>. Our Package Management and Travel Consultation desk has reviewed your question and prepared an official response for you below.
+                            </p>
+
+                            <!-- Customer's Original Inquiry (Quote Box) -->
+                            <div th:if="${originalMessage != null and !originalMessage.isEmpty()}"
+                                 style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 16px 20px; margin-bottom: 24px;">
+                                <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #64748B; padding-bottom: 6px;">
+                                            Your Question:
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size: 13.5px; color: #334155; line-height: 1.55; font-style: italic;"
+                                            th:text="${originalMessage}">
+                                            What are the flight options and baggage inclusions for the selected package?
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Package Manager / Consultant Response Card (Hero Component) -->
+                            <div style="background: linear-gradient(180deg, #F0FDFA 0%, #FFFFFF 100%); border: 2px solid #0D9488; border-radius: 14px; overflow: hidden; margin-bottom: 28px; box-shadow: 0 6px 18px rgba(13, 148, 136, 0.08);">
+                                <!-- Card Header -->
+                                <div style="background-color: #0D9488; padding: 10px 18px; color: #FFFFFF;">
+                                    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td style="vertical-align: middle;">
+                                                <span style="font-size: 14px; margin-right: 6px;">💬</span>
+                                                <strong style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.6px;">Consultant Response</strong>
+                                            </td>
+                                            <td align="right" style="vertical-align: middle;">
+                                                <span style="font-size: 11px; background-color: rgba(255, 255, 255, 0.2); padding: 3px 8px; border-radius: 10px; font-weight: 600;">Travel Desk Verified</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <!-- Response Body -->
+                                <div style="padding: 22px 22px 22px 22px;">
+                                    <div style="font-size: 15px; color: #0F172A; line-height: 1.7; white-space: pre-wrap; word-break: break-word;"
+                                         th:text="${replyBody}">
+                                        Thank you for your interest! The tour includes luxury airport transfers, 4-star hotel stays with daily breakfast, and complete visa documentation assistance.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Next Steps / Call to Action Section -->
+                            <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0"
+                                   style="background-color: #F8FAFC; border: 1px dashed #CBD5E1; border-radius: 12px; margin-bottom: 26px;">
+                                <tr>
+                                    <td style="padding: 20px; text-align: center;">
+                                        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B; margin-bottom: 4px;">
+                                            Need further help with your booking or itinerary?
+                                        </div>
+                                        <div style="font-size: 12.5px; color: #64748B; margin-bottom: 16px;">
+                                            You can reply directly to this email or speak with our travel desk team anytime.
+                                        </div>
+                                        <div>
+                                            <!-- CTA Button -->
+                                            <a th:href="@{http://localhost:8080/packages}"
+                                               style="display: inline-block; background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%); color: #FFFFFF; font-size: 13px; font-weight: 700; padding: 11px 24px; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 10px rgba(13, 148, 136, 0.25);">
+                                                Explore Tour Packages &rarr;
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Sign-off Block -->
+                            <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td style="padding-top: 6px;">
+                                        <div style="font-size: 14px; color: #475569; margin-bottom: 4px;">Warm regards,</div>
+                                        <div style="font-size: 15px; font-weight: 800; color: #0F172A;">TravelGO Support & Package Management</div>
+                                        <div style="font-size: 13px; color: #0D9488; font-weight: 600; margin-top: 2px;">
+                                            ✉ <a href="mailto:veezkalif@gmail.com" style="color: #0D9488; text-decoration: none;" th:text="${supportEmail != null ? supportEmail : 'veezkalif@gmail.com'}">veezkalif@gmail.com</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </td>
+                    </tr>
+
+                    <!-- Email Footer -->
+                    <tr>
+                        <td class="mobile-p-20" style="background-color: #0F172A; padding: 28px 36px; border-top: 1px solid #1E293B; text-align: center;">
+                            <div style="font-size: 13px; font-weight: 700; color: #FFFFFF; margin-bottom: 6px;">
+                                Travel<span style="color: #2DD4BF;">GO</span> Agency
+                            </div>
+                            <div style="font-size: 11.5px; color: #94A3B8; line-height: 1.6; margin-bottom: 14px;">
+                                Premium Destination Packages &bull; Visa Advisory &bull; VIP Hotel Reservations<br>
+                                Colombo &bull; Male &bull; Dubai &bull; Singapore &bull; Zurich
+                            </div>
+                            <div style="font-size: 11px; color: #64748B; border-top: 1px solid #1E293B; padding-top: 14px;">
+                                &copy; <span th:text="${year != null ? year : '2026'}">2026</span> TravelGO. All rights reserved. This message was dispatched regarding your inquiry ticket on our portal.
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+                <!-- End Main Email Card -->
+
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

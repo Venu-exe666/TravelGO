@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script th:src="@{/js/theme.js}"></script>
+    <title>Book Package - TravelGO</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 0.45rem;
+        }
+        .form-control-custom {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1.5px solid #CBD5E1;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: #FFFFFF;
+            color: #0F172A;
+            caret-color: #0284C7;
+            transition: all var(--transition-fast);
+            box-sizing: border-box;
+        }
+        .form-control-custom:focus {
+            outline: none;
+            border-color: #0284C7;
+            background: #FFFFFF;
+            color: #0F172A;
+            box-shadow: 0 0 0 3.5px rgba(2, 132, 199, 0.18);
+        }
+        .form-control-custom option {
+            background-color: #FFFFFF;
+            color: #0F172A;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-subtle);
+            font-size: 0.9rem;
+        }
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+        .summary-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .summary-value {
+            color: var(--text-heading);
+            font-weight: 600;
+        }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main class="main-content">
+        <div class="container section">
+            <!-- Header Section -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <span class="badge badge-primary" style="margin-bottom: 0.5rem;" th:text="${tourPackage.category.name}">CATEGORY</span>
+                    <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem;" th:text="${tourPackage.name}">European Classical Journey</h1>
+                    <p style="color: var(--text-muted); font-size: 1rem;">
+                        <span th:text="${tourPackage.destination.city + ', ' + tourPackage.destination.country}">Paris, France</span> &bull; 
+                        <span th:text="${tourPackage.durationDays + ' Days Expedition'}">7 Days Expedition</span>
+                    </p>
+                </div>
+                <div>
+                    <a th:href="@{/packages}" class="btn btn-outline btn-sm">
+                        &larr; Back to Packages
+                    </a>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <div th:text="${errorMessage}">Error occurred</div>
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="grid grid-2" style="gap: 2.5rem; align-items: flex-start;">
+
+                <!-- Package Summary & Inclusions -->
+                <div>
+                    <div class="card" style="padding: 2rem; margin-bottom: 1.5rem;">
+                        <h3 style="margin-bottom: 1.25rem; font-size: 1.25rem;">Tour Package Overview</h3>
+                        
+                        <p style="color: var(--text-body); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem;" 
+                           th:text="${tourPackage.description}">
+                            Package description details.
+                        </p>
+
+                        <div class="summary-row">
+                            <span class="summary-label">Destination</span>
+                            <span class="summary-value" th:text="${tourPackage.destination.city + ', ' + tourPackage.destination.country}">Paris, France</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Duration</span>
+                            <span class="summary-value" th:text="${tourPackage.durationDays + ' Days / ' + (tourPackage.durationDays - 1) + ' Nights'}">7 Days</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Base Rate</span>
+                            <span class="summary-value" style="color: var(--brand-accent); font-weight: 700; font-size: 1.1rem;" 
+                                  th:text="'$' + ${#numbers.formatDecimal(tourPackage.basePrice, 1, 'COMMA', 2, 'POINT')} + ' / person'">
+                                $1,299.00 / person
+                            </span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Group Maximum</span>
+                            <span class="summary-value" th:text="${tourPackage.maxCapacity + ' Travelers Max'}">20 Travelers</span>
+                        </div>
+                    </div>
+
+                    <!-- Inclusions & Policies -->
+                    <div class="card" style="padding: 2rem;">
+                        <h4 style="margin-bottom: 1rem; font-size: 1.1rem;">Included Services & Perks</h4>
+                        <ul class="inclusions-list" style="margin-bottom: 1.5rem;">
+                            <li>
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                <strong>Flights:</strong>&nbsp;<span th:text="${tourPackage.flightDetails != null and !tourPackage.flightDetails.isEmpty() ? tourPackage.flightDetails : 'Standard Return Flights Included'}">Flight Details</span>
+                            </li>
+                            <li>
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                <strong>Visa Support:</strong>&nbsp;<span>Full Document Review & Application Handling</span>
+                            </li>
+                            <li>
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                <strong>Excursions:</strong>&nbsp;<span th:text="${tourPackage.includedServices != null and !tourPackage.includedServices.isEmpty() ? tourPackage.includedServices : 'Guided tours & landmark admission'}">Excursion Details</span>
+                            </li>
+                        </ul>
+
+                        <div class="hotel-note">
+                            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                            <span>Hotel Accommodation is an optional add-on available during checkout.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Reservation Form -->
+                <div class="card" style="padding: 2.25rem;">
+                    <h3 style="margin-bottom: 0.5rem; font-size: 1.3rem;">Customize Your Reservation</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.75rem;">
+                        Select your preferred departure date and traveler group size.
+                    </p>
+
+                    <form th:action="@{/customer/bookings/create}" method="post">
+                        <input type="hidden" name="packageId" th:value="${tourPackage.id}">
+
+                        <div class="form-group">
+                            <label class="form-label">Departure / Travel Date *</label>
+                            <input type="date" id="travelDateInput" name="travelDate" class="form-control-custom" required>
+                            <small style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.25rem; display: block;">Select a travel date at least 4 days from today (processing time required).</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Number of Travelers *
+                                <span style="color: var(--text-muted); font-weight: normal;">(Maximum Capacity: <strong th:text="${tourPackage.maxCapacity}">20</strong>)</span>
+                            </label>
+                            <input type="number" id="travelerInput" name="numberOfTravelers" class="form-control-custom" 
+                                   min="1" th:max="${tourPackage.maxCapacity}" value="1" required>
+                            <div id="capacityWarning" style="display: none; color: #DC2626; font-size: 0.82rem; margin-top: 0.35rem; font-weight: 600;">
+                                Group size exceeds maximum package capacity (<span th:text="${tourPackage.maxCapacity}">20</span>).
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Optional Hotel Accommodation</label>
+                            <select name="hotelId" class="form-control-custom">
+                                <option value="">No Hotel Add-on (I'll arrange my own stay)</option>
+                                <option th:each="hotel : ${hotels}"
+                                        th:value="${hotel.id}"
+                                        th:text="${hotel.name + ' (' + hotel.starRating + '★) - $' + hotel.pricePerNight + '/night'}">
+                                </option>
+                            </select>
+                            <small style="display: block; color: var(--text-muted); margin-top: 0.35rem; font-size: 0.8rem;">
+                                Hotel pricing is per room/night and calculated based on traveler group size.
+                            </small>
+                        </div>
+
+                        <!-- Real-time Price Estimation Box -->
+                        <div style="background: var(--bg-subtle); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.75rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem;">
+                                <span style="color: var(--text-muted);">Package Rate:</span>
+                                <span style="color: var(--text-heading); font-weight: 600;">$<span th:text="${tourPackage.basePrice}">1299</span> / person</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem;">
+                                <span style="color: var(--text-muted);">Travelers:</span>
+                                <span id="displayTravelers" style="color: var(--text-heading); font-weight: 600;">1</span>
+                            </div>
+                            <div style="border-top: 1px solid var(--border-subtle); padding-top: 0.75rem; margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                                <strong style="font-size: 1.05rem; color: var(--text-heading);">Estimated Package Total:</strong>
+                                <strong style="font-size: 1.45rem; color: var(--brand-accent); font-weight: 800;" id="displayTotal">
+                                    $<span th:text="${tourPackage.basePrice}">1299.00</span>
+                                </strong>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; font-size: 1.05rem; justify-content: center;">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; margin-right: 0.5rem;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Confirm Reservation & Continue
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script th:src="@{/js/main.js}"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const basePrice = /*[[${tourPackage.basePrice}]]*/ 0;
+        const maxCapacity = /*[[${tourPackage.maxCapacity}]]*/ 20;
+        const travelerInput = document.getElementById('travelerInput');
+        const displayTravelers = document.getElementById('displayTravelers');
+        const displayTotal = document.getElementById('displayTotal');
+        const capacityWarning = document.getElementById('capacityWarning');
+        const travelDateInput = document.getElementById('travelDateInput');
+
+        // Set min date to today + 4 days
+        if (travelDateInput) {
+            const minDate = new Date();
+            minDate.setDate(minDate.getDate() + 4);
+            travelDateInput.setAttribute('min', minDate.toISOString().split('T')[0]);
+        }
+
+        if (travelerInput && displayTravelers && displayTotal) {
+            travelerInput.addEventListener('input', () => {
+                const count = parseInt(travelerInput.value) || 0;
+                displayTravelers.textContent = count;
+                const total = (count * basePrice).toFixed(2);
+                displayTotal.textContent = '$' + total;
+
+                if (count > maxCapacity) {
+                    if (capacityWarning) capacityWarning.style.display = 'block';
+                    travelerInput.style.borderColor = '#DC2626';
+                } else {
+                    if (capacityWarning) capacityWarning.style.display = 'none';
+                    travelerInput.style.borderColor = '';
+                }
+            });
+        }
+        /*]]>*/
+    </script>
+</body>
+</html>

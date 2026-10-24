@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TravelGO - Smart Travel Agency & Tour Management System. Explore curated luxury tour packages, certified visa processing, and seamless flight ticketing.">
+    <title>TravelGO - Smart Travel Agency &amp; Luxury Tour Management</title>
+    <link rel="stylesheet" th:href="@{/css/premium.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="public-homepage">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main class="main-content">
+        <!-- Hero Section with UHD Ambient Video Background -->
+        <section class="hero hero-video-container curtain-hero-sticky" data-section-title="Discover">
+            <!-- 4K UHD Video Background (Responsive full-viewport cover) -->
+            <div class="hero-video-wrap">
+                <video class="hero-video-bg" autoplay loop muted playsinline preload="auto" th:poster="@{/images/destinations/amalfi-coast.png}">
+                    <source th:src="@{/videos/hero-video.mp4}" type="video/mp4">
+                    <source th:src="@{'/videos/' + '8865814-uhd_4096_2160_25fps (1).mp4'}" type="video/mp4">
+                </video>
+                <div class="hero-video-overlay"></div>
+            </div>
+
+            <!-- Ambient Glow Orbs -->
+            <div class="ambient-glow-orb ambient-orb-1"></div>
+            <div class="ambient-glow-orb ambient-orb-2"></div>
+
+            <div class="container hero-container-bottom-left">
+                <div class="hero-lower-left">
+
+                    <!-- Grand Display Headline (Lower-Left Corner) -->
+                    <h1 class="hero-title hero-title-left reveal-up">
+                        Discover the World with<br>
+                        <span class="text-gradient-light">Effortless Elegance</span>
+                    </h1>
+
+                    <!-- Left-Aligned Subtitle -->
+                    <p class="hero-subtitle hero-subtitle-left reveal-up" style="margin-bottom: 0;">
+                        Bespoke luxury itineraries, guaranteed airline reservations, and dedicated visa officers engineered for seamless international travel.
+                    </p>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Tour Packages (Seamless Luxury Curtain Continuity) -->
+        <section id="featured-packages" class="section-scenic scenic-fit-section scroll-section-animate curtain-layer curtain-stack" data-section-title="Luxury Packages">
+            <div class="section-scenic-bg scenic-fit-bg" th:style="'--scenic-image: url(' + @{/images/destinations/alps-night.jpg} + ');'"></div>
+            <div class="section-scenic-overlay" style="background: radial-gradient(ellipse 90% 60% at 50% 15%, rgba(255, 255, 255, 0.06) 0%, transparent 72%), linear-gradient(180deg, rgba(7, 10, 9, 0.34) 0%, rgba(7, 10, 9, 0.22) 38%, rgba(6, 9, 8, 0.38) 82%, rgba(5, 8, 7, 0.52) 100%) !important;"></div>
+
+            <div class="container section-scenic-content">
+                <div class="section-header reveal-up" style="text-align: center; margin-bottom: 1.5rem;">
+                    <h2 class="section-title reveal-up" style="font-size: 3rem; margin-bottom: 0; color: #FFFFFF; text-shadow: 0 4px 20px rgba(0,0,0,0.85);">
+                        Featured <span class="text-gradient-light">Luxury Packages</span>
+                    </h2>
+                </div>
+
+                <!-- Refined Wanderlust Journey Vibe Dock -->
+                <div class="travel-vibe-container reveal-up" th:if="${not #lists.isEmpty(categories)}" style="margin-bottom: 2.5rem;">
+                    <div class="travel-vibe-dock">
+                        <a th:href="@{/packages}" class="travel-vibe-pill active">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right: 0.2rem;">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+                            </svg>
+                            <span class="vibe-name">All Journeys</span>
+                        </a>
+                        <a th:each="cat : ${categories}" 
+                           th:href="@{/packages(categoryId=${cat.id})}" 
+                           class="travel-vibe-pill">
+                            <span class="vibe-name" th:text="${cat.name}">Cultural Heritage</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Borderless Floating Luxury Travel Cards Grid -->
+                <div class="luxury-travel-grid" th:if="${not #lists.isEmpty(packages)}">
+                    <a th:href="@{/packages/{id}/book(id=${pkg.id})}" 
+                       class="luxury-travel-card reveal-up" 
+                       th:each="pkg, iterStat : ${packages}" 
+                       th:if="${iterStat.index < 6}">
+                        <div class="luxury-card-media">
+                            <img th:src="${pkg.image != null and !pkg.image.isEmpty() ? pkg.image : 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1920&q=90'}" 
+                                 th:alt="${pkg.name}" 
+                                 class="luxury-card-img"
+                                 loading="lazy"
+                                 onerror="this.src='https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1920&q=90'">
+                            
+                            <!-- Floating Minimal Price Pill -->
+                            <div class="luxury-card-price-pill">
+                                <span class="price-from">From</span>
+                                <span class="price-amount" th:text="'$' + ${#numbers.formatDecimal(pkg.basePrice, 1, 'COMMA', 2, 'POINT')}">$1,299</span>
+                            </div>
+
+                            <!-- Floating Translucent Bottom Ribbon -->
+                            <div class="luxury-card-ribbon">
+                                <div class="luxury-card-location" th:if="${pkg.destination != null}">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21s-8-7.5-8-12a8 8 0 1116 0c0 4.5-8 12-8 12z"/>
+                                        <circle cx="12" cy="9" r="2.5"/>
+                                    </svg>
+                                    <span th:text="${pkg.destination.city + ', ' + pkg.destination.country}">Paris, France</span>
+                                </div>
+                                <div class="luxury-card-meta">
+                                    <h3 class="luxury-card-title" th:text="${pkg.name}">European Classical Journey</h3>
+                                    <div class="luxury-card-arrow" aria-hidden="true">
+                                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div style="text-align: center; margin-top: 3.5rem;">
+                    <a th:href="@{/packages}" class="btn btn-outline btn-lg btn-magnetic" style="display: inline-flex; align-items: center; gap: 0.6rem; border-color: rgba(165, 214, 167, 0.25);">
+                        <span>View All Tour Packages</span>
+                        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- Curated World Tourist Locations Showcase (Smooth Scroll-Down Reveal) -->
+        <!-- ================================================================= -->
+        <section id="destinations-showcase" class="destinations-showcase-section section-scenic scenic-fit-section scroll-section-animate curtain-layer curtain-stack" data-section-title="Curated Escapes">
+            <div class="section-scenic-bg scenic-fit-bg" th:style="'--scenic-image: url(' + @{/images/destinations/grand-adventure-sunset.jpg} + ');'"></div>
+            <div class="section-scenic-overlay"></div>
+
+            <div class="container section-scenic-content">
+                <div class="section-header scroll-down-reveal" style="text-align: center; margin-bottom: 2.5rem;">
+                    <h2 class="section-title" style="font-size: 3rem; margin-bottom: 0; color: #FFFFFF; text-shadow: 0 4px 20px rgba(0,0,0,0.85);">
+                        Curated <span class="text-gradient-azure">Tourist Destinations</span>
+                    </h2>
+                </div>
+
+                <!-- Showcase Cards Grid with Downward Scroll Stagger -->
+                <div class="destinations-showcase-grid">
+                    <!-- Destination 1: Amalfi Coast -->
+                    <a th:href="@{/packages}" class="destination-showcase-card scroll-down-reveal tilt-card">
+                        <div class="destination-showcase-image-wrap">
+                            <img th:src="@{/images/destinations/amalfi-coast.png}" alt="Amalfi Coast &amp; Positano" class="destination-showcase-img" loading="lazy">
+                        </div>
+                        <div class="destination-showcase-body">
+                            <span class="destination-showcase-country">Italy</span>
+                            <h3 class="destination-showcase-title">Amalfi Coast &amp; Positano</h3>
+                        </div>
+                    </a>
+
+                    <!-- Destination 2: Cappadocia -->
+                    <a th:href="@{/packages}" class="destination-showcase-card scroll-down-reveal tilt-card">
+                        <div class="destination-showcase-image-wrap">
+                            <img th:src="@{/images/destinations/cappadocia.jpg}" alt="Cappadocia Fairy Valleys" class="destination-showcase-img" loading="lazy">
+                        </div>
+                        <div class="destination-showcase-body">
+                            <span class="destination-showcase-country">Turkey</span>
+                            <h3 class="destination-showcase-title">Cappadocia Fairy Valleys</h3>
+                        </div>
+                    </a>
+
+                    <!-- Destination 3: Maldives -->
+                    <a th:href="@{/packages}" class="destination-showcase-card scroll-down-reveal tilt-card">
+                        <div class="destination-showcase-image-wrap">
+                            <img th:src="@{/images/destinations/maldives.jpg}" alt="Maldives Private Atolls" class="destination-showcase-img" loading="lazy">
+                        </div>
+                        <div class="destination-showcase-body">
+                            <span class="destination-showcase-country">Maldives</span>
+                            <h3 class="destination-showcase-title">Maldives Private Atolls</h3>
+                        </div>
+                    </a>
+
+                    <!-- Destination 4: Kyoto Bamboo Grove -->
+                    <a th:href="@{/packages}" class="destination-showcase-card scroll-down-reveal tilt-card">
+                        <div class="destination-showcase-image-wrap">
+                            <img th:src="@{/images/destinations/kyoto-bamboo.jpg}" alt="Kyoto Arashiyama Forest" class="destination-showcase-img" loading="lazy">
+                        </div>
+                        <div class="destination-showcase-body">
+                            <span class="destination-showcase-country">Japan</span>
+                            <h3 class="destination-showcase-title">Kyoto Arashiyama Forest</h3>
+                        </div>
+                    </a>
+
+                    <!-- Destination 5: Santorini -->
+                    <a th:href="@{/packages}" class="destination-showcase-card scroll-down-reveal tilt-card">
+                        <div class="destination-showcase-image-wrap">
+                            <img th:src="@{/images/destinations/santorini-balcony-sunset.jpg}" alt="Santorini Caldera Clifftops" class="destination-showcase-img" loading="lazy">
+                        </div>
+                        <div class="destination-showcase-body">
+                            <span class="destination-showcase-country">Greece</span>
+                            <h3 class="destination-showcase-title">Santorini Caldera Clifftops</h3>
+                        </div>
+                    </a>
+
+                    <!-- Destination 6: Swiss Alps -->
+                    <a th:href="@{/packages}" class="destination-showcase-card scroll-down-reveal tilt-card">
+                        <div class="destination-showcase-image-wrap">
+                            <img th:src="@{/images/destinations/swiss-alps.jpg}" alt="Matterhorn Glacier Peaks" class="destination-showcase-img" loading="lazy">
+                        </div>
+                        <div class="destination-showcase-body">
+                            <span class="destination-showcase-country">Switzerland</span>
+                            <h3 class="destination-showcase-title">Matterhorn Glacier Peaks</h3>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="destination-grid-action" style="text-align: center;">
+                    <a th:href="@{/destinations}" class="btn btn-primary btn-lg btn-magnetic btn-shimmer" style="display: inline-flex; align-items: center; gap: 0.65rem; padding: 0.9rem 2.4rem;">
+                        <span>Discover Full Destination Catalog</span>
+                        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Premier Global Destinations Section with Scenic Tropical Beach Background -->
+        <section class="section-scenic scenic-fit-section scroll-section-animate curtain-layer curtain-stack" data-section-title="Iconic Havens">
+            <div class="section-scenic-bg scenic-fit-bg" th:style="'--scenic-image: url(' + @{/images/destinations/tropical-beach.jpg} + ');'"></div>
+            <div class="section-scenic-overlay"></div>
+
+            <div class="container section-scenic-content">
+                <div class="section-header reveal-up" style="text-align: center; margin-bottom: 2.5rem;">
+                    <h2 class="section-title reveal-up" style="font-size: 3rem; margin-bottom: 0; color: #FFFFFF; text-shadow: 0 4px 20px rgba(0,0,0,0.85);">
+                        Explore <span class="text-gradient-azure">Iconic Destinations</span>
+                    </h2>
+                </div>
+
+                <div class="destinations-bento-grid" th:if="${not #lists.isEmpty(destinations)}">
+                    <a th:href="@{/packages(destinationId=${dest.id})}" 
+                       class="bento-destination-card tilt-card reveal-up" 
+                       th:each="dest, iterStat : ${destinations}" 
+                       th:if="${iterStat.index < 6}">
+                        <img th:src="${dest.image != null and !dest.image.isEmpty() ? dest.image : 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1920&q=90'}" 
+                             th:alt="${dest.city + ', ' + dest.country}" 
+                             class="bento-destination-img"
+                             loading="lazy"
+                             onerror="this.src='https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1920&q=90'">
+                        <div class="bento-destination-ribbon">
+                            <span class="bento-destination-country" th:text="${dest.country}">Country</span>
+                            <h3 class="bento-destination-title" th:text="${dest.city + ', ' + dest.country}">Paris, France</h3>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="destination-grid-action" style="text-align: center;">
+                    <a th:href="@{/destinations}" class="btn btn-outline btn-lg btn-magnetic" style="display: inline-flex; align-items: center; gap: 0.6rem;">
+                        <span>View All Destinations</span>
+                        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- TravelGO service ecosystem with an original, brand-specific visual -->
+        <section class="section-scenic home-excellence-section scroll-section-animate curtain-layer curtain-stack" data-section-title="Agency Excellence">
+            <div class="section-scenic-bg" th:style="'background-image: url(' + @{/images/generated/travelgo-service-atlas.png} + ');'"></div>
+            <div class="section-scenic-overlay"></div>
+
+            <div class="container section-scenic-content">
+                <div class="section-header home-section-heading reveal-up">
+                    <span class="home-section-kicker">One connected travel team</span>
+                    <h2 class="section-title reveal-up">
+                        Built for <span class="text-gradient-emerald">Discerning Travelers</span>
+                    </h2>
+                    <p>Every part of your journey is coordinated through one clear service experience.</p>
+                </div>
+
+                <div class="grid grid-4 home-service-grid">
+                    <div class="card tilt-card glass-card-luxury reveal-up">
+                        <div class="feature-card">
+                            <div class="stat-icon stat-icon-blue">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                </svg>
+                            </div>
+                            <h4 style="margin-bottom: 0.65rem; color: #FFFFFF; font-size: 1.2rem;">Flight Inclusions</h4>
+                            <p style="color: #CBD5E1; font-size: 0.92rem; line-height: 1.65;">
+                                Direct and connected airline tickets embedded directly in your package itinerary without hidden surcharges.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card tilt-card glass-card-luxury reveal-up">
+                        <div class="feature-card">
+                            <div class="stat-icon stat-icon-green">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                            </div>
+                            <h4 style="margin-bottom: 0.65rem; color: #FFFFFF; font-size: 1.2rem;">Visa Officers</h4>
+                            <p style="color: #CBD5E1; font-size: 0.92rem; line-height: 1.65;">
+                                Dedicated Visa Officers review your documents and verify requirements to maximize embassy approval rates.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card tilt-card glass-card-luxury reveal-up">
+                        <div class="feature-card">
+                            <div class="stat-icon stat-icon-amber">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                            </div>
+                            <h4 style="margin-bottom: 0.65rem; color: #FFFFFF; font-size: 1.2rem;">Modular Hotels</h4>
+                            <p style="color: #CBD5E1; font-size: 0.92rem; line-height: 1.65;">
+                                Never overpay for unwanted rooms. Tailor your stay with 4-star or 5-star hotel options during checkout.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card tilt-card glass-card-luxury reveal-up">
+                        <div class="feature-card">
+                            <div class="stat-icon stat-icon-blue">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                            </div>
+                            <h4 style="margin-bottom: 0.65rem; color: #FFFFFF; font-size: 1.2rem;">Expert Concierge</h4>
+                            <p style="color: #CBD5E1; font-size: 0.92rem; line-height: 1.65;">
+                                Certified Travel Consultants assigned to support your itinerary, adjustments, and inquiries at every turn.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Planning call-to-action with an original TravelGO departure visual -->
+        <section class="section-scenic home-cta-section scroll-section-animate curtain-layer curtain-stack" data-section-title="Plan Adventure">
+            <div class="section-scenic-bg" th:style="'background-image: url(' + @{/images/generated/travelgo-departure-path.png} + ');'"></div>
+            <div class="section-scenic-overlay"></div>
+
+            <div class="container section-scenic-content">
+                <div class="cta-banner home-cta-card reveal-up">
+                    <span class="home-section-kicker">Your journey starts here</span>
+                    <h2>
+                        Ready to Plan Your Next <span class="text-gradient-emerald">Grand Adventure?</span>
+                    </h2>
+                    <p>Create your account to save plans and manage bookings, or speak with the concierge first.</p>
+                    <div class="home-cta-actions">
+                        <a th:href="@{/auth/register}" class="btn btn-primary btn-lg btn-shimmer">
+                            <span>Create Free Account</span>
+                            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </a>
+                        <a th:href="@{/contact}" class="btn btn-outline btn-lg">
+                            <span>Speak with Consultant</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top-btn" aria-label="Scroll to top">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+
+    <!-- UI Scripts -->
+    <script th:src="@{/js/immersive-effects.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

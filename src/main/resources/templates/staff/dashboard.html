@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${userRole == 'VISA_OFFICER'} ? 'Visa Officer Command Terminal - TravelGO' : 'Tour Packages & Partner Inventory - TravelGO'">Staff Portal - TravelGO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700;800&family=Outfit:wght@700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <style>
+        /* Specific Figma Tokens & Overrides for Staff Portal */
+        .staff-kpi-grid-6 {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        @media (max-width: 1200px) {
+            .staff-kpi-grid-6 { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .staff-kpi-grid-6 { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .filter-pills-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        .pill-tab {
+            background: rgba(165, 214, 167, 0.08);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .pill-tab:hover,
+        .pill-tab.active {
+            background: rgba(102, 187, 106, 0.16);
+            border-color: var(--brand-primary);
+            color: var(--brand-primary);
+        }
+
+        /* Dossier Verification Panel (Figma 2:938) */
+        .dossier-panel {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .applicant-chip-box {
+            background: #0e2615;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 14px 16px;
+        }
+        .applicant-chip-box h4 {
+            margin: 0 0 4px 0;
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .badge-expiry {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--brand-gold);
+            letter-spacing: 0.05em;
+        }
+        .applicant-chip-box p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        .doc-checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .doc-check-item {
+            background: var(--bg-main);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+        .doc-check-item.warn {
+            border-color: var(--brand-gold);
+            background: rgba(34, 211, 238, 0.06);
+        }
+        .doc-check-title {
+            font-weight: 600;
+            color: #ffffff;
+        }
+        .doc-check-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .live-preview-box {
+            background: #061208;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        .live-preview-img {
+            max-width: 100%;
+            height: 140px;
+            object-fit: contain;
+            border-radius: 4px;
+            background: #ffffff;
+            padding: 4px;
+        }
+        .preview-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Package Manager Catalog Cards (Figma 2:1240) */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+        @media (max-width: 1100px) {
+            .catalog-grid { grid-template-columns: 1fr; }
+        }
+        .pkg-catalog-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .pkg-media-wrap {
+            position: relative;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
+        .pkg-badge-duration {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(6, 18, 8, 0.85);
+            border: 1px solid var(--border-subtle);
+            color: #ffffff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+        }
+        .pkg-badge-status {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(102, 187, 106, 0.2);
+            border: 1px solid var(--brand-primary);
+            color: var(--brand-primary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 800;
+        }
+        .pkg-card-body {
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+        .pkg-card-title {
+            font-family: var(--font-heading);
+            font-size: 17px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+        }
+        .pkg-card-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+        .pkg-card-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 12px;
+            border-top: 1px solid rgba(165, 214, 167, 0.1);
+        }
+        .pkg-price-val {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--brand-primary);
+        }
+
+        /* Hotels & Leads Grid */
+        .hotel-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        @media (max-width: 900px) {
+            .hotel-cards-grid { grid-template-columns: 1fr; }
+        }
+        .hotel-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        .hotel-card img {
+            width: 110px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="admin-layout">
+
+    <!-- Role-based Sidebar Fragment wrapped in th:block to ensure mutual exclusivity -->
+    <th:block th:if="${userRole == 'VISA_OFFICER'}">
+        <div th:replace="~{fragments/visa-sidebar :: visa-sidebar('dashboard')}"></div>
+    </th:block>
+    <th:block th:if="${userRole != 'VISA_OFFICER'}">
+        <div th:replace="~{fragments/consultant-sidebar :: consultant-sidebar('dashboard')}"></div>
+    </th:block>
+
+    <!-- Main Workspace -->
+    <div class="admin-main">
+
+        <!-- =========================================================
+             A. VISA OFFICER VIEW (Figma Frame: travelgo-visa-officer-hub 2:886)
+             ========================================================= -->
+        <th:block th:if="${userRole == 'VISA_OFFICER'}">
+            
+            <!-- Topbar (2:887) -->
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <h2 style="font-family: var(--font-heading); font-size: 17px; margin: 0; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+                        <span style="color: var(--brand-primary);">&bull;</span>
+                        TravelGO Visa Officer Command Terminal
+                    </h2>
+                </div>
+                <div class="topbar-right">
+                    <span class="sidebar-logo-badge" style="background: rgba(16, 185, 129, 0.16); border: 1px solid rgba(16, 185, 129, 0.35); color: #34d399;">VERIFICATION SPECIALIST</span>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span class="user-chip-avatar" style="color: var(--brand-primary); margin: 0;">IV</span>
+                        <span style="font-size: 13px; font-weight: 600; color: #ffffff;">Inspector Vance</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="admin-content">
+
+                <!-- 6 Metric Cards Row (2:892) -->
+                <div class="staff-kpi-grid-6">
+                    <div class="stat-card-kpi">
+                        <span class="kpi-label">TOTAL APPLICATIONS</span>
+                        <h2 class="kpi-number" th:text="${totalCount != null ? totalCount : 142}">142</h2>
+                        <span class="kpi-subtext">Active pipeline</span>
+                    </div>
+
+                    <div class="stat-card-kpi">
+                        <span class="kpi-label">PENDING DOCUMENTS</span>
+                        <h2 class="kpi-number" style="color: var(--brand-cta);" th:text="${pendingCount != null ? pendingCount : 28}">28</h2>
+                        <span class="kpi-subtext">Awaiting inspection</span>
+                    </div>
+
+                    <div class="stat-card-kpi">
+                        <span class="kpi-label">IN PROCESSING</span>
+                        <h2 class="kpi-number" style="color: var(--brand-info);" th:text="${processingCount != null ? processingCount : 45}">45</h2>
+                        <span class="kpi-subtext">Consular audit stage</span>
+                    </div>
+
+                    <div class="stat-card-kpi">
+                        <span class="kpi-label">APPROVED (CONSULAR)</span>
+                        <h2 class="kpi-number" style="color: var(--brand-primary);" th:text="${approvedCount != null ? approvedCount : 62}">62</h2>
+                        <span class="kpi-subtext">99.4% approval standard</span>
+                    </div>
+
+                    <div class="stat-card-kpi">
+                        <span class="kpi-label">REJECTED STATUS</span>
+                        <h2 class="kpi-number" style="color: var(--brand-danger);" th:text="${rejectedCount != null ? rejectedCount : 7}">7</h2>
+                        <span class="kpi-subtext">Invalid bank files</span>
+                    </div>
+
+                    <div class="stat-card-kpi">
+                        <span class="kpi-label">FEE LEDGER SUMMARY</span>
+                        <h2 class="kpi-number" style="color: var(--brand-primary); font-size: 21px;" th:text="${visaPaymentsTotal != null ? '$' + #numbers.formatDecimal(visaPaymentsTotal, 1, 'COMMA', 0, 'POINT') : '$21,300'}">$21,300</h2>
+                        <span class="kpi-subtext">Settled &amp; wire cleared</span>
+                    </div>
+                </div>
+
+                <!-- Dual Layout: Active Consular Dossiers & Dossier Verification Panel -->
+                <div style="display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px; margin-bottom: 24px;">
+                    
+                    <!-- Left: Active Consular Application Dossiers (2:910) -->
+                    <div class="surface-panel" style="margin-bottom: 0;">
+                        <div class="surface-header">
+                            <div class="surface-title-group">
+                                <span class="surface-tag">EMBASSY FEED</span>
+                                <h3>Active Consular Application Dossiers</h3>
+                            </div>
+                        </div>
+
+                        <!-- Pill Filter Tabs -->
+                        <div style="padding: 12px 24px; border-bottom: 1px solid var(--border-subtle);">
+                            <div class="filter-pills-row">
+                                <span class="pill-tab">All Applications</span>
+                                <span class="pill-tab active">Awaiting Verification</span>
+                                <span class="pill-tab">Ready for Processing</span>
+                                <span class="pill-tab">Approved</span>
+                                <span class="pill-tab">Decided</span>
+                            </div>
+                        </div>
+
+                        <div class="table-container" style="border: none; border-radius: 0;">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>DOSSIER ID</th>
+                                        <th>APPLICANT / VISA TYPE</th>
+                                        <th>EXPEDITION ROUTE</th>
+                                        <th>SUBMIT DATE</th>
+                                        <th>STATUS</th>
+                                        <th>ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic Loop if live applications exist -->
+                                    <tr th:each="app : ${recentApplications}" th:if="${recentApplications != null && !recentApplications.isEmpty()}">
+                                        <td style="font-family: var(--font-mono); color: var(--text-muted); font-weight: 700;" th:text="'#VISA-' + ${app.id}">#VISA-1082</td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span class="user-chip-avatar" style="margin: 0;" th:text="${app.booking != null && app.booking.user != null ? #strings.substring(app.booking.user.name, 0, 2).toUpperCase() : 'AP'}">SJ</span>
+                                                <div>
+                                                    <div style="font-weight: 600;" th:text="${app.booking != null && app.booking.user != null ? app.booking.user.name : 'Applicant'}">Sarah Jenkins</div>
+                                                    <div style="font-size: 11px; color: var(--text-muted);" th:text="${app.visaType != null ? app.visaType.name() : 'Tourist'}">Tourist</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="font-size: 12px;" th:text="${app.booking != null && app.booking.tourPackage != null ? app.booking.tourPackage.name : 'Expedition Tour'}">Swiss Alps Luxury</td>
+                                        <td th:text="${app.createdAt != null ? #temporals.format(app.createdAt, 'MMM dd, yyyy') : 'Sep 28, 2026'}">Sep 28, 2026</td>
+                                        <td>
+                                            <span class="badge-role visa_officer" th:text="${app.status != null ? app.status.name() : 'Awaiting Verification'}">Awaiting Verification</span>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/staff/visas}" class="btn-action" style="background: var(--brand-primary); color: #061208; padding: 4px 10px; font-size: 11px; font-weight: 700;">Dossier</a>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Default Demo Rows matching Figma (2:910) -->
+                                    <tr th:if="${recentApplications == null || recentApplications.isEmpty()}">
+                                        <td style="font-family: var(--font-mono); color: var(--text-muted); font-weight: 700;">#VISA-1082</td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span class="user-chip-avatar" style="margin: 0;">SJ</span>
+                                                <div>
+                                                    <div style="font-weight: 600;">Sarah Jenkins</div>
+                                                    <div style="font-size: 11px; color: var(--text-muted);">Schengen Tourist</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Swiss Alps Luxury</td>
+                                        <td>Sep 28, 2026</td>
+                                        <td><span class="badge-role visa_officer">AWAITING VERIFICATION</span></td>
+                                        <td><a th:href="@{/staff/visas}" class="btn-action" style="background: var(--brand-primary); color: #061208; padding: 4px 10px; font-size: 11px; font-weight: 700;">Dossier</a></td>
+                                    </tr>
+                                    <tr th:if="${recentApplications == null || recentApplications.isEmpty()}">
+                                        <td style="font-family: var(--font-mono); color: var(--text-muted); font-weight: 700;">#VISA-1081</td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span class="user-chip-avatar" style="margin: 0;">DC</span>
+                                                <div>
+                                                    <div style="font-weight: 600;">David Chen</div>
+                                                    <div style="font-size: 11px; color: var(--text-muted);">Schengen Ski</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Swiss Alps Masterpiece</td>
+                                        <td>Sep 27, 2026</td>
+                                        <td><span class="badge-role admin">IN PROCESSING</span></td>
+                                        <td><a th:href="@{/staff/visas}" class="btn-action" style="background: var(--brand-primary); color: #061208; padding: 4px 10px; font-size: 11px; font-weight: 700;">Dossier</a></td>
+                                    </tr>
+                                    <tr th:if="${recentApplications == null || recentApplications.isEmpty()}">
+                                        <td style="font-family: var(--font-mono); color: var(--text-muted); font-weight: 700;">#VISA-1080</td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span class="user-chip-avatar" style="margin: 0;">ER</span>
+                                                <div>
+                                                    <div style="font-weight: 600;">Elena Rostova</div>
+                                                    <div style="font-size: 11px; color: var(--text-muted);">Japan Cultural</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Kyoto Autumn Retreat</td>
+                                        <td>Sep 25, 2026</td>
+                                        <td><span class="badge-role customer">APPROVED</span></td>
+                                        <td><a th:href="@{/staff/visas}" class="btn-action" style="background: var(--brand-primary); color: #061208; padding: 4px 10px; font-size: 11px; font-weight: 700;">Dossier</a></td>
+                                    </tr>
+                                    <tr th:if="${recentApplications == null || recentApplications.isEmpty()}">
+                                        <td style="font-family: var(--font-mono); color: var(--text-muted); font-weight: 700;">#VISA-1079</td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span class="user-chip-avatar" style="margin: 0;">AS</span>
+                                                <div>
+                                                    <div style="font-weight: 600;">Amir Al-Sayed</div>
+                                                    <div style="font-size: 11px; color: var(--text-muted);">Alpine Explorer</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Swiss Rainforest Tour</td>
+                                        <td>Sep 22, 2026</td>
+                                        <td><span class="badge-role package_manager" style="color: var(--brand-danger); border-color: var(--brand-danger);">REJECTED</span></td>
+                                        <td><a th:href="@{/staff/visas}" class="btn-action" style="background: var(--brand-primary); color: #061208; padding: 4px 10px; font-size: 11px; font-weight: 700;">Dossier</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Right: Dossier Verification Panel (2:938) -->
+                    <div class="dossier-panel">
+                        <div>
+                            <span class="surface-tag">CONGRUENT AUDIT</span>
+                            <h3 style="font-family: var(--font-heading); font-size: 18px; margin: 0 0 12px 0;">Dossier Verification Panel</h3>
+                        </div>
+
+                        <!-- Applicant Chip Box -->
+                        <div class="applicant-chip-box">
+                            <h4>
+                                <span>Sarah Jenkins</span>
+                                <span class="badge-expiry">EXPIRES IN 18 MONTHS</span>
+                            </h4>
+                            <p>Nationality: United Kingdom &bull; DOB: 12 Mar 1993 &bull; Passport: #UK-98214</p>
+                        </div>
+
+                        <!-- Checklist -->
+                        <div>
+                            <div style="font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">DOCUMENT CHECKLIST</div>
+                            <div class="doc-checklist">
+                                <div class="doc-check-item">
+                                    <div>
+                                        <div class="doc-check-title">Passport Bio Page</div>
+                                        <div class="doc-check-desc">Clarity check &amp; watermark audit</div>
+                                    </div>
+                                    <span style="color: var(--brand-primary); font-weight: 800;">&check;</span>
+                                </div>
+                                <div class="doc-check-item warn">
+                                    <div>
+                                        <div class="doc-check-title">6-Month Bank Statement</div>
+                                        <div class="doc-check-desc">Requires quarterly ledger audit</div>
+                                    </div>
+                                    <span style="color: var(--brand-gold); font-weight: 800;">&Delta;</span>
+                                </div>
+                                <div class="doc-check-item">
+                                    <div>
+                                        <div class="doc-check-title">Passport Photo</div>
+                                        <div class="doc-check-desc">Must be white backdrop bio photo</div>
+                                    </div>
+                                    <span style="color: var(--brand-primary); font-weight: 800;">&check;</span>
+                                </div>
+                                <div class="doc-check-item">
+                                    <div>
+                                        <div class="doc-check-title">Outbound Flight Itinerary</div>
+                                        <div class="doc-check-desc">Round trip transit confirmation</div>
+                                    </div>
+                                    <span style="color: var(--brand-primary); font-weight: 800;">&check;</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Document Preview -->
+                        <div>
+                            <div style="font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">LIVE DOCUMENT PREVIEW</div>
+                            <div class="live-preview-box">
+                                <img th:src="@{/images/cust-visa.jpg}" alt="Visa Document Preview" class="live-preview-img">
+                                <div class="preview-controls">
+                                    <span>&minus; Zoom</span>
+                                    <span>Page 1 of 3</span>
+                                    <span>+ Zoom</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Audit Notes -->
+                        <textarea class="form-control" placeholder="Add inspector verification audit notes here..." style="min-height: 60px; font-size: 12px;"></textarea>
+
+                        <!-- Panel Buttons -->
+                        <div style="display: flex; gap: 10px;">
+                            <a th:href="@{/staff/visas}" class="btn-action" style="flex: 1; background: var(--brand-primary); color: #061208; font-weight: 700; padding: 10px;">
+                                Approve Document
+                            </a>
+                            <a th:href="@{/staff/visas}" class="btn-action" style="background: transparent; border: 1px solid var(--brand-danger); color: var(--brand-danger); font-weight: 600; padding: 10px;">
+                                Reject &amp; Request Re-upload
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Command Bar (Figma 2:970) -->
+                <div class="surface-panel" style="padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 0;">
+                    <div style="display: flex; gap: 12px;">
+                        <a th:href="@{/staff/visas}" class="btn-action btn-outline">Move to Processing</a>
+                        <a th:href="@{/staff/visas}" class="btn-action btn-outline">Schedule Interview</a>
+                        <a th:href="@{/staff/payments}" class="btn-action btn-outline">Record Offline Payment</a>
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <a th:href="@{/staff/visas}" class="btn-action btn-danger">Reject Visa</a>
+                        <a th:href="@{/staff/visas}" class="btn-action btn-primary" style="padding: 10px 22px;">
+                            Approve Visa &amp; Issue eVisa PDF &darr;
+                        </a>
+                    </div>
+                </div>
+
+            </main>
+        </th:block>
+
+        <!-- =========================================================
+             B. PACKAGE MANAGER VIEW (Figma Frame: travelgo-package-manager 2:1201)
+             ========================================================= -->
+        <th:block th:if="${userRole != 'VISA_OFFICER'}">
+            
+            <!-- Header (2:1202) -->
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <div>
+                        <span class="surface-tag" style="margin-bottom: 2px;">MANAGEMENT TERMINAL</span>
+                        <h2 style="font-family: var(--font-heading); font-size: 19px; margin: 0; color: #ffffff;">
+                            Tour Packages &amp; Partner Inventory
+                        </h2>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <span class="status-live-chip" style="background: rgba(165, 214, 167, 0.08); color: var(--text-muted); border-color: var(--border-subtle);">
+                        Today: Oct 12, 2026
+                    </span>
+                    <a th:href="@{/staff/packages}" class="btn-action btn-cta">
+                        + Create New Package
+                    </a>
+                </div>
+            </header>
+
+            <main class="admin-content">
+
+                <!-- Platform Vitals (4 KPI cards 2:1218) -->
+                <div class="stats-grid">
+                    <div class="stat-card-kpi">
+                        <span class="kpi-label">TOTAL ACTIVE PACKAGES</span>
+                        <h2 class="kpi-number" th:text="${activePackages != null ? activePackages : 38}">38</h2>
+                        <span class="kpi-subtext"><span class="trend-up">&uarr; +4 new this season</span></span>
+                    </div>
+
+                    <div class="stat-card-kpi">
+                        <span class="kpi-label">PARTNER HOTELS</span>
+                        <h2 class="kpi-number" th:text="${totalHotels != null ? totalHotels : 84}">84</h2>
+                        <span class="kpi-subtext"><span class="trend-up">&uarr; 100% active verified hotels</span></span>
+                    </div>
+
+                    <div class="stat-card-kpi">
+                        <span class="kpi-label">DESTINATIONS COVERED</span>
+                        <h2 class="kpi-number" th:text="${totalDestinations != null ? totalDestinations : 26}">26</h2>
+                        <span class="kpi-subtext"><span class="trend-up">&uarr; +2 added global zones</span></span>
+                    </div>
+
+                    <div class="stat-card-kpi">
+                        <span class="kpi-label">OPEN CUSTOMER INQUIRIES</span>
+                        <h2 class="kpi-number" style="color: var(--brand-gold);" th:text="${openInquiries != null ? openInquiries : 12}">12</h2>
+                        <span class="kpi-subtext"><span class="trend-warn">&Delta; Action Needed require reply</span></span>
+                    </div>
+                </div>
+
+                <!-- Active Tour Packages Catalog Header & Filters (2:1238) -->
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                    <h3 style="font-family: var(--font-heading); font-size: 19px; margin: 0; color: #ffffff;">
+                        Active Tour Packages Catalog
+                    </h3>
+                    <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);" th:text="'Showing ' + (${recentPackages != null ? recentPackages.size() : 3}) + ' of ' + (${totalPackages != null ? totalPackages : 38}) + ' Packages'">
+                        Showing 3 of 38 Packages
+                    </span>
+                </div>
+
+                <div class="surface-panel" style="padding: 12px 18px; margin-bottom: 24px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+                    <input type="text" placeholder="Search package title..." class="form-control" style="width: 220px; font-size: 12px; padding: 6px 12px;">
+                    <select class="form-control" style="width: 140px; font-size: 12px; padding: 6px 12px;">
+                        <option>All Destinations</option>
+                        <option>Asia</option>
+                        <option>Europe</option>
+                        <option>Middle East</option>
+                    </select>
+                    <div class="filter-pills-row">
+                        <span class="pill-tab">All</span>
+                        <span class="pill-tab">Adventure</span>
+                        <span class="pill-tab">Honeymoon</span>
+                        <span class="pill-tab">Cultural</span>
+                        <span class="pill-tab active">Luxury</span>
+                    </div>
+                </div>
+
+                <!-- Catalog Grid (2:1240) -->
+                <div class="catalog-grid">
+                    <!-- Package 1: Bali Sunset Retreat -->
+                    <div class="pkg-catalog-card">
+                        <div class="pkg-media-wrap" style="background-image: url('https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80');">
+                            <span class="pkg-badge-duration">8 Days / 7 Nights</span>
+                            <span class="pkg-badge-status">ACTIVE</span>
+                        </div>
+                        <div class="pkg-card-body">
+                            <h4 class="pkg-card-title">Bali Sunset Retreat</h4>
+                            <p class="pkg-card-sub">&bull; 12 max &bull; Luxury Curated</p>
+                            <div class="pkg-card-bottom">
+                                <div>
+                                    <div style="font-family: var(--font-mono); font-size: 9px; color: var(--text-muted);">BASE PRICE</div>
+                                    <div class="pkg-price-val">$2,850/person</div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <a th:href="@{/staff/packages}" class="btn-action btn-primary" style="padding: 6px 12px; font-size: 11px;">Edit Itinerary</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Package 2: Swiss Alps Expedition -->
+                    <div class="pkg-catalog-card">
+                        <div class="pkg-media-wrap" style="background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80');">
+                            <span class="pkg-badge-duration">10 Days / 9 Nights</span>
+                            <span class="pkg-badge-status">ACTIVE</span>
+                        </div>
+                        <div class="pkg-card-body">
+                            <h4 class="pkg-card-title">Swiss Alps Expedition</h4>
+                            <p class="pkg-card-sub">&bull; 8 max &bull; Luxury Curated</p>
+                            <div class="pkg-card-bottom">
+                                <div>
+                                    <div style="font-family: var(--font-mono); font-size: 9px; color: var(--text-muted);">BASE PRICE</div>
+                                    <div class="pkg-price-val">$4,120/person</div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <a th:href="@{/staff/packages}" class="btn-action btn-primary" style="padding: 6px 12px; font-size: 11px;">Edit Itinerary</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Package 3: Kyoto Cultural Immersion -->
+                    <div class="pkg-catalog-card">
+                        <div class="pkg-media-wrap" style="background-image: url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80');">
+                            <span class="pkg-badge-duration">7 Days / 6 Nights</span>
+                            <span class="pkg-badge-status" style="background: rgba(165, 214, 167, 0.1); color: var(--text-muted); border-color: var(--border-subtle);">DRAFT</span>
+                        </div>
+                        <div class="pkg-card-body">
+                            <h4 class="pkg-card-title">Kyoto Cultural Immersion</h4>
+                            <p class="pkg-card-sub">&bull; 6 max &bull; Luxury Curated</p>
+                            <div class="pkg-card-bottom">
+                                <div>
+                                    <div style="font-family: var(--font-mono); font-size: 9px; color: var(--text-muted);">BASE PRICE</div>
+                                    <div class="pkg-price-val">$3,400/person</div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <a th:href="@{/staff/packages}" class="btn-action btn-primary" style="padding: 6px 12px; font-size: 11px;">Edit Itinerary</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configure New Luxury Package Wizard (2:1270) -->
+                <div class="surface-panel">
+                    <div class="surface-header">
+                        <div class="surface-title-group">
+                            <span class="surface-tag">PACKAGE WIZARD</span>
+                            <h3>Configure New Luxury Package</h3>
+                        </div>
+                    </div>
+                    <div class="surface-body">
+                        <!-- Stepper -->
+                        <div class="filter-pills-row" style="margin-bottom: 20px; justify-content: space-around;">
+                            <span class="pill-tab active">1 Essentials</span>
+                            <span class="pill-tab">2 Pricing &amp; Policies</span>
+                            <span class="pill-tab">3 Itinerary Builder</span>
+                            <span class="pill-tab">4 Inclusions &amp; Media</span>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">PACKAGE TITLE</label>
+                                <input type="text" class="form-control" placeholder="E.g. Maldives Overwater Villa Sanctuary">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">THEME CATEGORY</label>
+                                <select class="form-control">
+                                    <option>Luxury Classic</option>
+                                    <option>Adventure Expedition</option>
+                                    <option>Cultural Heritage</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">TARGET DESTINATION</label>
+                                <select class="form-control">
+                                    <option>Maldives, Asia</option>
+                                    <option>Santorini, Europe</option>
+                                    <option>Kyoto, Japan</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">DURATION (DAYS / NIGHTS)</label>
+                                <div style="display: flex; gap: 8px;">
+                                    <input type="text" class="form-control" value="6 Days">
+                                    <input type="text" class="form-control" value="5 Nights">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">PHYSICAL DIFFICULTY</label>
+                                <select class="form-control">
+                                    <option>Easy</option>
+                                    <option>Moderate</option>
+                                    <option>Challenging</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--border-subtle);">
+                            <span style="font-size: 12px; color: var(--text-muted);">Currently configuring: <strong>Essentials</strong></span>
+                            <a th:href="@{/staff/packages}" class="btn-action btn-cta">
+                                Next: Pricing &amp; Policies &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Verified Partner Hotels Directory (2:1290) -->
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                    <h3 style="font-family: var(--font-heading); font-size: 19px; margin: 0; color: #ffffff;">
+                        Verified Partner Hotels Directory
+                    </h3>
+                    <a th:href="@{/staff/hotels}" style="font-size: 12px; color: var(--brand-primary); text-decoration: none; font-weight: 600;">
+                        Browse All Partnerships (84) &rarr;
+                    </a>
+                </div>
+
+                <div class="hotel-cards-grid" style="margin-bottom: 32px;">
+                    <div class="hotel-card">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80" alt="The Ritz-Carlton Bali">
+                        <div style="flex: 1;">
+                            <div style="color: var(--brand-gold); font-size: 12px; margin-bottom: 2px;">★★★★★</div>
+                            <h4 style="margin: 0 0 2px 0; font-size: 16px; color: #ffffff;">The Ritz-Carlton Bali</h4>
+                            <p style="margin: 0 0 8px 0; font-size: 12px; color: var(--text-muted);">Bali, Indonesia &bull; WiFi &bull; Pool &bull; Spa</p>
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <span style="font-family: var(--font-mono); font-size: 11px; color: var(--brand-primary);">Linked to 4 packages</span>
+                                <span style="font-family: var(--font-heading); font-weight: 800; color: #ffffff;">$420/night</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hotel-card">
+                        <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=400&q=80" alt="Grand Hotel Zermatt">
+                        <div style="flex: 1;">
+                            <div style="color: var(--brand-gold); font-size: 12px; margin-bottom: 2px;">★★★★★</div>
+                            <h4 style="margin: 0 0 2px 0; font-size: 16px; color: #ffffff;">Grand Hotel Zermatt</h4>
+                            <p style="margin: 0 0 8px 0; font-size: 12px; color: var(--text-muted);">Zermatt, Switzerland &bull; WiFi &bull; Pool &bull; Spa</p>
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <span style="font-family: var(--font-mono); font-size: 11px; color: var(--brand-primary);">Linked to 4 packages</span>
+                                <span style="font-family: var(--font-heading); font-weight: 800; color: #ffffff;">$550/night</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customer Inquiries & Leads Table (2:1310) -->
+                <div class="surface-panel">
+                    <div class="surface-header">
+                        <div class="surface-title-group">
+                            <span class="surface-tag">LEAD MANAGEMENT</span>
+                            <h3>Customer Inquiries &amp; Leads</h3>
+                        </div>
+                    </div>
+                    <div class="table-container" style="border: none;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>SENDER NAME</th>
+                                    <th>INQUIRED PACKAGE</th>
+                                    <th>MESSAGE PREVIEW</th>
+                                    <th>RECEIVED</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div style="font-weight: 600;">Eleanor Vance</div>
+                                        <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">eleanor.v@vancecorp.com</div>
+                                    </td>
+                                    <td>Swiss Alps Expedition</td>
+                                    <td style="color: var(--text-muted); font-size: 12px;">Inquiry regarding private heli-skiing extensions on Day 4...</td>
+                                    <td>Oct 12, 10:14 AM</td>
+                                    <td><a th:href="@{/staff/inquiries}" class="btn-action btn-outline" style="font-size: 11px; padding: 4px 10px;">Reply via Email</a></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="font-weight: 600;">Sir Thomas Sterling</div>
+                                        <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">thomas@sterlingallies.co.uk</div>
+                                    </td>
+                                    <td>Kyoto Cultural Immersion</td>
+                                    <td style="color: var(--text-muted); font-size: 12px;">Requesting luxury tea ceremony upgrade for group of 4...</td>
+                                    <td>Oct 11, 4:32 PM</td>
+                                    <td><a th:href="@{/staff/inquiries}" class="btn-action btn-outline" style="font-size: 11px; padding: 4px 10px;">Reply via Email</a></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="font-weight: 600;">Sophia Laurent</div>
+                                        <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">sophie@laurentarts.fr</div>
+                                    </td>
+                                    <td>Bali Sunset Retreat</td>
+                                    <td style="color: var(--text-muted); font-size: 12px;">Are spa facilities fully accessible for elderly guests?...</td>
+                                    <td>Oct 11, 1:15 PM</td>
+                                    <td><a th:href="@{/staff/inquiries}" class="btn-action btn-outline" style="font-size: 11px; padding: 4px 10px;">Reply via Email</a></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="font-weight: 600;">Dr. Kenji Sato</div>
+                                        <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">k.sato@kyototech.jp</div>
+                                    </td>
+                                    <td>Swiss Alps Expedition</td>
+                                    <td style="color: var(--text-muted); font-size: 12px;">Looking to merge this with Schengen diplomatic visas...</td>
+                                    <td>Oct 10, 9:45 AM</td>
+                                    <td><a th:href="@{/staff/inquiries}" class="btn-action btn-outline" style="font-size: 11px; padding: 4px 10px;">Reply via Email</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </main>
+        </th:block>
+
+    </div>
+
+</body>
+</html>

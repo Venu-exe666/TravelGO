@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script th:src="@{/js/theme.js}"></script>
+    <title>Booking Details - TravelGO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700;800&family=Outfit:wght@700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/customer.css}">
+    <style>
+        .detail-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92rem;
+        }
+        .detail-table th {
+            width: 35%;
+            padding: 0.85rem 0.5rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-subtle);
+            text-align: left;
+        }
+        .detail-table td {
+            padding: 0.85rem 0.5rem;
+            color: var(--text-heading);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .detail-table tr:last-child th,
+        .detail-table tr:last-child td {
+            border-bottom: none;
+        }
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        .form-label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 0.35rem;
+        }
+        .form-control-custom {
+            width: 100%;
+            padding: 0.72rem 0.95rem;
+            border: 1.5px solid #CBD5E1;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.92rem;
+            background: #FFFFFF;
+            color: #0F172A;
+            caret-color: #0284C7;
+            transition: all var(--transition-fast);
+            box-sizing: border-box;
+        }
+        .form-control-custom:focus {
+            outline: none;
+            border-color: #0284C7;
+            background: #FFFFFF;
+            color: #0F172A;
+            box-shadow: 0 0 0 3.5px rgba(2, 132, 199, 0.16);
+        }
+        .form-control-custom option {
+            background: #FFFFFF;
+            color: #0F172A;
+        }
+        .form-control-custom::placeholder {
+            color: #94A3B8;
+        }
+        /* Modal Styles */
+        .custom-modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .custom-modal-backdrop.active {
+            display: flex;
+        }
+        .custom-modal-box {
+            background: #FFFFFF;
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 520px;
+            box-shadow: var(--shadow-2xl);
+            border: 1px solid var(--border-subtle);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .custom-modal-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #E2E8F0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #FAFCFE;
+        }
+        .custom-modal-header h4 { margin: 0; font-size: 1.1rem; color: #0F172A; font-weight: 700; }
+        .custom-modal-close { background: none; border: none; font-size: 1.5rem; color: #64748B; cursor: pointer; }
+        .custom-modal-close:hover { color: #0F172A; }
+        .custom-modal-body { padding: 1.5rem; background: #FFFFFF; color: #334155; }
+        .custom-modal-footer { padding: 1rem 1.5rem; border-top: 1px solid #E2E8F0; display: flex; justify-content: flex-end; gap: 0.75rem; background: #FAFCFE; }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main class="main-content">
+        <div class="container section">
+            <!-- Header Section -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <span class="badge badge-info" style="margin-bottom: 0.5rem;">BOOKING SUMMARY</span>
+                    <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem;">
+                        Reservation <span th:text="'#BKG-' + ${booking.id}">#BKG-1</span>
+                    </h1>
+                    <p style="color: var(--text-muted); font-size: 1rem;" th:text="${booking.tourPackage.name}">European Classical Journey</p>
+                </div>
+                <div style="display: flex; gap: 0.75rem;">
+                    <a th:href="@{/customer/bookings}" class="btn btn-outline btn-sm">
+                        &larr; Back to My Bookings
+                    </a>
+                </div>
+            </div>
+
+            <!-- Flash Messages -->
+            <div th:if="${successMessage}" class="alert alert-success">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <div th:text="${successMessage}">Operation successful</div>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <div th:text="${errorMessage}">Error occurred</div>
+            </div>
+
+            <!-- Main Layout Grid -->
+            <div class="grid grid-3" style="grid-template-columns: 2fr 1.2fr; gap: 2rem; align-items: flex-start;">
+                
+                <!-- Left Column: Booking Details -->
+                <div style="display: flex; flex-direction: column; gap: 1.75rem;">
+                    
+                    <!-- Core Booking Information Card -->
+                    <div class="card" style="padding: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem; font-size: 1.25rem;">Reservation Specifications</h3>
+                        <table class="detail-table">
+                            <tr>
+                                <th>Package Name</th>
+                                <td>
+                                    <strong style="color: var(--text-heading); font-size: 1.05rem;" th:text="${booking.tourPackage.name}">European Classical Journey</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Destination</th>
+                                <td th:text="${booking.tourPackage.destination.city + ', ' + booking.tourPackage.destination.country}">Paris, France</td>
+                            </tr>
+                            <tr>
+                                <th>Travel Departure Date</th>
+                                <td>
+                                    <strong th:text="${booking.travelDate}">2026-10-15</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Travelers Registered</th>
+                                <td>
+                                    <span th:text="${booking.numberOfTravelers}">2</span> 
+                                    <span style="color: var(--text-muted);" th:text="${booking.numberOfTravelers == 1 ? 'Person' : 'People'}">People</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Base Unit Price</th>
+                                <td th:text="'$' + ${#numbers.formatDecimal(booking.packageUnitPrice, 1, 'COMMA', 2, 'POINT')} + ' per traveler'">$1,299.00</td>
+                            </tr>
+                            <tr>
+                                <th>Total Package Price</th>
+                                <td>
+                                    <strong style="font-size: 1.2rem; color: var(--text-heading);" 
+                                            th:text="'$' + ${#numbers.formatDecimal(booking.totalPackageAmount, 1, 'COMMA', 2, 'POINT')}">
+                                        $2,598.00
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Reservation Status</th>
+                                <td>
+                                    <span class="badge"
+                                          th:classappend="${booking.bookingStatus.name() == 'CONFIRMED'} ? 'badge-success' : (${booking.bookingStatus.name() == 'CANCELLED'} ? 'badge-danger' : (${booking.bookingStatus.name() == 'PENDING'} ? 'badge-warning' : 'badge-info'))"
+                                          th:text="${booking.bookingStatus}">
+                                        STATUS
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr th:if="${booking.packagePaymentDeadline}">
+                                <th>Payment Deadline</th>
+                                <td style="color: #D97706; font-weight: 600;" th:text="${#temporals.format(booking.packagePaymentDeadline, 'yyyy-MM-dd HH:mm')}">2026-10-16 12:00</td>
+                            </tr>
+                            <tr>
+                                <th>Date Booked</th>
+                                <td th:text="${#temporals.format(booking.createdAt, 'yyyy-MM-dd HH:mm')}">2026-09-09 10:00</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Hotel Accommodation Card (If Selected) -->
+                    <div class="card" th:if="${bookingHotel != null}" style="padding: 2rem; border-left: 4px solid var(--brand-primary);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h3 style="margin: 0; font-size: 1.15rem;">Selected Hotel Accommodation</h3>
+                            <span class="badge badge-success">Optional Add-On Included</span>
+                        </div>
+                        <table class="detail-table">
+                            <tr>
+                                <th>Hotel Property</th>
+                                <td>
+                                    <strong th:text="${bookingHotel.hotel.name}">Grand Hotel de Paris</strong>
+                                    <div style="font-size: 0.8rem; color: var(--text-muted);" th:text="${bookingHotel.hotel.address}">12 Rue de Rivoli, Paris</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Star Rating</th>
+                                <td>
+                                    <span th:text="${bookingHotel.hotel.starRating} + ' ★ Luxury Rating'">4 ★ Luxury Rating</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Stay Duration</th>
+                                <td th:text="${bookingHotel.numberOfNights} + ' Nights (' + ${bookingHotel.checkInDate} + ' to ' + ${bookingHotel.checkOutDate} + ')'">7 Nights</td>
+                            </tr>
+                            <tr>
+                                <th>Rooms Reserved</th>
+                                <td th:text="${bookingHotel.numberOfRooms} + ' Room(s)'">1 Room</td>
+                            </tr>
+                            <tr>
+                                <th>Hotel Total Cost</th>
+                                <td>
+                                    <strong style="color: var(--text-heading);" th:text="'$' + ${#numbers.formatDecimal(bookingHotel.hotelCost, 1, 'COMMA', 2, 'POINT')}">$1,260.00</strong>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Confirmed Flight Ticket Card (when CONFIRMED) -->
+                    <div class="card" th:if="${booking.bookingStatus.name() == 'CONFIRMED'}" style="padding: 2rem; border-left: 4px solid #2563EB; background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+                            <div style="display: flex; align-items: center; gap: 0.6rem;">
+                                <div style="width: 38px; height: 38px; border-radius: 50%; background: #2563EB; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                                    ✈️
+                                </div>
+                                <div>
+                                    <h3 style="margin: 0; font-size: 1.2rem; color: #0F172A;">Confirmed Flight Tickets</h3>
+                                    <span style="font-size: 0.8rem; color: #2563EB; font-weight: 700;">OFFICIAL E-TICKET ISSUED</span>
+                                </div>
+                            </div>
+                            <a th:href="@{/customer/bookings/{id}/confirmation(id=${booking.id})}" class="btn btn-sm btn-primary" style="background: #2563EB; border-color: #2563EB;">
+                                View Full Boarding Pass &amp; Vouchers &rarr;
+                            </a>
+                        </div>
+
+                        <!-- Flight Route Visualizer -->
+                        <div style="background: #F1F5F9; border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                            <div>
+                                <div style="font-size: 0.75rem; text-transform: uppercase; color: #64748B; font-weight: 700;">Departure</div>
+                                <div style="font-size: 1.3rem; font-weight: 800; color: #0F172A;">ORIGIN AIRPORT</div>
+                                <div style="font-size: 0.85rem; color: #475569;" th:text="${booking.travelDate}">2026-10-15</div>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
+                                <span style="font-size: 0.75rem; font-weight: 700; color: #2563EB; background: #DBEAFE; padding: 0.2rem 0.6rem; border-radius: 20px;">Flight TG-742 &bull; Non-Stop</span>
+                                <div style="width: 100px; height: 2px; background: #94A3B8; position: relative;">
+                                    <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #F1F5F9; padding: 0 4px; font-size: 0.9rem;">✈️</span>
+                                </div>
+                                <span style="font-size: 0.72rem; color: #64748B;">Confirmed &bull; Economy Class</span>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 0.75rem; text-transform: uppercase; color: #64748B; font-weight: 700;">Destination</div>
+                                <div style="font-size: 1.3rem; font-weight: 800; color: #0F172A;" th:text="${booking.tourPackage.destination.city}">PARIS</div>
+                                <div style="font-size: 0.85rem; color: #475569;" th:text="${booking.tourPackage.destination.country}">France</div>
+                            </div>
+                        </div>
+
+                        <!-- Ticket Quick Specs -->
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; font-size: 0.85rem;">
+                            <div style="background: #FFFFFF; border: 1px solid #E2E8F0; padding: 0.65rem 0.85rem; border-radius: 8px;">
+                                <div style="color: #64748B; font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Status</div>
+                                <div style="color: #059669; font-weight: 700;">✓ Confirmed &amp; Paid</div>
+                            </div>
+                            <div style="background: #FFFFFF; border: 1px solid #E2E8F0; padding: 0.65rem 0.85rem; border-radius: 8px;">
+                                <div style="color: #64748B; font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Travelers</div>
+                                <div style="color: #0F172A; font-weight: 700;" th:text="${booking.numberOfTravelers} + ' Passenger(s)'">2 Passengers</div>
+                            </div>
+                            <div style="background: #FFFFFF; border: 1px solid #E2E8F0; padding: 0.65rem 0.85rem; border-radius: 8px;">
+                                <div style="color: #64748B; font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Baggage</div>
+                                <div style="color: #0F172A; font-weight: 700;">2x 23kg Included</div>
+                            </div>
+                            <div style="background: #FFFFFF; border: 1px solid #E2E8F0; padding: 0.65rem 0.85rem; border-radius: 8px;">
+                                <div style="color: #64748B; font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Visa Status</div>
+                                <div style="color: #059669; font-weight: 700;">✓ Approved</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Column: Visa Services & Actions -->
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+
+                    <!-- Visa Services Module -->
+                    <div class="card" style="padding: 1.75rem;">
+                        <h4 style="margin-bottom: 0.4rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.4rem;">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; color: var(--brand-accent);">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                            Visa Application
+                        </h4>
+
+                        <!-- State 1: Visa Application Exists -->
+                        <div th:if="${visaApplication != null}" style="margin-top: 1rem;">
+                            <!-- Officer Remarks Alert (if documents requested/feedback) -->
+                            <div th:if="${visaApplication.officerRemarks != null and !#strings.isEmpty(visaApplication.officerRemarks) and (visaApplication.status.name() == 'PENDING_DOCUMENTS' or visaApplication.status.name() == 'DOCUMENTS_SUBMITTED')}" 
+                                 style="background: #FEF3C7; border: 1.5px solid #F59E0B; border-radius: var(--radius-md); padding: 0.95rem 1.15rem; margin-bottom: 1.25rem;">
+                                <div style="display: flex; gap: 0.65rem; align-items: flex-start;">
+                                    <span style="font-size: 1.25rem; line-height: 1;">⚠️</span>
+                                    <div>
+                                        <strong style="color: #92400E; font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Visa Officer Action Requested:</strong>
+                                        <p style="margin: 0; color: #78350F; font-size: 0.84rem; line-height: 1.45;" th:text="${visaApplication.officerRemarks}"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Visa Card Summary Box -->
+                            <div style="background: var(--bg-subtle); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);" th:text="'REF: #VISA-' + ${visaApplication.id}">#VISA-1</span>
+                                    <span class="badge"
+                                          th:classappend="${visaApplication.status.name() == 'APPROVED'} ? 'badge-success' : (${visaApplication.status.name() == 'REJECTED'} ? 'badge-danger' : (${visaApplication.status.name() == 'PROCESSING' or visaApplication.status.name() == 'DOCUMENTS_VERIFIED'} ? 'badge-info' : 'badge-warning'))"
+                                          th:text="${visaApplication.status}">
+                                        STATUS
+                                    </span>
+                                </div>
+                                <div style="font-size: 0.88rem; margin-bottom: 0.35rem;">
+                                    <strong>Category:</strong> <span th:text="${visaApplication.visaType}">VISIT</span>
+                                </div>
+                                <div style="font-size: 0.88rem; margin-bottom: 0.35rem;" th:if="${visaApplication.visaCharge != null}">
+                                    <strong>Gov Visa Fee:</strong> <span th:text="'$' + ${visaApplication.visaCharge}">$85.00</span>
+                                </div>
+                                <div style="font-size: 0.88rem;" th:if="${visaApplication.documentationCharge != null}">
+                                    <strong>Agency Fee:</strong> <span th:text="'$' + ${visaApplication.documentationCharge}">$40.00</span>
+                                </div>
+                            </div>
+
+                            <!-- Uploaded Documents Preview -->
+                            <div th:if="${visaDocuments != null and not #lists.isEmpty(visaDocuments)}" style="margin-bottom: 1.25rem;">
+                                <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; letter-spacing: 0.05em;">Uploaded Documents</div>
+                                <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+                                    <div th:each="doc : ${visaDocuments}" style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-subtle); padding: 0.55rem 0.85rem; border-radius: 8px; font-size: 0.85rem;">
+                                        <div style="display: flex; align-items: center; gap: 0.45rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                            <span style="font-size: 1rem;">📄</span>
+                                            <span th:text="${doc.documentName}" style="font-weight: 600;">Passport Copy</span>
+                                        </div>
+                                        <span class="badge" th:classappend="${doc.verified} ? 'badge-success' : 'badge-warning'" th:text="${doc.verified} ? 'Verified' : 'Under Review'" style="font-size: 0.7rem; padding: 0.2rem 0.55rem;">
+                                            Status
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- STATE-SPECIFIC ACTIONS -->
+
+                            <!-- 1. Document Submission Phase -->
+                            <div th:if="${visaApplication.status.name() == 'PENDING_DOCUMENTS' or visaApplication.status.name() == 'DOCUMENTS_SUBMITTED'}">
+                                <button type="button" class="btn btn-primary" onclick="openBookingDocModal()" style="width: 100%; justify-content: center;">
+                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; margin-right: 0.4rem;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                    </svg>
+                                    <span th:text="${visaDocuments != null and not #lists.isEmpty(visaDocuments)} ? 'Upload Additional Document' : 'Upload Required Documents'">Upload Documents</span>
+                                </button>
+                                <a th:href="@{/customer/visas}" style="display: block; text-align: center; margin-top: 0.65rem; font-size: 0.82rem; color: var(--text-muted);">
+                                    View Full Visa Portal &rarr;
+                                </a>
+                            </div>
+
+                            <!-- 2. Documents Verified: Waiting for Charges -->
+                            <div th:if="${visaApplication.status.name() == 'DOCUMENTS_VERIFIED'}" style="background: #F0FDF4; border: 1.5px solid #86EFAC; border-radius: var(--radius-md); padding: 1rem; text-align: center;">
+                                <div style="font-size: 1.35rem; margin-bottom: 0.25rem;">✓</div>
+                                <strong style="color: #166534; font-size: 0.9rem; display: block; margin-bottom: 0.2rem;">Documents Verified</strong>
+                                <p style="margin: 0; color: #15803D; font-size: 0.82rem; line-height: 1.4;">
+                                    Your documents have been verified by our visa officer. Official visa fees will be issued shortly for payment.
+                                </p>
+                            </div>
+
+                            <!-- 3. Payment Pending: Customer Pays Visa & Doc Fee -->
+                            <div th:if="${visaApplication.status.name() == 'PAYMENT_PENDING'}">
+                                <a th:href="@{/customer/payments/checkout/{id}(id=${booking.id})}" class="btn btn-primary" style="width: 100%; justify-content: center; background: var(--brand-accent); border-color: var(--brand-accent);">
+                                    Pay Visa &amp; Doc Fee (<span th:text="'$' + ${visaApplication.totalCharge}">$135.00</span>) &rarr;
+                                </a>
+                            </div>
+
+                            <!-- 4. Processing: Embassy Review Underway (NO LOOPING BUTTON) -->
+                            <div th:if="${visaApplication.status.name() == 'PROCESSING'}" style="background: #EFF6FF; border: 1.5px solid #93C5FD; border-radius: var(--radius-md); padding: 1rem; text-align: center;">
+                                <div style="font-size: 1.35rem; margin-bottom: 0.25rem;">🏛️</div>
+                                <strong style="color: #1E40AF; font-size: 0.92rem; display: block; margin-bottom: 0.25rem;">Embassy Processing Underway</strong>
+                                <p style="margin: 0; color: #1E3A8A; font-size: 0.84rem; line-height: 1.45;">
+                                    Fee payment verified. Our licensed visa officer has submitted your application for official embassy consular processing. You will be notified immediately upon approval.
+                                </p>
+                            </div>
+
+                            <!-- 5. Approved: Customer Pays Full Package Price -->
+                            <div th:if="${visaApplication.status.name() == 'APPROVED'}">
+                                <div style="background: #ECFDF5; border: 1.5px solid #10B981; border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1rem; text-align: center;">
+                                    <div style="font-size: 1.35rem; margin-bottom: 0.25rem;">🎉</div>
+                                    <strong style="color: #065F46; font-size: 0.92rem; display: block; margin-bottom: 0.2rem;">Visa Application Approved!</strong>
+                                    <p style="margin: 0; color: #047857; font-size: 0.84rem; line-height: 1.4;" th:if="${booking.bookingStatus.name() != 'CONFIRMED' and booking.bookingStatus.name() != 'PAID_AWAITING_TICKETS'}">
+                                        Your travel clearance is confirmed! Please pay the remaining package price to issue flight tickets.
+                                    </p>
+                                    <p style="margin: 0; color: #047857; font-size: 0.84rem; line-height: 1.4;" th:if="${booking.bookingStatus.name() == 'CONFIRMED'}">
+                                        Your reservation is confirmed! Flight and hotel vouchers are available below.
+                                    </p>
+                                    <p style="margin: 0; color: #047857; font-size: 0.84rem; line-height: 1.4;" th:if="${booking.bookingStatus.name() == 'PAID_AWAITING_TICKETS'}">
+                                        Full payment received. Your visa officer is preparing the ticket and booking details for release.
+                                    </p>
+                                </div>
+                                <a th:if="${booking.bookingStatus.name() != 'CONFIRMED' and booking.bookingStatus.name() != 'PAID_AWAITING_TICKETS' and booking.bookingStatus.name() != 'CANCELLED'}" th:href="@{/customer/payments/checkout/{id}(id=${booking.id})}" class="btn btn-primary" style="width: 100%; justify-content: center; background: #059669; border-color: #059669;">
+                                    Pay Full Package Price (<span th:text="'$' + ${booking.totalPackageAmount}">$2,598.00</span>) &rarr;
+                                </a>
+                            </div>
+
+                            <!-- 6. Rejected: Documentation Fee Refunded -->
+                            <div th:if="${visaApplication.status.name() == 'REJECTED'}" style="background: #FEF2F2; border: 1.5px solid #EF4444; border-radius: var(--radius-md); padding: 1rem; text-align: center;">
+                                <div style="font-size: 1.35rem; margin-bottom: 0.25rem;">❌</div>
+                                <strong style="color: #991B1B; font-size: 0.92rem; display: block; margin-bottom: 0.25rem;">Visa Application Rejected</strong>
+                                <p style="margin: 0 0 0.5rem 0; color: #B91C1C; font-size: 0.84rem;" th:if="${visaApplication.rejectionReason != null}">
+                                    Reason: <span th:text="${visaApplication.rejectionReason}"></span>
+                                </p>
+                                <span style="font-size: 0.8rem; color: #7F1D1D;">Documentation fee has been automatically refunded.</span>
+                            </div>
+
+                        </div>
+
+                        <!-- State 2: No Visa Application Yet -->
+                        <div th:if="${visaApplication == null}" style="margin-top: 0.75rem;">
+                            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.5;">
+                                This trip requires destination visa clearance. Apply now to have our licensed visa officers handle your documentation.
+                            </p>
+                            <form th:action="@{/customer/visas/apply}" method="post">
+                                <input type="hidden" name="bookingId" th:value="${booking.id}">
+                                <div class="form-group">
+                                    <label class="form-label">Select Visa Classification</label>
+                                    <select name="visaType" class="form-control-custom" required>
+                                        <option value="VISIT">Tourist / Visit Visa</option>
+                                        <option value="WORK">Business / Work Visa</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                                    Apply for Visa Assistance
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Payment Action Card (if NOT CONFIRMED and VISA APPROVED) -->
+                    <div class="card" style="padding: 1.75rem; background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%); border: 1px solid #BBF7D0;" 
+                         th:if="${booking.bookingStatus.name() != 'CONFIRMED' and booking.bookingStatus.name() != 'PAID_AWAITING_TICKETS' and booking.bookingStatus.name() != 'CANCELLED' and visaApplication != null and visaApplication.status.name() == 'APPROVED'}">
+                        <h4 style="margin-bottom: 0.5rem; color: #166534; font-size: 1.1rem;">Complete Booking Payment</h4>
+                        <p style="font-size: 0.85rem; color: #15803D; margin-bottom: 1.25rem;">
+                            Your visa has been approved! Complete your package settlement to issue your confirmed airline tickets and vouchers.
+                        </p>
+                        <a th:href="@{/customer/payments/checkout/{id}(id=${booking.id})}" class="btn btn-primary" style="width: 100%; justify-content: center; background: #059669; border-color: #059669;">
+                            Proceed to Checkout &rarr;
+                        </a>
+                    </div>
+
+                    <div class="card" style="padding: 1.75rem; background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%); border: 1px solid #6EE7B7;"
+                         th:if="${booking.bookingStatus.name() == 'PAID_AWAITING_TICKETS'}">
+                        <h4 style="margin-bottom: 0.5rem; color: #065F46; font-size: 1.1rem;">Payment received</h4>
+                        <p style="font-size: 0.85rem; color: #047857; margin: 0; line-height: 1.5;">
+                            Your payment is complete. Tickets will appear here after the visa officer sends the final travel documents.
+                        </p>
+                    </div>
+
+                    <!-- Modify Booking Card (if PENDING) -->
+                    <div class="card" style="padding: 1.75rem;" th:if="${booking.bookingStatus.name() == 'PENDING'}">
+                        <h4 style="margin-bottom: 1rem; font-size: 1.1rem;">Modify Reservation</h4>
+                        <form th:action="@{/customer/bookings/{id}/modify(id=${booking.id})}" method="post">
+                            <div class="form-group">
+                                <label class="form-label">New Travel Date</label>
+                                <input type="date" id="modifyTravelDateInput" name="travelDate" class="form-control-custom" th:value="${booking.travelDate}" required>
+                                <small style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.25rem; display: block;">Must be at least 4 days from today.</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Travelers Count 
+                                    <span style="color: var(--text-muted); font-weight: normal;">(Max: <span th:text="${booking.tourPackage.maxCapacity}">20</span>)</span>
+                                </label>
+                                <input type="number" name="numberOfTravelers" class="form-control-custom" min="1" th:max="${booking.tourPackage.maxCapacity}" th:value="${booking.numberOfTravelers}" required>
+                            </div>
+                            <button type="submit" class="btn btn-outline btn-sm" style="width: 100%; justify-content: center;">
+                                Update Reservation
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Flight Details & Confirmation Voucher Card (if CONFIRMED) -->
+                    <div class="card" style="padding: 1.75rem; background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); border: 1px solid #93C5FD;"
+                         th:if="${booking.bookingStatus.name() == 'CONFIRMED'}">
+                        <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: #2563EB; color: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                </svg>
+                            </div>
+                            <h4 style="margin: 0; color: #1E40AF; font-size: 1.1rem;">Flight Tickets & Vouchers</h4>
+                        </div>
+                        <p style="font-size: 0.85rem; color: #1E3A8A; margin-bottom: 1.25rem; line-height: 1.5;">
+                            Your package has been fully paid & confirmed! View and print your official airline ticket, itinerary schedule, and hotel vouchers.
+                        </p>
+                        <a th:href="@{/customer/bookings/{id}/confirmation(id=${booking.id})}" class="btn btn-primary" style="width: 100%; justify-content: center; background: #2563EB; border-color: #2563EB;">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; margin-right: 0.4rem;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            View Flight Tickets & Vouchers &rarr;
+                        </a>
+                        <a th:href="@{/customer/bookings/{id}/ticket.pdf(id=${booking.id})}" class="btn btn-outline" style="width: 100%; justify-content: center; margin-top: 0.65rem; color: #1E40AF; border-color: #93C5FD;">
+                            Download Ticket PDF
+                        </a>
+                    </div>
+
+                    <!-- Review Card (if CONFIRMED) -->
+                    <div class="card" style="padding: 1.75rem;" th:if="${booking.bookingStatus.name() == 'CONFIRMED'}">
+                        <h4 style="margin-bottom: 1rem; font-size: 1.1rem;">Submit Trip Review</h4>
+                        <form th:action="@{/customer/reviews}" method="post">
+                            <input type="hidden" name="bookingId" th:value="${booking.id}">
+                            <div class="form-group">
+                                <label class="form-label">Star Rating (1-5)</label>
+                                <select name="rating" class="form-control-custom" required>
+                                    <option value="5">5 ★★★★★ (Exceptional Experience)</option>
+                                    <option value="4">4 ★★★★☆ (Very Good)</option>
+                                    <option value="3">3 ★★★☆☆ (Satisfactory)</option>
+                                    <option value="2">2 ★★☆☆☆ (Below Expectations)</option>
+                                    <option value="1">1 ★☆☆☆☆ (Unsatisfactory)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Feedback / Comments</label>
+                                <textarea name="comment" class="form-control-custom" rows="3" placeholder="Share your experience..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm" style="width: 100%; justify-content: center;">
+                                Post Review
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <!-- Document Upload Modal for Booking Detail -->
+    <div class="custom-modal-backdrop" id="bookingDocModal" th:if="${visaApplication != null}">
+        <div class="custom-modal-box">
+            <form th:action="@{/customer/visas/{id}/documents(id=${visaApplication.id})}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="redirect" value="booking">
+                <div class="custom-modal-header">
+                    <div>
+                        <h4>Upload Visa Document</h4>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);" th:text="'Ref: #VISA-' + ${visaApplication.id} + ' • ' + ${booking.tourPackage.name}">Ref #VISA-1</div>
+                    </div>
+                    <button type="button" class="custom-modal-close" onclick="closeBookingDocModal()">&times;</button>
+                </div>
+                <div class="custom-modal-body">
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+                        Upload clear, scanned copies of your passport bio page, financial statements, or travel insurance certificates.
+                    </p>
+                    <div class="form-group">
+                        <label class="form-label">Document Description / Label</label>
+                        <input type="text" name="documentName" class="form-control-custom" placeholder="e.g. Passport Bio Page, Bank Statement" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Select File (PDF, JPG, PNG)</label>
+                        <input type="file" name="file" class="form-control-custom" accept=".pdf,.jpg,.jpeg,.png" required>
+                    </div>
+                </div>
+                <div class="custom-modal-footer">
+                    <button type="button" class="btn btn-outline btn-sm" onclick="closeBookingDocModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Upload & Submit for Review</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script th:src="@{/js/main.js}"></script>
+    <script>
+        function openBookingDocModal() {
+            const modal = document.getElementById('bookingDocModal');
+            if (modal) modal.classList.add('active');
+        }
+        function closeBookingDocModal() {
+            const modal = document.getElementById('bookingDocModal');
+            if (modal) modal.classList.remove('active');
+        }
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('bookingDocModal');
+            if (e.target === modal) {
+                closeBookingDocModal();
+            }
+        });
+
+        // Set min date to today + 4 days for reservation modification
+        const modifyDateInput = document.getElementById('modifyTravelDateInput');
+        if (modifyDateInput) {
+            const minDate = new Date();
+            minDate.setDate(minDate.getDate() + 4);
+            modifyDateInput.setAttribute('min', minDate.toISOString().split('T')[0]);
+        }
+    </script>
+</body>
+</html>

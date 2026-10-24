@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore active TravelGO destinations and continue directly to matching tour packages.">
+    <title>Global Destinations - TravelGO Luxury Tours</title>
+    <link rel="stylesheet" th:href="@{/css/premium.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/public-pages.css}">
+</head>
+<body class="public-inner-page page-destinations">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-immersive-wrapper">
+        <!-- Full-Page Filling Scenic Background (Santorini, Greece) -->
+        <div class="page-immersive-bg" data-parallax-bg th:style="'background-image: url(' + @{/images/destinations/santorini.jpg} + ');'">
+            <div class="page-immersive-overlay"></div>
+            <div class="ambient-glow-orb ambient-orb-1"></div>
+            <div class="ambient-glow-orb ambient-orb-2"></div>
+        </div>
+
+        <main class="page-immersive-content">
+            <div class="container">
+                <!-- Page Hero Header -->
+                <div class="page-hero-content inner-page-hero" data-motion="up">
+                    <span class="page-eyebrow">Destination directory</span>
+                    <h1 class="hero-title">
+                        Explore <span class="text-gradient-azure">Iconic Destinations</span>
+                    </h1>
+                    <p class="page-summary">Search active destinations, compare the places that inspire you, and move directly into matching TravelGO journeys.</p>
+                    <a href="#destination-results" class="page-scroll-cue" data-scroll-link>
+                        Explore destinations
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m0 0l6-6m-6 6l-6-6" /></svg>
+                    </a>
+                </div>
+
+                <!-- Search & Filter Controls (Frosted Glass Panel) -->
+                <div id="destination-results" class="card glass-card-luxury public-search-panel public-content-start" data-motion="up">
+                    <form th:action="@{/destinations}" method="get" class="public-filter-form public-filter-form--search">
+                        <div class="public-filter-field public-filter-field--grow">
+                            <label for="destinationSearch" class="public-field-label">Search destinations</label>
+                            <div style="position: relative;">
+                                <input id="destinationSearch" type="search" name="search" th:value="${search}" placeholder="Search by city or country" class="form-control public-inner-control" style="padding-left: 2.75rem;">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" style="position: absolute; left: 0.95rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--brand-accent);">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="public-filter-actions">
+                            <button type="submit" class="btn btn-primary btn-shimmer btn-magnetic" style="height: 48px; padding: 0 1.65rem;">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" style="width: 17px; height: 17px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                                <span>Search</span>
+                            </button>
+                            <a th:if="${search != null and !search.isEmpty()}" th:href="@{/destinations}" class="btn btn-outline btn-magnetic" style="height: 48px; padding: 0 1.25rem;">Reset</a>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="public-results-bar" th:if="${not #lists.isEmpty(destinations)}" data-motion="up">
+                    <div>
+                        <span class="section-kicker">Available now</span>
+                        <h2>Choose your next setting</h2>
+                        <p>Select a destination to view matching tour packages.</p>
+                    </div>
+                    <span class="public-result-count"><span th:text="${#lists.size(destinations)}">0</span> destinations</span>
+                </div>
+
+                <!-- Dynamic Destinations Bento Mosaic -->
+                <div class="destinations-bento-grid" data-motion-group th:if="${not #lists.isEmpty(destinations)}">
+                    <a th:href="@{/packages(destinationId=${dest.id})}" 
+                       class="bento-destination-card" 
+                       th:each="dest : ${destinations}">
+                        <img th:src="${dest.image != null and !dest.image.isEmpty() ? dest.image : 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1920&q=90'}" 
+                             th:alt="${dest.city + ', ' + dest.country}" 
+                             class="bento-destination-img"
+                             data-parallax-media
+                             loading="lazy"
+                             onerror="this.src='https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1920&q=90'">
+                        <div class="bento-destination-ribbon">
+                            <span class="bento-destination-country" th:text="${dest.country}">Country</span>
+                            <h3 class="bento-destination-title" th:text="${dest.city + ', ' + dest.country}">Paris, France</h3>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Empty State -->
+                <div th:if="${#lists.isEmpty(destinations)}" class="card glass-card-luxury" data-motion="scale" style="text-align: center; padding: 4.5rem 2rem; max-width: 620px; margin: 0 auto;">
+                    <div style="width: 70px; height: 70px; background: rgba(14, 165, 233, 0.12); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: var(--brand-accent);">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 34px; height: 34px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    <h3 style="margin-bottom: 0.75rem; color: #FFFFFF;">No Destinations Found</h3>
+                    <p style="color: #94A3B8; margin-bottom: 1.75rem;">We couldn't find any travel destinations matching your search parameters. Please try a different query or reset filters.</p>
+                    <a th:href="@{/destinations}" class="btn btn-primary btn-magnetic" style="display: inline-flex;">View All Destinations</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top-btn" aria-label="Scroll to top">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+
+    <!-- UI Scripts -->
+    <script th:src="@{/js/public-scroll.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

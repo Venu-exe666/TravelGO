@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Command Center - TravelGO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700;800&family=Outfit:wght@700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body class="admin-layout">
+
+    <!-- Figma: Executive-Sidebar (2:592) -->
+    <div th:replace="~{fragments/admin-sidebar :: admin-sidebar('dashboard')}"></div>
+
+    <!-- Figma: Main-Workspace (2:635) -->
+    <div class="admin-main">
+
+        <!-- Figma: Topbar (2:636) -->
+        <header class="admin-topbar">
+            <div class="topbar-left">
+                <p class="topbar-breadcrumb">
+                    <span>Admin</span> / <strong>Overview</strong>
+                </p>
+                <div class="topbar-search-terminal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="color: var(--brand-primary);">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" placeholder="Search terminal..." aria-label="Search terminal">
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <div class="status-live-chip">
+                    <span class="status-dot-pulse"></span>
+                    <span>Status: LIVE</span>
+                </div>
+                <a th:href="@{/}" target="_blank" class="topbar-link">
+                    Preview Website &rarr;
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Viewport -->
+        <main class="admin-content">
+
+            <div th:if="${successMessage}" style="padding: 12px 16px; margin-bottom: 16px; border: 1px solid rgba(16,185,129,.35); border-radius: 8px; background: rgba(16,185,129,.1); color: #6ee7b7;" th:text="${successMessage}"></div>
+            <div th:if="${errorMessage}" style="padding: 12px 16px; margin-bottom: 16px; border: 1px solid rgba(239,68,68,.35); border-radius: 8px; background: rgba(239,68,68,.1); color: #fca5a5;" th:text="${errorMessage}"></div>
+
+            <!-- Figma: Metric Cards Row (2:649) -->
+            <div class="stats-grid">
+                <!-- Metric 1: Total Platform Users -->
+                <div class="stat-card-kpi">
+                    <div class="kpi-header">
+                        <span class="kpi-label">TOTAL PLATFORM USERS</span>
+                        <div class="kpi-icon-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="kpi-number" th:text="${totalUsers != null ? #numbers.formatInteger(totalUsers, 1, 'COMMA') : '18,420'}">18,420</h2>
+                        <div class="kpi-subtext">
+                            <span class="trend-up">&uarr; +12% this month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metric 2: Active Staff Members -->
+                <div class="stat-card-kpi">
+                    <div class="kpi-header">
+                        <span class="kpi-label">ACTIVE STAFF MEMBERS</span>
+                        <div class="kpi-icon-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="kpi-number" th:text="${totalStaff != null ? totalStaff + ' Officers' : '34 Officers'}">34 Officers</h2>
+                        <div class="kpi-subtext">
+                            <span class="trend-up">&uarr; Fully Verified</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metric 3: Total Booking Revenue -->
+                <div class="stat-card-kpi">
+                    <div class="kpi-header">
+                        <span class="kpi-label">TOTAL BOOKING REVENUE</span>
+                        <div class="kpi-icon-wrap orange">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                <polyline points="17 6 23 6 23 12"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="kpi-number" th:text="'$' + ${totalRevenue != null ? #numbers.formatDecimal(totalRevenue, 1, 'COMMA', 0, 'POINT') : '1,280,450'}">$1,280,450</h2>
+                        <div class="kpi-subtext">
+                            <span class="trend-up">&uarr; Sparkline Activity</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metric 4: Pending Approvals -->
+                <div class="stat-card-kpi">
+                    <div class="kpi-header">
+                        <span class="kpi-label">PENDING APPROVALS</span>
+                        <div class="kpi-icon-wrap gold">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="kpi-number" th:text="${pendingBookings != null ? pendingBookings + ' Visa Actions' : '8 Visa Actions'}">8 Visa Actions</h2>
+                        <div class="kpi-subtext">
+                            <span class="trend-warn">&Delta; Action Required</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Figma: Security Audit Card (2:697) -->
+            <div class="surface-panel">
+                <div class="surface-header">
+                    <div class="surface-title-group">
+                        <span class="surface-tag">SECURITY AUDIT</span>
+                        <h3>User &amp; Staff Security Clearance</h3>
+                    </div>
+                    <div style="display: flex; gap: 12px; align-items: center;">
+                        <input id="dashboardUserSearch" type="search" placeholder="Search name/email..." class="form-control" style="width: 200px; padding: 6px 12px; font-size: 12px;" oninput="filterDashboardUsers()">
+                        <select id="dashboardRoleFilter" class="form-control" style="width: 150px; padding: 6px 12px; font-size: 12px;" onchange="filterDashboardUsers()">
+                            <option value="">All Roles</option>
+                            <option value="ADMIN">Admin</option>
+                            <option value="VISA_OFFICER">Visa Officer</option>
+                            <option value="PACKAGE_MANAGER">Package Manager</option>
+                            <option value="CUSTOMER">Customer</option>
+                        </select>
+                        <select id="dashboardStatusFilter" class="form-control" style="width: 130px; padding: 6px 12px; font-size: 12px;" onchange="filterDashboardUsers()">
+                            <option value="">All Statuses</option>
+                            <option value="ACTIVE">Active</option>
+                            <option value="DISABLED">Disabled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="dashboardUsersTable">
+                        <thead>
+                            <tr>
+                                <th>AVATAR</th>
+                                <th>CLEARANCE IDENTIFIED NAME</th>
+                                <th>EMAIL ADDR</th>
+                                <th>RBAC ROLE</th>
+                                <th>REG DATE</th>
+                                <th>CONSOLE</th>
+                                <th>OPTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic loop if live database users exist -->
+                            <tr th:each="user : ${recentUsers}" th:if="${recentUsers != null && !recentUsers.isEmpty()}"
+                                th:attr="data-search=${#strings.toLowerCase(user.name + ' ' + user.email)},data-role=${user.role != null ? user.role.roleName : ''},data-status=${user.active ? 'ACTIVE' : 'DISABLED'}">
+                                <td>
+                                    <span class="user-chip-avatar" th:text="${user.name != null && !user.name.isEmpty() ? #strings.substring(user.name, 0, 2).toUpperCase() : 'US'}">US</span>
+                                </td>
+                                <td style="font-weight: 600;" th:text="${user.name}">John Traveler</td>
+                                <td style="color: var(--text-muted); font-family: var(--font-mono);" th:text="${user.email}">john@traveler.com</td>
+                                <td>
+                                    <span class="badge-role" 
+                                          th:classappend="${user.role != null ? #strings.toLowerCase(user.role.roleName) : 'customer'}"
+                                          th:text="${user.role != null ? user.role.roleName : 'CUSTOMER'}">
+                                        CUSTOMER
+                                    </span>
+                                </td>
+                                <td th:text="${user.createdAt != null ? #temporals.format(user.createdAt, 'MMM dd, yyyy') : 'Oct 01, 2026'}">Oct 01, 2026</td>
+                                <td>
+                                    <form th:action="@{/admin/users/{id}/toggle-status(id=${user.id})}" method="post" onsubmit="return confirm('Change access status for this account?');">
+                                        <input type="hidden" name="redirect" value="dashboard">
+                                        <button type="submit" class="btn-action btn-outline" style="font-size: 10px; padding: 5px 9px; cursor: pointer;" th:text="${user.active ? 'Disable' : 'Enable'}">Toggle</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <a th:href="@{/admin/users/{id}(id=${user.id})}" style="color: var(--brand-primary); text-decoration: none; font-weight: 700;">&bull;&bull;&bull;</a>
+                                </td>
+                            </tr>
+
+                            <tr th:if="${recentUsers == null || recentUsers.isEmpty()}">
+                                <td colspan="7" style="padding: 28px; text-align: center; color: var(--text-muted);">No user accounts are available.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Figma: Dual Column Bottom Row (RBAC Grid 2:784 & Global Settings 2:817) -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                
+                <!-- Left: RBAC Permission Grid -->
+                <div class="surface-panel" style="margin-bottom: 0;">
+                    <div class="surface-header">
+                        <div class="surface-title-group">
+                            <span class="surface-tag">ACCESS CONTROL</span>
+                            <h3>RBAC Permission Grid</h3>
+                        </div>
+                    </div>
+                    <div class="surface-body" style="padding: 16px 24px !important;">
+                        <table class="rbac-grid-table">
+                            <thead>
+                                <tr>
+                                    <th>SYSTEM PERMISSION</th>
+                                    <th>SA</th>
+                                    <th>VO</th>
+                                    <th>PM</th>
+                                    <th>CUST</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Manage Packages</td>
+                                    <td><span class="check-pill">&check;</span></td>
+                                    <td><span class="check-pill disabled"></span></td>
+                                    <td><span class="check-pill">&check;</span></td>
+                                    <td><span class="check-pill disabled"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Approve Visa</td>
+                                    <td><span class="check-pill">&check;</span></td>
+                                    <td><span class="check-pill">&check;</span></td>
+                                    <td><span class="check-pill disabled"></span></td>
+                                    <td><span class="check-pill disabled"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>View Revenue</td>
+                                    <td><span class="check-pill">&check;</span></td>
+                                    <td><span class="check-pill disabled"></span></td>
+                                    <td><span class="check-pill disabled"></span></td>
+                                    <td><span class="check-pill disabled"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>System Config</td>
+                                    <td><span class="check-pill">&check;</span></td>
+                                    <td><span class="check-pill disabled"></span></td>
+                                    <td><span class="check-pill disabled"></span></td>
+                                    <td><span class="check-pill disabled"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Manage Users</td>
+                                    <td><span class="check-pill">&check;</span></td>
+                                    <td><span class="check-pill disabled"></span></td>
+                                    <td><span class="check-pill disabled"></span></td>
+                                    <td><span class="check-pill disabled"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right: TravelGO Global Settings -->
+                <div class="surface-panel" style="margin-bottom: 0;">
+                    <div class="surface-header">
+                        <div class="surface-title-group">
+                            <span class="surface-tag">GLOBAL SYSTEM CONFIG</span>
+                            <h3>TravelGO Global Settings</h3>
+                        </div>
+                    </div>
+                    <div class="surface-body">
+                        <div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label">AGENCY DEPLOYMENT NAME</label>
+                                     <input type="text" name="companyName" class="form-control" 
+                                            th:value="${settings != null ? settings.companyName : 'TravelGO Enterprise Ltd.'}" 
+                                            value="TravelGO Enterprise Ltd." readonly>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label">SUPPORT HOTLINE TERMINAL</label>
+                                     <input type="text" name="companyPhone" class="form-control" 
+                                            th:value="${settings != null ? settings.companyPhone : '+1 (800) 555-PINE'}" 
+                                            value="+1 (800) 555-PINE" readonly>
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label">CORE BASE CURRENCY</label>
+                                    <select name="currency" class="form-control" disabled>
+                                        <option th:text="${settings != null && settings.currency != null ? settings.currency : 'USD'}">USD</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label">SURCHARGE TAX RATE (%)</label>
+                                    <input type="text" class="form-control" value="Managed in payment rules" readonly>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label">DEFAULT CONSULAR FEE</label>
+                                    <input type="text" class="form-control" value="Set per visa dossier" readonly>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border-subtle);">
+                                <div>
+                                    <div style="font-weight: 700; font-size: 13px;">Website Status</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);" th:text="${settings != null ? settings.websiteStatus : 'ACTIVE'}">ACTIVE</div>
+                                </div>
+                                <a th:href="@{/admin/settings}" class="btn-action btn-primary" style="padding: 8px 14px;">Manage Settings</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function filterDashboardUsers() {
+            var query = (document.getElementById('dashboardUserSearch').value || '').toLowerCase().trim();
+            var role = document.getElementById('dashboardRoleFilter').value;
+            var status = document.getElementById('dashboardStatusFilter').value;
+            document.querySelectorAll('#dashboardUsersTable tbody tr[data-search]').forEach(function (row) {
+                var matchesQuery = !query || (row.getAttribute('data-search') || '').includes(query);
+                var matchesRole = !role || row.getAttribute('data-role') === role;
+                var matchesStatus = !status || row.getAttribute('data-status') === status;
+                row.style.display = matchesQuery && matchesRole && matchesStatus ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>

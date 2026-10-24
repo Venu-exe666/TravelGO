@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TravelGO is temporarily unavailable while scheduled improvements are completed.">
+    <title>Scheduled Maintenance - TravelGO</title>
+    <link rel="stylesheet" th:href="@{/css/premium.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/maintenance.css}">
+</head>
+<body class="maintenance-page">
+    <div class="maintenance-atmosphere" aria-hidden="true">
+        <span class="maintenance-glow maintenance-glow-one"></span>
+        <span class="maintenance-glow maintenance-glow-two"></span>
+        <span class="maintenance-grid"></span>
+    </div>
+
+    <header class="maintenance-header">
+        <a th:href="@{/}" class="maintenance-brand" aria-label="TravelGO home">
+            <span class="maintenance-brand-mark">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="m15.7 8.3-2.1 5.3-5.3 2.1 2.1-5.3 5.3-2.1Z"></path>
+                </svg>
+            </span>
+            <span>Travel<strong>GO</strong></span>
+        </a>
+
+        <div class="maintenance-status" role="status">
+            <span class="maintenance-status-dot"></span>
+            Planned service window
+        </div>
+    </header>
+
+    <main class="maintenance-main">
+        <section class="maintenance-shell" aria-labelledby="maintenance-title">
+            <div class="maintenance-visual" aria-hidden="true">
+                <div class="maintenance-orbit maintenance-orbit-outer"></div>
+                <div class="maintenance-orbit maintenance-orbit-inner"></div>
+                <span class="maintenance-node maintenance-node-one"></span>
+                <span class="maintenance-node maintenance-node-two"></span>
+                <span class="maintenance-node maintenance-node-three"></span>
+                <div class="maintenance-core">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.64 5.64l2.12 2.12m8.48 8.48 2.12 2.12m0-12.72-2.12 2.12m-8.48 8.48-2.12 2.12"></path>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="m10.7 12 1 1 2-2"></path>
+                    </svg>
+                </div>
+                <div class="maintenance-route">
+                    <svg viewBox="0 0 360 130" preserveAspectRatio="none">
+                        <path d="M8 100C72 10 142 122 208 51s103-22 144-40"></path>
+                    </svg>
+                </div>
+                <p>Systems are being prepared for your next journey.</p>
+            </div>
+
+            <div class="maintenance-content">
+                <span class="maintenance-eyebrow">Temporary service pause</span>
+                <h1 id="maintenance-title">We are making TravelGO <span>even better.</span></h1>
+                <p class="maintenance-message"
+                   th:text="${settings != null and settings.maintenanceMessage != null and !settings.maintenanceMessage.isBlank() ? settings.maintenanceMessage : 'We are completing scheduled system improvements. Your travel information remains safe, and normal access will return shortly.'}">
+                    We are completing scheduled system improvements. Your travel information remains safe, and normal access will return shortly.
+                </p>
+
+                <div class="maintenance-assurance">
+                    <span class="maintenance-assurance-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.6-4A12 12 0 0112 3a12 12 0 01-8.6 3A12 12 0 003 9c0 5.6 3.8 10.3 9 11.6 5.2-1.3 9-6 9-11.6 0-1-.1-2-.4-3Z"></path>
+                        </svg>
+                    </span>
+                    <span><strong>Your data stays protected</strong> while maintenance is in progress.</span>
+                </div>
+
+                <div class="maintenance-actions">
+                    <a th:href="@{/}" class="maintenance-button maintenance-button-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20 11a8 8 0 10-2.3 5.7M20 4v7h-7"></path>
+                        </svg>
+                        Check again
+                    </a>
+                    <a th:href="@{/auth/login}" class="maintenance-button maintenance-button-secondary">
+                        Administrator access
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="maintenance-footer">
+        <span>&copy; 2026 TravelGO</span>
+        <span class="maintenance-footer-separator"></span>
+        <span>Smart journeys, thoughtfully managed</span>
+    </footer>
+</body>
+</html>

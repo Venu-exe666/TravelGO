@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script th:src="@{/js/theme.js}"></script>
+    <title th:text="'Booking Confirmation - ' + ${booking.tourPackage.name} + ' - TravelGO'">Booking Confirmation - TravelGO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .confirmation-page {
+            padding: calc(74px + 2rem) 0 4rem;
+            background: #F8FAFC;
+            min-height: calc(100vh - 160px);
+        }
+
+        /* This page has no hero image, so give the fixed navbar a solid themed surface. */
+        .booking-confirmation-body .navbar,
+        .booking-confirmation-body .navbar.scrolled {
+            background: rgba(6, 18, 9, 0.98) !important;
+            border-bottom: 1px solid rgba(165, 214, 167, 0.18) !important;
+            box-shadow: 0 8px 24px rgba(6, 18, 9, 0.2) !important;
+            backdrop-filter: blur(16px) saturate(150%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(150%) !important;
+        }
+
+        /* Hero Banner */
+        .celebration-banner {
+            background: linear-gradient(135deg, #0B1F11 0%, #0F5132 55%, #087F5B 100%);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            border-radius: var(--radius-lg);
+            padding: 2.25rem 2.5rem;
+            color: #FFFFFF;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.25);
+        }
+        .celebration-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .celebration-sub {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+        }
+        .ref-pill {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .confirmation-page { padding-top: calc(74px + 1rem); }
+            .celebration-banner { padding: 1.5rem; border-radius: 14px; }
+            .celebration-title { font-size: 1.35rem; align-items: flex-start; }
+            .ref-pill { width: 100%; text-align: center; }
+        }
+
+        /* Action Toolbar */
+        .confirmation-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        /* Flight Ticket Card */
+        .ticket-wrapper {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+        .ticket-header {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            color: #FFFFFF;
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .airline-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .airline-icon {
+            width: 38px;
+            height: 38px;
+            background: #2563EB;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+        }
+        .ticket-body {
+            padding: 2rem;
+        }
+
+        /* Route Visualizer */
+        .flight-route-visual {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem 0 2rem;
+            border-bottom: 1px dashed #CBD5E1;
+            margin-bottom: 1.75rem;
+        }
+        .airport-block h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #0F172A;
+            margin: 0 0 0.25rem;
+        }
+        .airport-block p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #64748B;
+        }
+        .flight-path {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .path-line {
+            width: 140px;
+            height: 2px;
+            background: #94A3B8;
+            position: relative;
+        }
+        .path-plane {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #FFFFFF;
+            padding: 0 6px;
+            color: #2563EB;
+        }
+
+        /* Flight Data Grid */
+        .flight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.75rem;
+        }
+        .flight-meta-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748B;
+            margin-bottom: 0.35rem;
+        }
+        .flight-meta-val {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0F172A;
+        }
+
+        /* Barcode Area */
+        .ticket-footer {
+            background: #F8FAFC;
+            border-top: 1px dashed #CBD5E1;
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .barcode-simulation {
+            display: flex;
+            gap: 2px;
+            height: 36px;
+            align-items: center;
+        }
+        .barcode-bar {
+            background: #0F172A;
+            height: 100%;
+        }
+
+        /* Voucher Section */
+        .voucher-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: var(--radius-lg);
+            padding: 1.75rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        .voucher-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #E2E8F0;
+            padding-bottom: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        /* Receipt Table */
+        .receipt-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92rem;
+        }
+        .receipt-table th, .receipt-table td {
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid #E2E8F0;
+        }
+        .receipt-table th {
+            text-align: left;
+            color: #64748B;
+            font-weight: 600;
+        }
+        .receipt-table td {
+            color: #0F172A;
+        }
+        .receipt-table tr:last-child th,
+        .receipt-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Print Media Styles */
+        @media print {
+            body {
+                background: #FFFFFF !important;
+                color: #000000 !important;
+                font-size: 12pt;
+            }
+            header, nav, footer, .confirmation-actions, .alert, .btn, .no-print {
+                display: none !important;
+            }
+            .confirmation-page {
+                padding: 0 !important;
+                background: #FFFFFF !important;
+            }
+            .ticket-wrapper, .voucher-card {
+                border: 1px solid #000000 !important;
+                box-shadow: none !important;
+                page-break-inside: avoid;
+                margin-bottom: 1.5cm;
+            }
+            .celebration-banner {
+                background: #F1F5F9 !important;
+                color: #000000 !important;
+                border: 1px solid #CBD5E1 !important;
+                box-shadow: none !important;
+            }
+            .celebration-title, .celebration-sub {
+                color: #000000 !important;
+            }
+            .ref-pill {
+                border: 1px solid #000000 !important;
+                color: #000000 !important;
+                background: none !important;
+            }
+            .ticket-header {
+                background: #F1F5F9 !important;
+                color: #000000 !important;
+                border-bottom: 1px solid #000000 !important;
+            }
+            .airport-block h2 {
+                color: #000000 !important;
+            }
+        }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+</head>
+<body class="booking-confirmation-body">
+    <div class="no-print" th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main class="confirmation-page">
+        <div class="container" style="max-width: 960px;">
+
+            <!-- Flash Alerts -->
+            <div th:if="${successMessage}" class="alert alert-success no-print" style="margin-bottom: 1.5rem;">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span th:text="${successMessage}">Payment successful!</span>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger no-print" style="margin-bottom: 1.5rem;">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <span th:text="${errorMessage}">Error occurred</span>
+            </div>
+
+            <!-- Header Celebratory Banner -->
+            <div class="celebration-banner">
+                <div>
+                    <div class="celebration-title">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="width: 28px; height: 28px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>Package Paid & Booking Confirmed!</span>
+                    </div>
+                    <p class="celebration-sub">
+                        Your seats and accommodation are officially reserved. Present these vouchers at check-in.
+                    </p>
+                </div>
+                <div class="ref-pill" th:text="'REF: #TG-' + ${booking.id} + '-' + ${booking.createdAt.getYear()}">
+                    REF: #TG-104-2026
+                </div>
+            </div>
+
+            <!-- Action Toolbar (Print / Back) -->
+            <div class="confirmation-actions no-print">
+                <a th:href="@{/customer/bookings}" class="btn btn-outline btn-sm">
+                    &larr; Back to My Bookings
+                </a>
+                <button type="button" onclick="window.print()" class="btn btn-primary btn-sm" style="background: #2563EB; border-color: #2563EB;">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; margin-right: 0.4rem;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Print E-Tickets & Vouchers
+                </button>
+                <a th:href="@{/customer/bookings/{id}/ticket.pdf(id=${booking.id})}" class="btn btn-primary btn-sm" style="background: #059669; border-color: #059669;">
+                    Download PDF
+                </a>
+            </div>
+
+            <!-- ╔═════════════════════════════════════════════════════════════╗
+                 ║   OFFICIAL FLIGHT BOARDING PASS & TICKET VOUCHER             ║
+                 ╚═════════════════════════════════════════════════════════════╝ -->
+            <div class="ticket-wrapper">
+                <!-- Ticket Header -->
+                <div class="ticket-header">
+                    <div class="airline-brand">
+                        <div class="airline-icon">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                            </svg>
+                        </div>
+                        <div>
+                            <strong style="font-size: 1.05rem; letter-spacing: 0.02em;">TRAVELGO AIRWAYS PARTNER VOUCHER</strong>
+                            <div style="font-size: 0.75rem; color: #94A3B8;">Electronic Ticket Passenger Itinerary Receipt</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="badge badge-success" style="font-size: 0.78rem; padding: 0.35rem 0.75rem;">CONFIRMED & ISSUED</span>
+                        <div style="font-size: 0.78rem; color: #94A3B8; margin-top: 0.2rem;" 
+                             th:text="'ETKT: 074-2026-' + ${booking.id} + '008'">ETKT: 074-2026-104008</div>
+                    </div>
+                </div>
+
+                <!-- Ticket Body -->
+                <div class="ticket-body">
+                    <!-- Route Graphic -->
+                    <div class="flight-route-visual">
+                        <div class="airport-block">
+                            <span class="flight-meta-label">Origin Gateway</span>
+                            <h2>DEP</h2>
+                            <p>International Departure</p>
+                            <small style="color: var(--text-muted); font-size: 0.8rem;" th:text="${#temporals.format(booking.travelDate, 'EEEE, MMM dd, yyyy')}">Monday, Oct 12, 2026</small>
+                        </div>
+
+                        <div class="flight-path">
+                            <span style="font-size: 0.75rem; font-weight: 700; color: #2563EB;" 
+                                  th:text="${booking.tourPackage.durationDays} + ' Days Round-Trip'">7 Days Round-Trip</span>
+                            <div class="path-line">
+                                <div class="path-plane">
+                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; transform: rotate(90deg);">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <span style="font-size: 0.72rem; color: #64748B;">Non-Stop / Direct</span>
+                        </div>
+
+                        <div class="airport-block" style="text-align: right;">
+                            <span class="flight-meta-label">Destination</span>
+                            <h2 th:text="${booking.tourPackage.destination.city.toUpperCase()}">PARIS</h2>
+                            <p th:text="${booking.tourPackage.destination.country}">France</p>
+                            <small style="color: var(--text-muted); font-size: 0.8rem;" 
+                                   th:text="'Return: ' + ${#temporals.format(booking.travelDate.plusDays(booking.tourPackage.durationDays), 'MMM dd, yyyy')}">Return: Oct 19, 2026</small>
+                        </div>
+                    </div>
+
+                    <!-- Flight Meta Information -->
+                    <div class="flight-grid">
+                        <div>
+                            <div class="flight-meta-label">Lead Passenger</div>
+                            <div class="flight-meta-val" th:text="${currentUser.name}">John Traveler</div>
+                        </div>
+                        <div>
+                            <div class="flight-meta-label">Flight Specification</div>
+                            <div class="flight-meta-val" style="color: #2563EB;"
+                                 th:text="${booking.tourPackage.flightDetails != null and !booking.tourPackage.flightDetails.isEmpty() ? booking.tourPackage.flightDetails : 'Standard Return Flights Included'}">
+                                Return Flights Included
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flight-meta-label">Total Seats</div>
+                            <div class="flight-meta-val" th:text="${booking.numberOfTravelers} + ' Passenger(s)'">2 Passengers</div>
+                        </div>
+                        <div>
+                            <div class="flight-meta-label">Cabin Class</div>
+                            <div class="flight-meta-val">Economy Classic</div>
+                        </div>
+                        <div>
+                            <div class="flight-meta-label">Baggage Allowance</div>
+                            <div class="flight-meta-val">23 kg Checked + 7 kg Cabin</div>
+                        </div>
+                        <div>
+                            <div class="flight-meta-label">Boarding Status</div>
+                            <div class="flight-meta-val" style="color: #059669;">E-Ticket Active</div>
+                        </div>
+                    </div>
+
+                    <!-- Inclusions Highlights -->
+                    <div style="background: #F8FAFC; border-radius: var(--radius-md); padding: 1rem 1.25rem; font-size: 0.85rem; color: #475569; display: flex; align-items: center; gap: 0.75rem;">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; color: #2563EB; flex-shrink: 0;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div>
+                            <strong>Airport Instructions:</strong> Please arrive at the airport international terminal at least 3 hours prior to scheduled departure. Present this digital confirmation or printed voucher along with your original passport.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ticket Barcode Footer -->
+                <div class="ticket-footer">
+                    <div>
+                        <div style="font-size: 0.75rem; color: #64748B; font-weight: 600; text-transform: uppercase;">Ticket Security Barcode</div>
+                        <div class="barcode-simulation" title="Automated IATA Barcode Simulation">
+                            <span class="barcode-bar" style="width: 3px;"></span>
+                            <span class="barcode-bar" style="width: 1px; margin-left: 2px;"></span>
+                            <span class="barcode-bar" style="width: 4px; margin-left: 3px;"></span>
+                            <span class="barcode-bar" style="width: 2px; margin-left: 1px;"></span>
+                            <span class="barcode-bar" style="width: 3px; margin-left: 3px;"></span>
+                            <span class="barcode-bar" style="width: 1px; margin-left: 2px;"></span>
+                            <span class="barcode-bar" style="width: 5px; margin-left: 2px;"></span>
+                            <span class="barcode-bar" style="width: 2px; margin-left: 3px;"></span>
+                            <span class="barcode-bar" style="width: 3px; margin-left: 1px;"></span>
+                            <span class="barcode-bar" style="width: 4px; margin-left: 3px;"></span>
+                            <span class="barcode-bar" style="width: 2px; margin-left: 2px;"></span>
+                            <span class="barcode-bar" style="width: 6px; margin-left: 2px;"></span>
+                            <span class="barcode-bar" style="width: 1px; margin-left: 3px;"></span>
+                            <span class="barcode-bar" style="width: 3px; margin-left: 2px;"></span>
+                            <span class="barcode-bar" style="width: 4px; margin-left: 1px;"></span>
+                            <span class="barcode-bar" style="width: 2px; margin-left: 3px;"></span>
+                            <span class="barcode-bar" style="width: 5px; margin-left: 2px;"></span>
+                        </div>
+                    </div>
+                    <div style="text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #64748B;">
+                        IATA PNR: <strong style="color: #0F172A;" th:text="'TG' + ${booking.id} + 'X' + ${booking.numberOfTravelers}">TG104X2</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ╔═════════════════════════════════════════════════════════════╗
+                 ║   HOTEL ACCOMMODATION VOUCHER (If Booked)                    ║
+                 ╚═════════════════════════════════════════════════════════════╝ -->
+            <div class="voucher-card" th:if="${bookingHotel != null}">
+                <div class="voucher-header">
+                    <div style="display: flex; align-items: center; gap: 0.6rem;">
+                        <div style="width: 32px; height: 32px; border-radius: 8px; background: #FEF3C7; color: #D97706; display: flex; align-items: center; justify-content: center;">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; font-size: 1.15rem;">Hotel Accommodation Voucher</h3>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);" th:text="${bookingHotel.hotel.address}">12 Rue de Rivoli, Paris</div>
+                        </div>
+                    </div>
+                    <span class="badge badge-success">HOTEL RESERVED</span>
+                </div>
+
+                <div class="flight-grid">
+                    <div>
+                        <div class="flight-meta-label">Hotel Property</div>
+                        <div class="flight-meta-val" th:text="${bookingHotel.hotel.name}">Grand Hotel de Paris</div>
+                    </div>
+                    <div>
+                        <div class="flight-meta-label">Star Classification</div>
+                        <div class="flight-meta-val" th:text="${bookingHotel.hotel.starRating} + ' ★ Luxury'">4 ★ Luxury</div>
+                    </div>
+                    <div>
+                        <div class="flight-meta-label">Check-In Date</div>
+                        <div class="flight-meta-val" th:text="${bookingHotel.checkInDate}">2026-10-12</div>
+                    </div>
+                    <div>
+                        <div class="flight-meta-label">Check-Out Date</div>
+                        <div class="flight-meta-val" th:text="${bookingHotel.checkOutDate}">2026-10-19</div>
+                    </div>
+                    <div>
+                        <div class="flight-meta-label">Stay Duration</div>
+                        <div class="flight-meta-val" th:text="${bookingHotel.numberOfNights} + ' Night(s)'">7 Night(s)</div>
+                    </div>
+                    <div>
+                        <div class="flight-meta-label">Rooms Reserved</div>
+                        <div class="flight-meta-val" th:text="${bookingHotel.numberOfRooms} + ' Room(s)'">1 Room(s)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ╔═════════════════════════════════════════════════════════════╗
+                 ║   TRAVELERS PASSENGER MANIFEST & DETAILS                     ║
+                 ╚═════════════════════════════════════════════════════════════╝ -->
+            <div class="voucher-card">
+                <div class="voucher-header">
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.15rem;">Registered Passengers & Travelers</h3>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">
+                            Passenger manifest linked to airline ticket (<span th:text="${travelers != null ? travelers.size() : 0}">0</span> of <span th:text="${booking.numberOfTravelers}">2</span> registered)
+                        </div>
+                    </div>
+                    <span class="badge badge-primary" th:text="${booking.numberOfTravelers} + ' Total Seats'">2 Total Seats</span>
+                </div>
+
+                <!-- Existing Travelers Table -->
+                <div th:if="${travelers != null and !travelers.isEmpty()}" style="overflow-x: auto; margin-bottom: 1.5rem;">
+                    <table class="receipt-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Passenger Full Name</th>
+                                <th>Passport Number</th>
+                                <th>Date of Birth</th>
+                                <th>Gender</th>
+                                <th>Nationality</th>
+                                <th>Ticket Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="tr, iterStat : ${travelers}">
+                                <td th:text="${iterStat.count}">1</td>
+                                <td><strong th:text="${tr.fullName}">John Traveler</strong></td>
+                                <td style="font-family: 'JetBrains Mono', monospace;" th:text="${tr.passportNumber}">A12345678</td>
+                                <td th:text="${tr.dateOfBirth}">1990-05-15</td>
+                                <td th:text="${tr.gender}">Male</td>
+                                <td th:text="${tr.nationality}">United States</td>
+                                <td><span class="badge badge-success" style="font-size: 0.72rem;">Voucher Linked</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Empty state prompt if none added yet -->
+                <div th:if="${travelers == null or travelers.isEmpty()}" style="padding: 1rem 0 1.5rem; text-align: center; color: var(--text-muted);">
+                    <p style="margin-bottom: 0.5rem; font-size: 0.95rem;">No traveler passport details submitted yet for this booking.</p>
+                    <small>Default lead ticket issued under account name: <strong th:text="${currentUser.name}">John Traveler</strong>. You can register individual traveler passports below for full airline manifest clearance.</small>
+                </div>
+
+                <!-- Add Traveler Form (if slots available) -->
+                <div th:if="${travelers == null or travelers.size() < booking.numberOfTravelers}" class="no-print"
+                     style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: var(--radius-md); padding: 1.25rem 1.5rem; margin-top: 1rem;">
+                    <h4 style="margin-bottom: 0.75rem; font-size: 0.95rem; color: var(--text-heading);">
+                        + Register Passenger on Flight Ticket (<span th:text="${booking.numberOfTravelers - (travelers != null ? travelers.size() : 0)}">1</span> slot(s) remaining)
+                    </h4>
+                    <form th:action="@{/customer/bookings/{id}/travelers(id=${booking.id})}" method="post" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; align-items: flex-end;">
+                        <div>
+                            <label class="form-label" style="font-size: 0.8rem; margin-bottom: 0.25rem;">Full Name (as in passport) *</label>
+                            <input type="text" name="fullName" class="form-control" placeholder="Jane Traveler" required>
+                        </div>
+                        <div>
+                            <label class="form-label" style="font-size: 0.8rem; margin-bottom: 0.25rem;">Passport Number *</label>
+                            <input type="text" name="passportNumber" class="form-control" placeholder="P12345678" required style="text-transform: uppercase;">
+                        </div>
+                        <div>
+                            <label class="form-label" style="font-size: 0.8rem; margin-bottom: 0.25rem;">Date of Birth *</label>
+                            <input type="date" name="dateOfBirth" class="form-control" required>
+                        </div>
+                        <div>
+                            <label class="form-label" style="font-size: 0.8rem; margin-bottom: 0.25rem;">Gender</label>
+                            <select name="gender" class="form-control">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label" style="font-size: 0.8rem; margin-bottom: 0.25rem;">Nationality</label>
+                            <input type="text" name="nationality" class="form-control" placeholder="e.g. British">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; height: 42px; font-size: 0.88rem;">
+                                Add Passenger
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ╔═════════════════════════════════════════════════════════════╗
+                 ║   PAYMENT RECEIPT & INVOICE SUMMARY                          ║
+                 ╚═════════════════════════════════════════════════════════════╝ -->
+            <div class="voucher-card">
+                <div class="voucher-header">
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.15rem;">Settlement & Official Invoice Receipt</h3>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Proof of full package payment for immigration and travel records</div>
+                    </div>
+                    <span class="badge badge-success">FULLY PAID</span>
+                </div>
+
+                <table class="receipt-table" style="margin-bottom: 1.5rem;">
+                    <tbody>
+                        <tr>
+                            <th>Tour Package:</th>
+                            <td colspan="2"><strong th:text="${booking.tourPackage.name}">European Classical Journey</strong></td>
+                        </tr>
+                        <tr>
+                            <th>Package Rate Breakdown:</th>
+                            <td th:text="'$' + ${#numbers.formatDecimal(booking.packageUnitPrice, 1, 'COMMA', 2, 'POINT')} + ' × ' + ${booking.numberOfTravelers} + ' traveler(s)'">$1,299.00 × 2 travelers</td>
+                            <td style="text-align: right; font-weight: 600;" th:text="'$' + ${#numbers.formatDecimal(booking.totalPackageAmount, 1, 'COMMA', 2, 'POINT')}">$2,598.00</td>
+                        </tr>
+                        <tr th:if="${bookingHotel != null}">
+                            <th>Hotel Accommodation Add-On:</th>
+                            <td th:text="${bookingHotel.hotel.name} + ' (' + ${bookingHotel.numberOfRooms} + ' rooms / ' + ${bookingHotel.numberOfNights} + ' nights)'">Grand Hotel (1 room / 7 nights)</td>
+                            <td style="text-align: right; font-weight: 600;" th:text="'$' + ${#numbers.formatDecimal(bookingHotel.hotelCost, 1, 'COMMA', 2, 'POINT')}">$1,260.00</td>
+                        </tr>
+                        <tr th:if="${visaApplication != null and visaApplication.totalCharge != null}">
+                            <th>Visa Processing Fee:</th>
+                            <td th:text="'Category: ' + ${visaApplication.visaType}">Category: VISIT</td>
+                            <td style="text-align: right; font-weight: 600;" th:text="'$' + ${#numbers.formatDecimal(visaApplication.totalCharge, 1, 'COMMA', 2, 'POINT')}">$125.00</td>
+                        </tr>
+                        <tr style="border-top: 2px solid #0F172A; font-size: 1.05rem;">
+                            <th><strong>Grand Total Settled:</strong></th>
+                            <td></td>
+                            <td style="text-align: right; color: #059669; font-weight: 800;" 
+                                th:text="'$' + ${#numbers.formatDecimal(booking.totalPackageAmount.add(bookingHotel != null ? bookingHotel.hotelCost : 0), 1, 'COMMA', 2, 'POINT')}">
+                                $3,858.00
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Payment Transaction Records -->
+                <div th:if="${payments != null and !payments.isEmpty()}">
+                    <h4 style="font-size: 0.9rem; color: #64748B; text-transform: uppercase; margin-bottom: 0.75rem;">Verified Payment Transactions</h4>
+                    <div style="background: #F8FAFC; border-radius: var(--radius-md); padding: 0.75rem 1rem;">
+                        <div th:each="p : ${payments}" style="display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0; font-size: 0.85rem; border-bottom: 1px solid #E2E8F0;">
+                            <div>
+                                <strong style="font-family: 'JetBrains Mono', monospace;" th:text="${p.transactionReference}">TXN-A1B2C3D4</strong>
+                                <span style="color: var(--text-muted); margin-left: 0.5rem;" th:text="'(' + ${p.paymentType} + ' - ' + ${p.paymentMethod} + ')'">(FULL_PACKAGE - Online)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <span style="color: var(--text-muted);" th:text="${p.paidAt != null ? #temporals.format(p.paidAt, 'yyyy-MM-dd HH:mm') : ''}">2026-09-10 14:00</span>
+                                <strong style="color: #059669;" th:text="'$' + ${#numbers.formatDecimal(p.amount, 1, 'COMMA', 2, 'POINT')}">$2,598.00</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Return / Help CTA -->
+            <div class="no-print" style="text-align: center; margin-top: 2rem; color: var(--text-muted); font-size: 0.9rem;">
+                Need help with your itinerary or flight details? 
+                <a th:href="@{/contact}" style="color: #2563EB; font-weight: 600;">Contact our Customer Support Team</a>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="no-print" th:replace="~{fragments/footer :: footer}"></div>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Understand common visa application steps, document preparation, and destination-specific guidance with TravelGO.">
+    <title>Visa Application Guidance - TravelGO</title>
+    <link rel="stylesheet" th:href="@{/css/premium.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/public-pages.css}">
+</head>
+<body class="public-inner-page page-visa-info">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="page-immersive-wrapper">
+        <!-- Full-Page Filling Scenic Background (Alpine Starry Night Sky) -->
+        <div class="page-immersive-bg" data-parallax-bg th:style="'background-image: url(' + @{/images/destinations/alps-night.jpg} + ');'">
+            <div class="page-immersive-overlay"></div>
+            <div class="ambient-glow-orb ambient-orb-1"></div>
+            <div class="ambient-glow-orb ambient-orb-2"></div>
+        </div>
+
+        <main class="page-immersive-content">
+            <div class="container">
+                <!-- Page Hero Header -->
+                <div class="page-hero-content inner-page-hero" data-motion="up">
+                    <span class="page-eyebrow">Prepare with clarity</span>
+                    <h1 class="hero-title">
+                        Global <span class="text-gradient-azure">Visa Guidance</span>
+                    </h1>
+                    <p class="page-summary">A practical overview of preparation and document review. Final requirements and decisions always remain with the relevant embassy, consulate, or immigration authority.</p>
+                    <a href="#visa-process" class="page-scroll-cue" data-scroll-link>
+                        Review the process
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m0 0l6-6m-6 6l-6-6" /></svg>
+                    </a>
+                </div>
+
+                <!-- Process Header -->
+                <div id="visa-process" class="public-section-heading public-content-start" data-motion="up">
+                    <span class="section-kicker">Application workflow</span>
+                    <h2>Prepare in four clear stages</h2>
+                    <p>The exact route depends on your nationality, residence, destination, and purpose of travel.</p>
+                </div>
+
+                <!-- Visa Process Steps with Stagger -->
+                <div class="grid grid-4 public-process-grid" data-motion-group style="margin-bottom: 4rem;">
+                    <div class="card glass-card-luxury public-process-card">
+                        <div class="public-step-number">01</div>
+                        <h4 style="margin-bottom: 0.5rem; color: #FFFFFF; font-size: 1.2rem;">Select Destination</h4>
+                        <p style="color: #94A3B8; font-size: 0.9rem; line-height: 1.65;">Confirm whether you need a visa and check the official rules for your nationality and country of residence.</p>
+                    </div>
+                    <div class="card glass-card-luxury public-process-card">
+                        <div class="public-step-number">02</div>
+                        <h4 style="margin-bottom: 0.5rem; color: #FFFFFF; font-size: 1.2rem;">Prepare Documents</h4>
+                        <p style="color: #94A3B8; font-size: 0.9rem; line-height: 1.65;">Gather the application, passport, photographs, itinerary, finances, insurance, and any destination-specific evidence.</p>
+                    </div>
+                    <div class="card glass-card-luxury public-process-card">
+                        <div class="public-step-number">03</div>
+                        <h4 style="margin-bottom: 0.5rem; color: #FFFFFF; font-size: 1.2rem;">Review &amp; Submit</h4>
+                        <p style="color: #94A3B8; font-size: 0.9rem; line-height: 1.65;">TravelGO can help review completeness; submit through the official channel specified for your application location.</p>
+                    </div>
+                    <div class="card glass-card-luxury public-process-card">
+                        <div class="public-step-number">04</div>
+                        <h4 style="margin-bottom: 0.5rem; color: #FFFFFF; font-size: 1.2rem;">Decision &amp; Travel</h4>
+                        <p style="color: #94A3B8; font-size: 0.9rem; line-height: 1.65;">Wait for the authority’s decision, then verify the issued visa details and carry the required travel documents.</p>
+                    </div>
+                </div>
+
+                <div class="public-advisory" data-motion="up">
+                    <strong>Important:</strong>
+                    <span>Visa requirements can change and approval is never guaranteed. Confirm the latest rules with the embassy, consulate, or official immigration portal responsible for your application before paying or travelling.</span>
+                </div>
+
+                <!-- Visa Types Breakdown -->
+                <div class="public-section-heading" data-motion="up">
+                    <span class="section-kicker">Common travel paths</span>
+                    <h2>Short-stay visa guidance</h2>
+                    <p>These summaries are orientation only. Required documents vary by applicant and responsible mission.</p>
+                </div>
+
+                <div class="grid grid-3 public-card-grid" data-motion-group>
+                    <!-- Schengen Visa -->
+                    <div class="card glass-card-luxury">
+                        <div class="card-body" style="padding: 2.25rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                                <span class="category-pill-luxury">Multi-Country</span>
+                                <span style="font-size: 0.8rem; color: #94A3B8; font-weight: 600;">Short stay</span>
+                            </div>
+                            <h3 style="color: #FFFFFF; margin-bottom: 0.75rem; font-size: 1.35rem;">Schengen Tourist Visa</h3>
+                            <p style="color: #CBD5E1; font-size: 0.92rem; margin-bottom: 1.5rem; line-height: 1.65;">
+                                A Schengen short-stay visa can permit travel within the Schengen area, subject to the visa’s validity and permitted duration.
+                            </p>
+                            
+                            <h5 style="margin-bottom: 0.75rem; color: #F8FAFC; font-size: 0.95rem;">Typical preparation:</h5>
+                            <ul class="inclusions-list" style="margin-bottom: 1.75rem;">
+                                <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg> Passport valid at least 3 months after planned departure</li>
+                                <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg> Return Flight Ticket &amp; Accommodation Voucher</li>
+                                <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg> Evidence of sufficient financial means</li>
+                                <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg> Travel Health Insurance (€30,000 minimum)</li>
+                            </ul>
+
+                            <div style="margin-top: auto; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08);">
+                                <a th:href="@{/contact}" class="btn btn-outline btn-sm btn-magnetic" style="width: 100%;">Consult Visa Specialist</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- UAE Visa -->
+                    <div class="card glass-card-luxury">
+                        <div class="card-body" style="padding: 2.25rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                                <span class="category-pill-luxury category-pill-emerald">Tourist entry</span>
+                                <span style="font-size: 0.8rem; color: #94A3B8; font-weight: 600;">Eligibility varies</span>
+                            </div>
+                            <h3 style="color: #FFFFFF; margin-bottom: 0.75rem; font-size: 1.35rem;">UAE 30/60 Days Tourist Visa</h3>
+                            <p style="color: #CBD5E1; font-size: 0.92rem; margin-bottom: 1.5rem; line-height: 1.65;">
+                                Travellers who are not eligible for visa-free entry or visa on arrival may need a tourist visa arranged through an eligible UAE channel.
+                            </p>
+
+                            <h5 style="margin-bottom: 0.75rem; color: #F8FAFC; font-size: 0.95rem;">Typical preparation:</h5>
+                            <ul class="inclusions-list" style="margin-bottom: 1.75rem;">
+                                <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg> Passport Color Scan (Clear Bio-Page)</li>
+                                <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg> Recent Passport Photograph (White Background)</li>
+                                <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg> Confirmed Return Airline Ticket</li>
+                            </ul>
+
+                            <div style="margin-top: auto; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08);">
+                                <a th:href="@{/contact}" class="btn btn-outline btn-sm btn-magnetic" style="width: 100%;">Consult Visa Specialist</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Japan Visa -->
+                    <div class="card glass-card-luxury">
+                        <div class="card-body" style="padding: 2.25rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                                <span class="category-pill-luxury category-pill-gold">Temporary visitor</span>
+                                <span style="font-size: 0.8rem; color: #94A3B8; font-weight: 600;">Check local mission</span>
+                            </div>
+                            <h3 style="color: #FFFFFF; margin-bottom: 0.75rem; font-size: 1.35rem;">Japan Tourist Visa</h3>
+                            <p style="color: #CBD5E1; font-size: 0.92rem; margin-bottom: 1.5rem; line-height: 1.65;">
+                                Visa need, application route, and required evidence depend on nationality and residence. Some eligible applicants may use JAPAN eVISA.
+                            </p>
+
+                            <h5 style="margin-bottom: 0.75rem; color: #F8FAFC; font-size: 0.95rem;">Typical preparation:</h5>
+                            <ul class="inclusions-list" style="margin-bottom: 1.75rem;">
+                                <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg> Completed Visa Application Form</li>
+                                <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg> Detailed Day-by-Day Travel Schedule</li>
+                                <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg> Annual Tax Assessment &amp; Bank Certificate</li>
+                            </ul>
+
+                            <div style="margin-top: auto; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08);">
+                                <a th:href="@{/contact}" class="btn btn-outline btn-sm btn-magnetic" style="width: 100%;">Consult Visa Specialist</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top-btn" aria-label="Scroll to top">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+
+    <!-- UI Scripts -->
+    <script th:src="@{/js/public-scroll.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

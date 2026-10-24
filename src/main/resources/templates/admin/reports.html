@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - TravelGO Admin</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+    <div class="admin-layout">
+        <div th:replace="~{fragments/admin-sidebar :: admin-sidebar('reports')}"></div>
+
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <div>
+                        <div class="topbar-breadcrumb">
+                            <a th:href="@{/admin/dashboard}">Admin</a>
+                            <span>/</span>
+                            <span style="color: var(--text-heading); font-weight: 600;">Reports</span>
+                        </div>
+                        <h2 class="topbar-title">Report Generation Center</h2>
+                    </div>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+
+                    <!-- Booking Report Card -->
+                    <div class="card">
+                        <div class="card-body" style="padding: 1.5rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                                <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); display: flex; align-items: center; justify-content: center;">
+                                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 style="margin: 0; font-size: 1.05rem;">Booking Summary</h4>
+                                    <span style="font-size: 0.78rem; color: var(--text-muted);">All bookings with status & revenue</span>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-body); margin-bottom: 1.25rem; line-height: 1.5;">
+                                Complete list of customer bookings including travel dates, package details, traveler counts, booking statuses, and total pricing.
+                            </p>
+                            <a th:href="@{/admin/reports/bookings}" class="btn btn-primary btn-sm" style="width: 100%; justify-content: center;">
+                                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Download PDF
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Payment Report Card -->
+                    <div class="card">
+                        <div class="card-body" style="padding: 1.5rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                                <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #22c55e, #15803d); display: flex; align-items: center; justify-content: center;">
+                                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 style="margin: 0; font-size: 1.05rem;">Payment & Revenue</h4>
+                                    <span style="font-size: 0.78rem; color: var(--text-muted);">Financial transactions & totals</span>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-body); margin-bottom: 1.25rem; line-height: 1.5;">
+                                All payment transactions including amounts, payment methods, statuses, collected revenue totals, and pending receivables.
+                            </p>
+                            <a th:href="@{/admin/reports/payments}" class="btn btn-primary btn-sm" style="width: 100%; justify-content: center;">
+                                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Download PDF
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Visa Report Card -->
+                    <div class="card">
+                        <div class="card-body" style="padding: 1.5rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                                <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center;">
+                                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 style="margin: 0; font-size: 1.05rem;">Visa Applications</h4>
+                                    <span style="font-size: 0.78rem; color: var(--text-muted);">Application statuses & processing</span>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-body); margin-bottom: 1.25rem; line-height: 1.5;">
+                                All visa applications with applicant details, visa types, processing statuses, submission dates, and destination countries.
+                            </p>
+                            <a th:href="@{/admin/reports/visas}" class="btn btn-primary btn-sm" style="width: 100%; justify-content: center;">
+                                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Download PDF
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- User Report Card -->
+                    <div class="card">
+                        <div class="card-body" style="padding: 1.5rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                                <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #8b5cf6, #6d28d9); display: flex; align-items: center; justify-content: center;">
+                                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 style="margin: 0; font-size: 1.05rem;">Users & Staff</h4>
+                                    <span style="font-size: 0.78rem; color: var(--text-muted);">Registered accounts & roles</span>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-body); margin-bottom: 1.25rem; line-height: 1.5;">
+                                All registered user and staff accounts including names, emails, assigned roles, active/inactive status, and registration dates.
+                            </p>
+                            <a th:href="@{/admin/reports/users}" class="btn btn-primary btn-sm" style="width: 100%; justify-content: center;">
+                                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Download PDF
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Packages Report Card -->
+                    <div class="card">
+                        <div class="card-body" style="padding: 1.5rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                                <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #ec4899, #be185d); display: flex; align-items: center; justify-content: center;">
+                                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 style="margin: 0; font-size: 1.05rem;">Tour Packages</h4>
+                                    <span style="font-size: 0.78rem; color: var(--text-muted);">Inventory, pricing & capacity</span>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-body); margin-bottom: 1.25rem; line-height: 1.5;">
+                                Complete tour package inventory with destinations, base prices, duration, maximum capacity, and active/inactive status overview.
+                            </p>
+                            <a th:href="@{/admin/reports/packages}" class="btn btn-primary btn-sm" style="width: 100%; justify-content: center;">
+                                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Download PDF
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/admin.js}"></script>
+</body>
+</html>

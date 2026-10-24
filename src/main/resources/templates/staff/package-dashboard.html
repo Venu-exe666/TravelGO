@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour Packages &amp; Partner Inventory - TravelGO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700;800&family=Outfit:wght@700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <style>
+        /* Specific Figma Tokens & Overrides for Package Manager Hub (Figma 2:1201) */
+        .staff-kpi-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        @media (max-width: 1100px) {
+            .staff-kpi-grid-4 { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+            .staff-kpi-grid-4 { grid-template-columns: 1fr; }
+        }
+
+        .filter-pills-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        .pill-tab {
+            background: rgba(165, 214, 167, 0.08);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .pill-tab:hover,
+        .pill-tab.active {
+            background: rgba(102, 187, 106, 0.16);
+            border-color: var(--brand-primary);
+            color: var(--brand-primary);
+        }
+
+        /* Package Manager Catalog Cards (Figma 2:1240) */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+        @media (max-width: 1100px) {
+            .catalog-grid { grid-template-columns: 1fr; }
+        }
+        .pkg-catalog-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .pkg-media-wrap {
+            position: relative;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
+        .pkg-badge-duration {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(6, 18, 8, 0.85);
+            border: 1px solid var(--border-subtle);
+            color: #ffffff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+        }
+        .pkg-badge-status {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(102, 187, 106, 0.2);
+            border: 1px solid var(--brand-primary);
+            color: var(--brand-primary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 800;
+        }
+        .pkg-card-body {
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+        .pkg-card-title {
+            font-family: var(--font-heading);
+            font-size: 17px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+        }
+        .pkg-card-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+        .pkg-card-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 12px;
+            border-top: 1px solid rgba(165, 214, 167, 0.1);
+        }
+        .pkg-price-val {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--brand-primary);
+        }
+
+        /* Hotels & Leads Grid */
+        .hotel-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        @media (max-width: 900px) {
+            .hotel-cards-grid { grid-template-columns: 1fr; }
+        }
+        .hotel-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        .hotel-card img {
+            width: 110px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="admin-layout">
+
+    <!-- Dedicated Package Manager Sidebar Fragment -->
+    <div th:replace="~{fragments/consultant-sidebar :: consultant-sidebar('dashboard')}"></div>
+
+    <!-- Main Workspace -->
+    <div class="admin-main">
+
+        <!-- Topbar (Figma 2:1202) -->
+        <header class="admin-topbar">
+            <div class="topbar-left">
+                <div>
+                    <span class="surface-tag" style="margin-bottom: 2px;">MANAGEMENT TERMINAL</span>
+                    <h2 style="font-family: var(--font-heading); font-size: 19px; margin: 0; color: #ffffff;">
+                        Tour Packages &amp; Partner Inventory
+                    </h2>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <span class="status-live-chip" style="background: rgba(165, 214, 167, 0.08); color: var(--text-muted); border-color: var(--border-subtle);">
+                    Today: Oct 12, 2026
+                </span>
+                <a th:href="@{/staff/packages(create=true)}" class="btn-action btn-cta">
+                    + Create New Package
+                </a>
+            </div>
+        </header>
+
+        <main class="admin-content">
+
+            <div th:if="${successMessage}" style="padding: 12px 16px; margin-bottom: 16px; border: 1px solid rgba(16,185,129,.35); border-radius: 8px; background: rgba(16,185,129,.1); color: #6ee7b7;" th:text="${successMessage}"></div>
+            <div th:if="${errorMessage}" style="padding: 12px 16px; margin-bottom: 16px; border: 1px solid rgba(239,68,68,.35); border-radius: 8px; background: rgba(239,68,68,.1); color: #fca5a5;" th:text="${errorMessage}"></div>
+
+            <!-- Platform Vitals (4 KPI cards Figma 2:1218) -->
+            <div class="stats-grid">
+                <div class="stat-card-kpi">
+                    <span class="kpi-label">TOTAL ACTIVE PACKAGES</span>
+                    <h2 class="kpi-number" th:text="${activePackages != null ? activePackages : 38}">38</h2>
+                    <span class="kpi-subtext"><span class="trend-up">&uarr; +4 new this season</span></span>
+                </div>
+
+                <div class="stat-card-kpi">
+                    <span class="kpi-label">PARTNER HOTELS</span>
+                    <h2 class="kpi-number" th:text="${totalHotels != null ? totalHotels : 84}">84</h2>
+                    <span class="kpi-subtext"><span class="trend-up">&uarr; 100% active verified hotels</span></span>
+                </div>
+
+                <div class="stat-card-kpi">
+                    <span class="kpi-label">DESTINATIONS COVERED</span>
+                    <h2 class="kpi-number" th:text="${totalDestinations != null ? totalDestinations : 26}">26</h2>
+                    <span class="kpi-subtext"><span class="trend-up">&uarr; +2 added global zones</span></span>
+                </div>
+
+                <div class="stat-card-kpi">
+                    <span class="kpi-label">OPEN CUSTOMER INQUIRIES</span>
+                    <h2 class="kpi-number" style="color: var(--brand-gold);" th:text="${openInquiries != null ? openInquiries : 12}">12</h2>
+                    <span class="kpi-subtext"><span class="trend-warn">&Delta; Action Needed require reply</span></span>
+                </div>
+            </div>
+
+            <!-- Active Tour Packages Catalog Header & Filters (Figma 2:1238) -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                <h3 style="font-family: var(--font-heading); font-size: 19px; margin: 0; color: #ffffff;">
+                    Active Tour Packages Catalog
+                </h3>
+                <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);" th:text="'Showing ' + (${recentPackages != null ? recentPackages.size() : 3}) + ' of ' + (${totalPackages != null ? totalPackages : 38}) + ' Packages'">
+                    Showing 3 of 38 Packages
+                </span>
+            </div>
+
+            <div class="surface-panel" style="padding: 12px 18px; margin-bottom: 24px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+                <input id="dashboardPackageSearch" type="search" placeholder="Search package title..." class="form-control" style="width: 220px; font-size: 12px; padding: 6px 12px;" oninput="filterDashboardPackages()">
+                <select id="dashboardDestinationFilter" class="form-control" style="width: 180px; font-size: 12px; padding: 6px 12px;" onchange="filterDashboardPackages()">
+                    <option value="">All Destinations</option>
+                    <option th:each="destination : ${destinations}" th:value="${#strings.toLowerCase(destination.city + ' ' + destination.country)}" th:text="${destination.city + ', ' + destination.country}"></option>
+                </select>
+                <select id="dashboardCategoryFilter" class="form-control" style="width: 180px; font-size: 12px; padding: 6px 12px;" onchange="filterDashboardPackages()">
+                    <option value="">All Categories</option>
+                    <option th:each="category : ${categories}" th:value="${#strings.toLowerCase(category.name)}" th:text="${category.name}"></option>
+                </select>
+            </div>
+
+            <!-- Catalog Grid (Figma 2:1240) -->
+            <div class="catalog-grid" id="dashboardPackageCatalog">
+                <div class="pkg-catalog-card" th:each="pkg : ${recentPackages}"
+                     th:attr="data-name=${#strings.toLowerCase(pkg.name)},data-destination=${pkg.destination != null ? #strings.toLowerCase(pkg.destination.city + ' ' + pkg.destination.country) : ''},data-category=${pkg.category != null ? #strings.toLowerCase(pkg.category.name) : ''}">
+                    <div class="pkg-media-wrap" th:style="|background-image: url('${pkg.image != null && !#strings.isEmpty(pkg.image) ? pkg.image : '/images/hero-travel.jpg'}');|">
+                        <span class="pkg-badge-duration" th:text="${pkg.durationDays} + ' Days / ' + ${pkg.durationDays - 1} + ' Nights'">7 Days</span>
+                        <span class="pkg-badge-status" th:text="${pkg.active ? 'ACTIVE' : 'INACTIVE'}">ACTIVE</span>
+                    </div>
+                    <div class="pkg-card-body">
+                        <h4 class="pkg-card-title" th:text="${pkg.name}">Package name</h4>
+                        <p class="pkg-card-sub" th:text="'• ' + ${pkg.maxCapacity} + ' max • ' + ${pkg.category != null ? pkg.category.name : 'Uncategorized'}">Package details</p>
+                        <div class="pkg-card-bottom">
+                            <div>
+                                <div style="font-family: var(--font-mono); font-size: 9px; color: var(--text-muted);">BASE PRICE</div>
+                                <div class="pkg-price-val" th:text="'$' + ${#numbers.formatDecimal(pkg.basePrice, 1, 'COMMA', 2, 'POINT')} + '/person'">$0/person</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <form th:action="@{/staff/packages/{id}/toggle-status(id=${pkg.id})}" method="post">
+                                    <input type="hidden" name="redirect" value="dashboard">
+                                    <button type="submit" class="btn-action btn-outline" style="padding: 6px 10px; font-size: 11px; cursor: pointer;" th:text="${pkg.active ? 'Deactivate' : 'Activate'}">Toggle</button>
+                                </form>
+                                <a th:href="@{/staff/packages(edit=${pkg.id})}" class="btn-action btn-primary" style="padding: 6px 12px; font-size: 11px;">Edit Package</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${recentPackages == null || recentPackages.isEmpty()}" style="grid-column: 1 / -1; padding: 32px; text-align: center; color: var(--text-muted);">No packages have been created yet.</div>
+            </div>
+
+            <!-- Configure New Luxury Package Wizard (Figma 2:1270) -->
+            <div class="surface-panel">
+                <div class="surface-header">
+                    <div class="surface-title-group">
+                        <span class="surface-tag">PACKAGE WIZARD</span>
+                        <h3>Configure New Luxury Package</h3>
+                    </div>
+                </div>
+                <div class="surface-body">
+                    <p style="margin: 0 0 18px; color: var(--text-muted); font-size: 13px; line-height: 1.7;">
+                        Create a package through the complete editor so its destination, category, capacity, pricing, itinerary, services, and media are saved together.
+                    </p>
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--border-subtle);">
+                        <a th:href="@{/staff/categories}" class="btn-action btn-outline">Manage Categories</a>
+                        <a th:href="@{/staff/packages(create=true)}" class="btn-action btn-cta">
+                            Launch Package Editor &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verified Partner Hotels Directory (Figma 2:1290) -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                <h3 style="font-family: var(--font-heading); font-size: 19px; margin: 0; color: #ffffff;">
+                    Verified Partner Hotels Directory
+                </h3>
+                <a th:href="@{/staff/hotels}" style="font-size: 12px; color: var(--brand-primary); text-decoration: none; font-weight: 600;">
+                    Browse All Partnerships (<span th:text="${totalHotels}">0</span>) &rarr;
+                </a>
+            </div>
+
+            <div class="hotel-cards-grid" style="margin-bottom: 32px;">
+                <div class="hotel-card" th:each="hotel : ${recentHotels}">
+                    <img th:src="${hotel.image != null && !#strings.isEmpty(hotel.image) ? hotel.image : '/images/hero-travel.jpg'}" th:alt="${hotel.name}">
+                    <div style="flex: 1;">
+                        <div style="color: var(--brand-gold); font-size: 12px; margin-bottom: 2px;" th:text="${hotel.starRating} + '-star partner'">Partner hotel</div>
+                        <h4 style="margin: 0 0 2px 0; font-size: 16px; color: #ffffff;" th:text="${hotel.name}">Hotel</h4>
+                        <p style="margin: 0 0 8px 0; font-size: 12px; color: var(--text-muted);" th:text="${hotel.destination != null ? hotel.destination.city + ', ' + hotel.destination.country : hotel.address}">Destination</p>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <a th:href="@{/staff/hotels(edit=${hotel.id})}" style="font-family: var(--font-mono); font-size: 11px; color: var(--brand-primary);">Edit Partner</a>
+                            <span style="font-family: var(--font-heading); font-weight: 800; color: #ffffff;" th:text="'$' + ${#numbers.formatDecimal(hotel.pricePerNight, 1, 'COMMA', 2, 'POINT')} + '/night'">$0/night</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hotel-card" th:if="${recentHotels == null || recentHotels.isEmpty()}" style="color: var(--text-muted);">No partner hotels have been added yet.</div>
+            </div>
+
+            <!-- Customer Inquiries & Leads Table (Figma 2:1310) -->
+            <div class="surface-panel">
+                <div class="surface-header">
+                    <div class="surface-title-group">
+                        <span class="surface-tag">LEAD MANAGEMENT</span>
+                        <h3>Customer Inquiries &amp; Leads</h3>
+                    </div>
+                </div>
+                <div class="table-container" style="border: none;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>SENDER NAME</th>
+                                <th>INQUIRED PACKAGE</th>
+                                <th>MESSAGE PREVIEW</th>
+                                <th>RECEIVED</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="inquiry : ${recentInquiries}">
+                                <td>
+                                    <div style="font-weight: 600;" th:text="${inquiry.senderName}">Sender</div>
+                                    <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);" th:text="${inquiry.senderEmail}">email@example.com</div>
+                                </td>
+                                <td th:text="${inquiry.subject}">Subject</td>
+                                <td style="color: var(--text-muted); font-size: 12px;" th:text="${#strings.abbreviate(inquiry.message, 80)}">Message</td>
+                                <td th:text="${#temporals.format(inquiry.createdAt, 'MMM dd, HH:mm')}">Received</td>
+                                <td>
+                                    <a th:if="${inquiry.status.name() != 'RESOLVED'}" th:href="@{/staff/inquiries(reply=${inquiry.id})}" class="btn-action btn-outline" style="font-size: 11px; padding: 4px 10px;">Reply</a>
+                                    <span th:if="${inquiry.status.name() == 'RESOLVED'}" style="color: var(--brand-primary); font-size: 11px;">Resolved</span>
+                                </td>
+                            </tr>
+                            <tr th:if="${recentInquiries == null || recentInquiries.isEmpty()}">
+                                <td colspan="5" style="padding: 28px; text-align: center; color: var(--text-muted);">No customer inquiries are waiting for a response.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function filterDashboardPackages() {
+            var query = (document.getElementById('dashboardPackageSearch').value || '').toLowerCase().trim();
+            var destination = document.getElementById('dashboardDestinationFilter').value;
+            var category = document.getElementById('dashboardCategoryFilter').value;
+            document.querySelectorAll('#dashboardPackageCatalog .pkg-catalog-card').forEach(function (card) {
+                var matchesQuery = !query || (card.getAttribute('data-name') || '').includes(query);
+                var matchesDestination = !destination || (card.getAttribute('data-destination') || '') === destination;
+                var matchesCategory = !category || (card.getAttribute('data-category') || '') === category;
+                card.style.display = matchesQuery && matchesDestination && matchesCategory ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
